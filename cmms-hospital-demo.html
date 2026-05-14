@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NachiCMMS — Hospital & Healthcare Demo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+[data-theme="dark"]{--bg:#05080f;--bg2:#080d18;--surface:#0d1626;--surface2:#111e35;--surface3:#162340;--text:#f0f6ff;--grey:#4a6080;--grey2:#7a96b8;--border:rgba(20,184,166,0.12);--border2:rgba(20,184,166,0.25);--header-bg:rgba(5,8,15,0.97);--card-bg:#0d1626;--sidebar-bg:#080d18;--input-bg:#111e35;--shadow:rgba(0,0,0,0.5)}
+[data-theme="light"]{--bg:#f0faf8;--bg2:#e0f2f0;--surface:#ffffff;--surface2:#f0faf8;--surface3:#e0f2f0;--text:#1a3530;--grey:#94a3b8;--grey2:#64748b;--border:rgba(20,184,166,0.2);--border2:rgba(20,184,166,0.35);--header-bg:rgba(255,255,255,0.97);--card-bg:#ffffff;--sidebar-bg:#e0f2f0;--input-bg:#f0faf8;--shadow:rgba(0,0,0,0.1)}
+:root{--teal:#14b8a6;--teal2:#2dd4bf;--blue:#1a56db;--blue2:#3b82f6;--blue3:#60a5fa;--green:#10b981;--green2:#34d399;--amber:#f59e0b;--amber2:#fbbf24;--red:#ef4444;--red2:#f87171;--purple:#8b5cf6;--pink:#ec4899;--cyan:#06b6d4}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background 0.3s,color 0.3s}
+h1,h2,h3,h4{font-family:'Syne',sans-serif}
+
+/* CRITICAL ALERT */
+.crit-alert{background:linear-gradient(90deg,rgba(239,68,68,0.2),rgba(239,68,68,0.08));border-bottom:1px solid rgba(239,68,68,0.35);padding:7px 24px;display:flex;align-items:center;gap:12px;font-size:12px;color:var(--red2);animation:alertpulse 2s ease-in-out infinite}
+@keyframes alertpulse{0%,100%{opacity:1}50%{opacity:0.7}}
+.alert-dot{width:7px;height:7px;background:var(--red2);border-radius:50%;animation:pulse 1s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.6)}}
+.alert-dismiss{margin-left:auto;background:none;border:1px solid rgba(239,68,68,0.3);color:var(--red2);padding:3px 10px;border-radius:6px;cursor:pointer;font-size:11px}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:200;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.header-left{display:flex;align-items:center;gap:12px}
+.header-logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text)}
+.logo-badge{background:var(--teal);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:0.06em}
+.industry-tag{background:rgba(20,184,166,0.12);border:1px solid rgba(20,184,166,0.25);color:var(--teal2);font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px}
+.cqc-badge{background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);color:var(--purple);font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px}
+.header-right{display:flex;align-items:center;gap:10px}
+.live-badge{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--green2);background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);padding:5px 12px;border-radius:100px}
+.live-dot{width:6px;height:6px;background:var(--green2);border-radius:50%;animation:pulse 2s infinite}
+.btn-demo{background:var(--teal);color:white;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s}
+.btn-demo:hover{filter:brightness(1.15);transform:translateY(-1px)}
+.btn-red{background:var(--red);color:white;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s;animation:btn-glow 2s infinite}
+@keyframes btn-glow{0%,100%{box-shadow:0 0 8px rgba(239,68,68,0.4)}50%{box-shadow:0 0 20px rgba(239,68,68,0.7)}}
+
+/* THEME SWITCHER */
+.theme-switcher{display:flex;align-items:center;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:3px;gap:2px}
+.theme-btn{border:none;background:none;color:var(--grey2);padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap}
+.theme-btn:hover{color:var(--text)}
+.theme-btn.active{background:var(--teal);color:white}
+
+/* NAV */
+.nav-tabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:4px;overflow-x:auto}
+.nav-tab{padding:11px 14px;font-size:13px;font-weight:500;color:var(--grey2);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--teal2);border-bottom-color:var(--teal2)}
+
+/* LAYOUT */
+.main{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 117px)}
+
+/* SIDEBAR */
+.sidebar{background:var(--sidebar-bg);border-right:1px solid var(--border);padding:16px 0;overflow-y:auto}
+.sidebar-section{margin-bottom:20px}
+.sidebar-label{font-size:10px;font-weight:700;color:var(--grey);letter-spacing:0.1em;text-transform:uppercase;padding:0 16px 8px;font-family:'Syne',sans-serif}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;transition:all 0.15s;border-left:3px solid transparent;font-size:13px;color:var(--grey2);margin-right:8px;border-radius:0 8px 8px 0}
+.sidebar-item:hover{background:var(--surface);color:var(--text)}
+.sidebar-item.active{background:rgba(20,184,166,0.1);color:var(--teal2);border-left-color:var(--teal);font-weight:600}
+.sidebar-icon{font-size:15px;width:18px;text-align:center}
+.sidebar-badge{margin-left:auto;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:100px;flex-shrink:0}
+
+/* CONTENT */
+.content{padding:20px;overflow-y:auto;max-height:calc(100vh - 117px);background:var(--bg)}
+.page{display:none}
+.page.active{display:block;animation:fadeIn 0.4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* DEPT HERO */
+.dept-hero{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:20px;padding:24px 28px;margin-bottom:20px;position:relative;overflow:hidden}
+.dept-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--dept-color,var(--teal))}
+.dept-hero-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:16px}
+.dept-title{font-size:21px;font-weight:800;font-family:'Syne',sans-serif;color:var(--text)}
+.dept-subtitle{font-size:13px;color:var(--grey2);margin-top:4px;max-width:520px;line-height:1.5}
+.dept-status{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;padding:6px 14px;border-radius:100px;flex-shrink:0}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.kpi-card{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:18px;position:relative;overflow:hidden;transition:all 0.3s}
+.kpi-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kpi-color,var(--teal))}
+.kpi-label{font-size:10px;color:var(--grey2);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:7px}
+.kpi-value{font-size:28px;font-weight:800;font-family:'Syne',sans-serif;line-height:1;margin-bottom:5px}
+.kpi-sub{font-size:11px;color:var(--grey2)}
+.kpi-icon{position:absolute;top:14px;right:14px;font-size:20px;opacity:0.3}
+
+/* GRID */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+
+/* CARD */
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text)}
+.card-action{font-size:11px;color:var(--teal2);cursor:pointer;font-weight:500}
+
+/* EQUIPMENT */
+.equip-list{display:flex;flex-direction:column;gap:7px}
+.equip-item{display:flex;align-items:center;gap:11px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;transition:all 0.2s;cursor:pointer}
+.equip-item:hover{border-color:var(--border2)}
+.equip-item.crit-eq{border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.04)}
+.equip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.equip-dot.ok{background:var(--green2);box-shadow:0 0 6px var(--green2)}
+.equip-dot.warn{background:var(--amber2)}
+.equip-dot.crit{background:var(--red2);box-shadow:0 0 8px var(--red2);animation:pulse 1s infinite}
+.equip-dot.offline{background:var(--grey)}
+.equip-info{flex:1}
+.equip-name{font-size:12px;font-weight:600;color:var(--text)}
+.equip-meta{font-size:10px;color:var(--grey2)}
+.equip-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;flex-shrink:0}
+
+/* WO */
+.wo-list{display:flex;flex-direction:column;gap:7px}
+.wo-item{display:flex;align-items:center;gap:11px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;cursor:pointer;transition:all 0.2s}
+.wo-item:hover{border-color:var(--border2);transform:translateX(3px)}
+.wo-item.lifecrit{border-left:3px solid var(--red2)}
+.wo-priority{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.wo-priority.life{background:var(--red2);box-shadow:0 0 8px var(--red2);animation:pulse 1s infinite}
+.wo-priority.urgent{background:var(--amber2)}
+.wo-priority.routine{background:var(--blue3)}
+.wo-priority.planned{background:var(--green2)}
+.wo-info{flex:1;min-width:0}
+.wo-title{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wo-meta{font-size:10px;color:var(--grey2)}
+.wo-status{font-size:10px;font-weight:700;letter-spacing:0.05em;padding:3px 8px;border-radius:100px;flex-shrink:0}
+.wo-status.open{background:rgba(239,68,68,0.15);color:var(--red2)}
+.wo-status.progress{background:rgba(245,158,11,0.15);color:var(--amber2)}
+.wo-status.done{background:rgba(16,185,129,0.15);color:var(--green2)}
+.wo-status.scheduled{background:rgba(59,130,246,0.15);color:var(--blue3)}
+.wo-status.lifecrit{background:rgba(239,68,68,0.25);color:white}
+
+/* PROGRESS */
+.progress-item{margin-bottom:10px}
+.progress-header{display:flex;justify-content:space-between;margin-bottom:4px;font-size:11px;color:var(--text)}
+.progress-bar{background:var(--surface2);border-radius:100px;height:6px;overflow:hidden}
+.progress-fill{height:100%;border-radius:100px;transition:width 1.2s ease}
+
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-size:10px;font-weight:700;color:var(--grey2);text-transform:uppercase;letter-spacing:0.06em;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);font-family:'Syne',sans-serif}
+.data-table td{padding:9px 10px;font-size:12px;border-bottom:1px solid var(--border);color:var(--text)}
+.data-table tr:hover td{background:var(--surface2)}
+
+/* ENGINEER CARD */
+.eng-card-sm{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;gap:14px;align-items:center;cursor:pointer;transition:all 0.25s}
+.eng-card-sm:hover{border-color:var(--border2);transform:translateY(-2px)}
+.eng-avatar{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;font-family:'Syne',sans-serif;flex-shrink:0}
+.eng-info{flex:1}
+.eng-name{font-size:14px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text)}
+.eng-role{font-size:11px;color:var(--grey2)}
+.eng-certs{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.eng-cert{font-size:10px;background:rgba(20,184,166,0.1);color:var(--teal2);border:1px solid var(--border);padding:2px 8px;border-radius:100px}
+
+/* CQC METER */
+.cqc-meter{background:var(--surface);border:1px solid rgba(139,92,246,0.25);border-radius:16px;padding:18px;margin-bottom:18px;position:relative;overflow:hidden}
+.cqc-meter::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--blue3),var(--teal))}
+.cqc-bar-wrap{background:var(--surface2);border-radius:100px;height:10px;overflow:hidden;margin:10px 0 6px}
+.cqc-bar{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--purple),var(--blue2),var(--teal));transition:width 1.5s ease}
+
+/* COMPLIANCE ROW */
+.comp-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--surface2);border-radius:10px;margin-bottom:6px;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
+.comp-row:hover{border-color:var(--border)}
+.comp-icon{font-size:18px;flex-shrink:0;width:28px;text-align:center}
+.comp-info{flex:1}
+.comp-name{font-size:12px;font-weight:600;color:var(--text)}
+.comp-due{font-size:10px;color:var(--grey2)}
+.comp-status{font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;flex-shrink:0}
+
+/* MESSAGING */
+.msg-layout{display:grid;grid-template-columns:200px 1fr;height:420px;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.msg-sidebar{border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--sidebar-bg)}
+.msg-sidebar-header{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text);display:flex;justify-content:space-between;align-items:center}
+.msg-new-btn{background:var(--teal);color:white;border:none;width:22px;height:22px;border-radius:6px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
+.msg-thread{padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--border);transition:all 0.15s}
+.msg-thread:hover,.msg-thread.active{background:rgba(20,184,166,0.08)}
+.msg-thread-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.msg-thread-preview{font-size:10px;color:var(--grey2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.msg-thread-time{font-size:9px;color:var(--grey);margin-top:2px}
+.msg-unread{width:7px;height:7px;background:var(--teal2);border-radius:50%;float:right;margin-top:4px}
+.msg-urgent-dot{width:7px;height:7px;background:var(--red2);border-radius:50%;float:right;margin-top:4px;animation:pulse 1s infinite}
+.msg-main{display:flex;flex-direction:column}
+.msg-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--card-bg)}
+.msg-avatar{width:30px;height:30px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'Syne',sans-serif;flex-shrink:0}
+.msg-header-info h4{font-size:13px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text)}
+.msg-header-info p{font-size:10px;color:var(--grey2)}
+.msg-header-actions{margin-left:auto;display:flex;gap:6px}
+.msg-action-btn{background:var(--surface2);border:1px solid var(--border);color:var(--grey2);padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;transition:all 0.2s}
+.msg-action-btn:hover{color:var(--text)}
+.urgent-flag{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:var(--red2);padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer}
+.msg-body{flex:1;padding:14px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.msg-bubble{max-width:75%;padding:9px 12px;border-radius:10px;font-size:12px;line-height:1.6;color:var(--text)}
+.msg-bubble.received{background:var(--surface2);border:1px solid var(--border);align-self:flex-start;border-radius:4px 10px 10px 10px}
+.msg-bubble.sent{background:var(--teal);color:white;align-self:flex-end;border-radius:10px 4px 10px 10px}
+.msg-bubble.urgent-msg{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.25);color:var(--red2);align-self:flex-start;border-radius:4px 10px 10px 10px}
+.msg-bubble-name{font-size:10px;color:var(--grey2);margin-bottom:3px;font-weight:600}
+.msg-bubble-time{font-size:10px;color:rgba(255,255,255,0.5);margin-top:3px;text-align:right}
+.msg-bubble.received .msg-bubble-time,.msg-bubble.urgent-msg .msg-bubble-time{color:var(--grey);text-align:left}
+.msg-input-wrap{padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;background:var(--card-bg)}
+.msg-input{flex:1;background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:8px 12px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;resize:none;outline:none;min-height:36px;max-height:80px}
+.msg-input:focus{border-color:var(--border2)}
+.msg-send-btn{background:var(--teal);color:white;border:none;width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
+.msg-send-btn:hover{filter:brightness(1.15);transform:scale(1.05)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;width:500px;max-width:95vw;max-height:90vh;overflow-y:auto;position:relative}
+.modal-title{font-size:17px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:18px;color:var(--text)}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--surface2);border:1px solid var(--border);color:var(--grey2);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:15px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:10px;font-weight:700;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px;display:block;font-family:'Syne',sans-serif}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--border2)}
+.form-select option{background:var(--surface2);color:var(--text)}
+.form-textarea{resize:vertical;min-height:70px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-primary{background:var(--teal);color:white;border:none;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s;width:100%}
+.btn-primary:hover{filter:brightness(1.15);transform:translateY(-1px)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--teal);border-radius:12px;padding:12px 18px;z-index:999;display:none;align-items:center;gap:10px;font-size:13px;color:var(--text);box-shadow:0 8px 32px var(--shadow)}
+.toast.show{display:flex;animation:slide-up 0.3s ease}
+@keyframes slide-up{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* CTA */
+.cta-banner{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:16px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;position:relative;overflow:hidden}
+.cta-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal),var(--purple),transparent)}
+.cta-text h3{font-size:14px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:3px;color:var(--text)}
+.cta-text p{font-size:12px;color:var(--grey2)}
+.cta-buttons{display:flex;gap:8px;flex-shrink:0}
+.btn-cta{padding:8px 18px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;border:none}
+.btn-cta.primary{background:var(--teal);color:white}
+.btn-cta.primary:hover{filter:brightness(1.15)}
+.btn-cta.ghost{background:transparent;color:var(--grey2);border:1px solid var(--border)}
+.btn-cta.ghost:hover{color:var(--text)}
+
+/* WARD GRID */
+.ward-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.ward-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all 0.25s}
+.ward-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.ward-name{font-size:14px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text);margin-bottom:3px}
+.ward-meta{font-size:11px;color:var(--grey2);margin-bottom:10px}
+.ward-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ward-stat{text-align:center;background:var(--surface);border-radius:8px;padding:8px}
+.ward-stat-num{font-size:16px;font-weight:800;font-family:'Syne',sans-serif}
+.ward-stat-lbl{font-size:9px;color:var(--grey2);text-transform:uppercase;letter-spacing:0.05em}
+
+@media(max-width:1100px){.main{grid-template-columns:1fr}.sidebar{display:none}.kpi-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.kpi-grid{grid-template-columns:1fr 1fr}.grid-2,.grid-3{grid-template-columns:1fr}.msg-layout{grid-template-columns:1fr}.msg-sidebar{display:none}}
+
+.heatmap-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
+.hm-cell{aspect-ratio:1;border-radius:5px;cursor:pointer;transition:all 0.2s}
+.hm-cell:hover{transform:scale(1.2);z-index:10;box-shadow:0 4px 12px rgba(0,0,0,0.4)}
+.hm-label{font-size:9px;color:var(--grey2);text-align:center;margin-top:5px;font-family:'DM Mono',monospace}
+</style>
+</head>
+<body>
+
+<!-- CRITICAL ALERT -->
+<div class="crit-alert" id="crit-alert">
+  <div class="alert-dot"></div>
+  🚨 <strong>LIFE CRITICAL:</strong>&nbsp; Emergency Generator 2 — Service Overdue 14 Days · Theatres Block B at Risk · Assign Engineer Immediately
+  <button class="alert-dismiss" onclick="document.getElementById('crit-alert').style.display='none'">Dismiss</button>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo">🏥 NachiCMMS <span class="logo-badge">DEMO</span></div>
+    <span class="industry-tag" id="industry-tag">🏥 All Hospital Overview</span>
+    <span class="cqc-badge" id="cqc-badge">⭐ CQC Ready: 94%</span>
+  </div>
+  <div class="header-right">
+    <div class="theme-switcher">
+      <button class="theme-btn active" onclick="setTheme('dark',this)">🌙 Dark</button>
+      <button class="theme-btn" onclick="setTheme('light',this)">☀️ Light</button>
+      <button class="theme-btn" onclick="setTheme('system',this)">💻 System</button>
+    </div>
+    <div class="live-badge"><div class="live-dot"></div> Live</div>
+    <button class="btn-red" onclick="showToast('🚨 Emergency escalation sent to all engineers!')">🚨 Emergency</button>
+    <button class="btn-demo" onclick="openModal()">+ Work Order</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showTab('dashboard',this)">📊 Dashboard</button>
+  <button class="nav-tab" onclick="showTab('assets',this)">🏗️ All Assets</button>
+  <button class="nav-tab" onclick="showTab('workorders',this)">📋 All Work Orders</button>
+  <button class="nav-tab" onclick="showTab('schedule',this)">📅 PPM Schedule</button>
+  <button class="nav-tab" onclick="showTab('compliance',this)">✅ Compliance <span style="background:var(--amber);color:#000;font-size:9px;padding:2px 5px;border-radius:100px;margin-left:3px">3</span></button>
+  <button class="nav-tab" onclick="showTab('ward',this)">🏥 Ward Portal</button>
+  <button class="nav-tab" onclick="showTab('messaging',this)">💬 Messaging <span style="background:var(--red);color:white;font-size:9px;padding:2px 5px;border-radius:100px;margin-left:3px">4</span></button>
+  <button class="nav-tab" onclick="showTab('reports',this)">📈 KPI Reports</button>
+  <button class="nav-tab" onclick="showTab('engineers',this)">👷 Engineers</button>
+</div>
+
+<div class="main">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Departments</div>
+      <div class="sidebar-item active" id="sb-all" onclick="showDept('all',this)"><span class="sidebar-icon">🏥</span> All Hospital <span class="sidebar-badge" style="background:var(--teal)">6</span></div>
+      <div class="sidebar-item" id="sb-theatres" onclick="showDept('theatres',this)"><span class="sidebar-icon">🔬</span> Theatres & ICU <span class="sidebar-badge" style="background:var(--red)">!</span></div>
+      <div class="sidebar-item" id="sb-wards" onclick="showDept('wards',this)"><span class="sidebar-icon">🛏️</span> Wards A–F</div>
+      <div class="sidebar-item" id="sb-plant" onclick="showDept('plant',this)"><span class="sidebar-icon">⚡</span> Plant & Utilities <span class="sidebar-badge" style="background:var(--red)">!</span></div>
+      <div class="sidebar-item" id="sb-lab" onclick="showDept('lab',this)"><span class="sidebar-icon">🧪</span> Pathology Lab</div>
+      <div class="sidebar-item" id="sb-ae" onclick="showDept('ae',this)"><span class="sidebar-icon">🚑</span> A&E Department</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Engineers On Call</div>
+      <div class="sidebar-item" onclick="showEngineerModal('sarah')"><span class="sidebar-icon">👷</span> Sarah Thompson</div>
+      <div class="sidebar-item" onclick="showEngineerModal('raj')"><span class="sidebar-icon">👷</span> Raj Patel</div>
+      <div class="sidebar-item" onclick="showEngineerModal('mike')"><span class="sidebar-icon">👷</span> Mike Okafor</div>
+      <div class="sidebar-item" onclick="showEngineerModal('claire')"><span class="sidebar-icon">👷</span> Claire Wilson</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Quick Actions</div>
+      <div class="sidebar-item" onclick="openModal()"><span class="sidebar-icon">➕</span> Raise Work Order</div>
+      <div class="sidebar-item" onclick="showTab('compliance',document.querySelectorAll('.nav-tab')[4])"><span class="sidebar-icon">✅</span> View Compliance</div>
+      <div class="sidebar-item" onclick="exportReport()"><span class="sidebar-icon">📥</span> Export PDF Report</div>
+      <div class="sidebar-item" onclick="openSettings()"><span class="sidebar-icon">⚙️</span> Settings</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- DASHBOARD TAB -->
+    <div class="page active" id="tab-dashboard">
+      <div class="cta-banner">
+        <div class="cta-text"><h3>🏥 NachiCMMS — Hospital Edition · Click any Department on the left for its complete data</h3><p>Built for NHS Trusts, private hospitals and healthcare estates teams. Book a demo at nachieng.co.uk</p></div>
+        <div class="cta-buttons"><a href="https://nachieng.co.uk" target="_blank" class="btn-cta primary">Book Free Demo →</a><a href="https://nachieng.co.uk" target="_blank" class="btn-cta ghost">Learn More</a></div>
+      </div>
+      <div id="dept-content"></div>
+    </div>
+
+    <!-- ASSETS TAB -->
+    <div class="page" id="tab-assets">
+      <div class="card"><div class="card-header"><div class="card-title">🏗️ Medical Asset Register — 124 Assets</div><button class="btn-demo" style="font-size:12px;padding:6px 14px" onclick="showToast('Asset added!')">+ Add Asset</button></div>
+      <table class="data-table"><tr><th>Asset ID</th><th>Equipment</th><th>Department</th><th>Risk</th><th>Status</th><th>Last Service</th><th>Next PM</th><th>HTM Ref</th></tr>
+      <tr><td style="color:var(--teal2);font-family:'DM Mono',monospace">MED-001</td><td>Emergency Generator B</td><td>Plant Room</td><td style="color:var(--red2)">Life Critical</td><td><span class="wo-status open">OVERDUE</span></td><td style="color:var(--red2)">30 Apr 2026</td><td style="color:var(--red2)">OVERDUE</td><td>HTM 06-01</td></tr>
+      <tr><td style="color:var(--teal2);font-family:'DM Mono',monospace">MED-002</td><td>Medical Gas System</td><td>All Zones</td><td style="color:var(--red2)">Life Critical</td><td><span class="wo-status done">COMPLIANT</span></td><td>01 May 2026</td><td>01 Aug 2026</td><td>HTM 02-01</td></tr>
+      <tr><td style="color:var(--teal2);font-family:'DM Mono',monospace">MED-003</td><td>Theatre HVAC Laminar Flow</td><td>Theatres 3&4</td><td style="color:var(--amber2)">High</td><td><span class="wo-status progress">DUE SOON</span></td><td>14 Feb 2026</td><td>19 May 2026</td><td>HTM 03-01</td></tr>
+      <tr><td style="color:var(--teal2);font-family:'DM Mono',monospace">MED-004</td><td>Autoclave — Sterile Services</td><td>CSSD</td><td style="color:var(--amber2)">High</td><td><span class="wo-status done">COMPLIANT</span></td><td>10 May 2026</td><td>10 Jun 2026</td><td>HTM 01-01</td></tr>
+      <tr><td style="color:var(--teal2);font-family:'DM Mono',monospace">MED-005</td><td>Nurse Call System</td><td>Ward C</td><td style="color:var(--blue3)">Medium</td><td><span class="wo-status scheduled">SCHEDULED</span></td><td>15 Apr 2026</td><td>15 May 2026</td><td>HTM 08-03</td></tr>
+      <tr><td style="color:var(--teal2);font-family:'DM Mono',monospace">MED-006</td><td>Pathology Centrifuge</td><td>Lab Block</td><td style="color:var(--blue3)">Medium</td><td><span class="wo-status done">COMPLIANT</span></td><td>13 May 2026</td><td>13 Aug 2026</td><td>—</td></tr>
+      <tr><td style="color:var(--teal2);font-family:'DM Mono',monospace">MED-007</td><td>Water System (Legionella)</td><td>Whole Site</td><td style="color:var(--red2)">Life Critical</td><td><span class="wo-status done">COMPLIANT</span></td><td>01 May 2026</td><td>01 Jun 2026</td><td>HTM 04-01</td></tr>
+      <tr><td style="color:var(--teal2);font-family:'DM Mono',monospace">MED-008</td><td>Fire Detection System</td><td>All Zones</td><td style="color:var(--red2)">Life Critical</td><td><span class="wo-status done">COMPLIANT</span></td><td>28 Apr 2026</td><td>28 Jul 2026</td><td>HTM 05-03</td></tr>
+      <tr><td style="color:var(--teal2);font-family:'DM Mono',monospace">MED-009</td><td>A&E Trauma Lights (x4)</td><td>A&E</td><td style="color:var(--blue3)">Medium</td><td><span class="wo-status done">COMPLIANT</span></td><td>10 May 2026</td><td>10 Aug 2026</td><td>—</td></tr>
+      </table></div>
+    </div>
+
+    <!-- WORK ORDERS TAB -->
+    <div class="page" id="tab-workorders">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h2 style="font-size:18px;font-weight:800">All Work Orders</h2><button class="btn-demo" onclick="openModal()">+ Raise Work Order</button></div>
+      <div class="wo-list" id="wo-all-list">
+        <div class="wo-item lifecrit"><div class="wo-priority life"></div><div class="wo-info"><div class="wo-title">WO-H441 · Emergency Generator Block B — Service Overdue 14 Days</div><div class="wo-meta">Theatres Block B · UNASSIGNED · Raised 30 Apr · ESCALATED</div></div><span class="wo-status lifecrit">LIFE CRIT</span></div>
+        <div class="wo-item"><div class="wo-priority urgent"></div><div class="wo-info"><div class="wo-title">WO-H440 · Theatre HVAC — Laminar Flow Filter Replacement</div><div class="wo-meta">Sarah Thompson · Theatres 3 & 4 · Due 19 May</div></div><span class="wo-status progress">IN PROGRESS</span></div>
+        <div class="wo-item"><div class="wo-priority urgent"></div><div class="wo-info"><div class="wo-title">WO-H439 · Legionella Risk Assessment — Ward D Water System</div><div class="wo-meta">Claire Wilson · Due 20 May</div></div><span class="wo-status scheduled">SCHEDULED</span></div>
+        <div class="wo-item"><div class="wo-priority routine"></div><div class="wo-info"><div class="wo-title">WO-H438 · Nurse Call System — Ward C Annual Check</div><div class="wo-meta">Raj Patel · Due 22 May</div></div><span class="wo-status scheduled">SCHEDULED</span></div>
+        <div class="wo-item"><div class="wo-priority routine"></div><div class="wo-info"><div class="wo-title">WO-H437 · A&E — Trauma Light Annual Service (x4)</div><div class="wo-meta">Mike Okafor · Due 25 May</div></div><span class="wo-status scheduled">SCHEDULED</span></div>
+        <div class="wo-item"><div class="wo-priority planned"></div><div class="wo-info"><div class="wo-title">WO-H436 · Pathology Lab — Centrifuge Annual Service</div><div class="wo-meta">Mike Okafor · Completed 13 May 2026</div></div><span class="wo-status done">COMPLETE</span></div>
+        <div class="wo-item"><div class="wo-priority planned"></div><div class="wo-info"><div class="wo-title">WO-H435 · Main Generator Block A — Monthly Load Test</div><div class="wo-meta">Sarah Thompson · Completed 07 May 2026</div></div><span class="wo-status done">COMPLETE</span></div>
+      </div>
+    </div>
+
+    <!-- SCHEDULE TAB -->
+    <div class="page" id="tab-schedule">
+      <div class="card"><div class="card-header"><div class="card-title">📅 Statutory & PPM Planner — May 2026</div></div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:10px">
+        <div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Mon</div><div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Tue</div><div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Wed</div><div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Thu</div><div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Fri</div><div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Sat</div><div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Sun</div>
+        <div style="aspect-ratio:1;border-radius:5px;background:transparent"></div><div style="aspect-ratio:1;border-radius:5px;background:transparent"></div><div style="aspect-ratio:1;border-radius:5px;background:transparent"></div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">1</div><div style="aspect-ratio:1;border-radius:5px;background:rgba(20,184,166,0.2);border:1px solid rgba(20,184,166,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--teal2)">2</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">3</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">4</div>
+        <div style="aspect-ratio:1;border-radius:5px;background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--purple)">5</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">6</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">7</div><div style="aspect-ratio:1;border-radius:5px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--red2)">8</div><div style="aspect-ratio:1;border-radius:5px;background:rgba(20,184,166,0.2);border:1px solid rgba(20,184,166,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--teal2)">9</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">10</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">11</div>
+        <div style="aspect-ratio:1;border-radius:5px;background:rgba(20,184,166,0.2);border:1px solid rgba(20,184,166,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--teal2)">12</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">13</div><div style="aspect-ratio:1;border-radius:5px;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:11px;color:white;font-weight:700">14</div><div style="aspect-ratio:1;border-radius:5px;background:rgba(20,184,166,0.2);border:1px solid rgba(20,184,166,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--teal2)">15</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">16</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">17</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">18</div>
+        <div style="aspect-ratio:1;border-radius:5px;background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--purple)">19</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">20</div><div style="aspect-ratio:1;border-radius:5px;background:rgba(20,184,166,0.2);border:1px solid rgba(20,184,166,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--teal2)">21</div><div style="aspect-ratio:1;border-radius:5px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--red2)">22</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">23</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">24</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">25</div>
+        <div style="aspect-ratio:1;border-radius:5px;background:rgba(20,184,166,0.2);border:1px solid rgba(20,184,166,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--teal2)">26</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">27</div><div style="aspect-ratio:1;border-radius:5px;background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--purple)">28</div><div style="aspect-ratio:1;border-radius:5px;background:rgba(20,184,166,0.2);border:1px solid rgba(20,184,166,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--teal2)">29</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">30</div><div style="aspect-ratio:1;border-radius:5px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--grey2)">31</div>
+      </div>
+      <div style="display:flex;gap:12px;font-size:11px;color:var(--grey2);margin-bottom:12px"><span style="display:inline-flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(139,92,246,0.4);border-radius:2px;display:inline-block"></span>Statutory</span><span style="display:inline-flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(20,184,166,0.4);border-radius:2px;display:inline-block"></span>PPM</span><span style="display:inline-flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(239,68,68,0.3);border-radius:2px;display:inline-block"></span>Overdue</span></div>
+      <div class="wo-list">
+        <div class="wo-item lifecrit"><div class="wo-priority life"></div><div class="wo-info"><div class="wo-title">Emergency Generator B — Statutory Service OVERDUE 14 Days</div><div class="wo-meta">HTM 06-01 · Was due 8 May · Escalate immediately</div></div><span class="wo-status open">OVERDUE</span></div>
+        <div class="wo-item"><div class="wo-priority urgent"></div><div class="wo-info"><div class="wo-title">Theatre HVAC — Laminar Flow Filter (Statutory)</div><div class="wo-meta">HTM 03-01 · Due 19 May · Sarah Thompson</div></div><span class="wo-status progress">IN PROGRESS</span></div>
+        <div class="wo-item"><div class="wo-priority routine"></div><div class="wo-info"><div class="wo-title">Water Hygiene Monthly Check — All Wards</div><div class="wo-meta">HTM 04-01 · Due 26 May · Claire Wilson</div></div><span class="wo-status scheduled">SCHEDULED</span></div>
+        <div class="wo-item"><div class="wo-priority planned"></div><div class="wo-info"><div class="wo-title">Fire Detection System — Quarterly Test</div><div class="wo-meta">HTM 05-03 · Due 28 May · Raj Patel</div></div><span class="wo-status scheduled">SCHEDULED</span></div>
+      </div></div>
+    </div>
+
+    <!-- COMPLIANCE TAB -->
+    <div class="page" id="tab-compliance">
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kpi-color:var(--purple)"><div class="kpi-icon">⭐</div><div class="kpi-label">CQC Readiness</div><div class="kpi-value" style="color:var(--purple)">94%</div><div class="kpi-sub">▲ 3% this month</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--teal2)"><div class="kpi-icon">📋</div><div class="kpi-label">HTM Compliance</div><div class="kpi-value" style="color:var(--teal2)">97%</div><div class="kpi-sub">21 of 22 standards met</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--amber2)"><div class="kpi-icon">⚠️</div><div class="kpi-label">Actions Outstanding</div><div class="kpi-value" style="color:var(--amber2)">3</div><div class="kpi-sub">Requires attention</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--green2)"><div class="kpi-icon">✅</div><div class="kpi-label">Audit Trail Entries</div><div class="kpi-value" style="color:var(--green2)">2,847</div><div class="kpi-sub">Complete digital record</div></div>
+      </div>
+      <div class="card"><div class="card-header"><div class="card-title">✅ HTM Statutory Compliance Tracker</div><button class="btn-demo" style="font-size:12px;padding:6px 14px" onclick="exportReport()">📥 Export for CQC</button></div>
+      <div class="comp-row"><div class="comp-icon">⚡</div><div class="comp-info"><div class="comp-name">HTM 06-01 — Electrical Safety (LV)</div><div class="comp-due">Emergency Generator B overdue · Action Required</div></div><span class="comp-status" style="background:rgba(239,68,68,0.15);color:var(--red2)">ACTION NEEDED</span></div>
+      <div class="comp-row"><div class="comp-icon">💧</div><div class="comp-info"><div class="comp-name">HTM 04-01 — Water Hygiene & Legionella</div><div class="comp-due">Next check due: 26 May 2026</div></div><span class="comp-status" style="background:rgba(16,185,129,0.15);color:var(--green2)">COMPLIANT</span></div>
+      <div class="comp-row"><div class="comp-icon">🌬️</div><div class="comp-info"><div class="comp-name">HTM 03-01 — Ventilation (Theatre HVAC)</div><div class="comp-due">Filter replacement due 19 May · In progress</div></div><span class="comp-status" style="background:rgba(245,158,11,0.15);color:var(--amber2)">DUE SOON</span></div>
+      <div class="comp-row"><div class="comp-icon">🔥</div><div class="comp-info"><div class="comp-name">HTM 05-03 — Fire Safety</div><div class="comp-due">Last: 28 Apr 2026 · Next: 28 Jul 2026</div></div><span class="comp-status" style="background:rgba(16,185,129,0.15);color:var(--green2)">COMPLIANT</span></div>
+      <div class="comp-row"><div class="comp-icon">💨</div><div class="comp-info"><div class="comp-name">HTM 02-01 — Medical Gas</div><div class="comp-due">All zones tested · Next: 01 Aug 2026</div></div><span class="comp-status" style="background:rgba(16,185,129,0.15);color:var(--green2)">COMPLIANT</span></div>
+      <div class="comp-row"><div class="comp-icon">🔬</div><div class="comp-info"><div class="comp-name">HTM 01-01 — Decontamination (Autoclave)</div><div class="comp-due">Last validated: 10 May 2026 · Next: 10 Jun</div></div><span class="comp-status" style="background:rgba(16,185,129,0.15);color:var(--green2)">COMPLIANT</span></div>
+      <div class="comp-row"><div class="comp-icon">📞</div><div class="comp-info"><div class="comp-name">HTM 08-03 — Nurse Call Systems</div><div class="comp-due">Annual check due 22 May 2026 · Scheduled</div></div><span class="comp-status" style="background:rgba(59,130,246,0.15);color:var(--blue3)">SCHEDULED</span></div>
+      </div>
+    </div>
+
+    <!-- WARD PORTAL TAB -->
+    <div class="page" id="tab-ward">
+      <div style="margin-bottom:14px"><h2 style="font-size:18px;font-weight:800">🏥 Ward Manager Portal</h2><p style="font-size:12px;color:var(--grey2);margin-top:3px">Ward managers can log faults and track status directly</p></div>
+      <div class="ward-grid">
+        <div class="ward-card" onclick="showToast('Opening Ward A...')"><div class="ward-name">Ward A — General Medical</div><div class="ward-meta">Dr. J. Adeyemi · 28 beds</div><div class="ward-stats"><div class="ward-stat"><div class="ward-stat-num" style="color:var(--green2)">0</div><div class="ward-stat-lbl">Open Jobs</div></div><div class="ward-stat"><div class="ward-stat-num" style="color:var(--teal2)">3</div><div class="ward-stat-lbl">PPMs Due</div></div></div></div>
+        <div class="ward-card" onclick="showToast('Opening Ward B...')"><div class="ward-name">Ward B — Surgical</div><div class="ward-meta">Sr. L. Okafor · 22 beds</div><div class="ward-stats"><div class="ward-stat"><div class="ward-stat-num" style="color:var(--amber2)">2</div><div class="ward-stat-lbl">Open Jobs</div></div><div class="ward-stat"><div class="ward-stat-num" style="color:var(--teal2)">1</div><div class="ward-stat-lbl">PPMs Due</div></div></div></div>
+        <div class="ward-card" onclick="showToast('Opening Ward C...')"><div class="ward-name">Ward C — Cardiology</div><div class="ward-meta">Dr. P. Singh · 18 beds</div><div class="ward-stats"><div class="ward-stat"><div class="ward-stat-num" style="color:var(--red2)">1</div><div class="ward-stat-lbl">Open Jobs</div></div><div class="ward-stat"><div class="ward-stat-num" style="color:var(--amber2)">2</div><div class="ward-stat-lbl">PPMs Due</div></div></div></div>
+        <div class="ward-card" onclick="showToast('Opening Theatres...')"><div class="ward-name">Theatres Block A & B</div><div class="ward-meta">Sr. K. Williams · 6 theatres</div><div class="ward-stats"><div class="ward-stat"><div class="ward-stat-num" style="color:var(--red2)">1</div><div class="ward-stat-lbl">Critical</div></div><div class="ward-stat"><div class="ward-stat-num" style="color:var(--amber2)">1</div><div class="ward-stat-lbl">Due Soon</div></div></div></div>
+        <div class="ward-card" onclick="showToast('Opening A&E...')"><div class="ward-name">A&E Department</div><div class="ward-meta">Dr. R. Hassan · 24hr ops</div><div class="ward-stats"><div class="ward-stat"><div class="ward-stat-num" style="color:var(--green2)">0</div><div class="ward-stat-lbl">Open Jobs</div></div><div class="ward-stat"><div class="ward-stat-num" style="color:var(--teal2)">2</div><div class="ward-stat-lbl">PPMs Due</div></div></div></div>
+        <div class="ward-card" onclick="openModal()"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;opacity:0.6"><div style="font-size:24px">➕</div><div style="font-size:13px;font-weight:600;font-family:'Syne',sans-serif">Log New Request</div></div></div>
+      </div>
+    </div>
+
+    <!-- MESSAGING TAB -->
+    <div class="page" id="tab-messaging">
+      <div style="margin-bottom:14px"><h2 style="font-size:18px;font-weight:800">💬 Team Messaging</h2><p style="font-size:12px;color:var(--grey2);margin-top:3px">Engineers, ward managers and contractors in one place</p></div>
+      <div class="msg-layout">
+        <div class="msg-sidebar">
+          <div class="msg-sidebar-header">Messages <button class="msg-new-btn" onclick="showToast('New chat started!')">+</button></div>
+          <div class="msg-thread active" onclick="loadThread('sarah',this)"><div style="display:flex;justify-content:space-between"><div class="msg-thread-name">Sarah Thompson</div><div class="msg-urgent-dot"></div></div><div class="msg-thread-preview">Theatre 3 HVAC temp spike urgent</div><div class="msg-thread-time">5 min ago</div></div>
+          <div class="msg-thread" onclick="loadThread('raj',this)"><div style="display:flex;justify-content:space-between"><div class="msg-thread-name">Raj Patel</div><div class="msg-unread"></div></div><div class="msg-thread-preview">Nurse call check complete</div><div class="msg-thread-time">32 min ago</div></div>
+          <div class="msg-thread" onclick="loadThread('ward',this)"><div style="display:flex;justify-content:space-between"><div class="msg-thread-name">Sr. L. Okafor</div><div class="msg-unread"></div></div><div class="msg-thread-preview">Bay 3 light still flickering</div><div class="msg-thread-time">1hr ago</div></div>
+          <div class="msg-thread" onclick="loadThread('team',this)"><div style="display:flex;justify-content:space-between"><div class="msg-thread-name">🏥 All Engineers</div><div class="msg-unread"></div></div><div class="msg-thread-preview">Generator B still unassigned</div><div class="msg-thread-time">2hr ago</div></div>
+          <div class="msg-thread" onclick="loadThread('mike',this)"><div class="msg-thread-name">Mike Okafor</div><div class="msg-thread-preview">Lab centrifuge service done</div><div class="msg-thread-time">3hr ago</div></div>
+        </div>
+        <div class="msg-main">
+          <div class="msg-header"><div class="msg-avatar" id="hmsg-av">ST</div><div class="msg-header-info"><h4 id="hmsg-nm">Sarah Thompson</h4><p id="hmsg-rl">Electrical Engineer · Theatres · 🟢 On Call</p></div><div class="msg-header-actions"><button class="urgent-flag" onclick="showToast('🚨 Urgent flag sent!')">🚨 Urgent</button><button class="msg-action-btn" onclick="openModal()">+ WO</button></div></div>
+          <div class="msg-body" id="hmsg-body"></div>
+          <div class="msg-input-wrap"><textarea class="msg-input" id="hmsg-in" placeholder="Type a message..." rows="1" onkeydown="handleHKey(event)"></textarea><button class="msg-send-btn" onclick="sendHMsg()">➤</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORTS TAB -->
+    <div class="page" id="tab-reports">
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kpi-color:var(--teal2)"><div class="kpi-icon">🏥</div><div class="kpi-label">Critical Uptime</div><div class="kpi-value" style="color:var(--teal2)">99.8%</div><div class="kpi-sub">▲ Excellent</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--blue3)"><div class="kpi-icon">💷</div><div class="kpi-label">Monthly Cost</div><div class="kpi-value" style="color:var(--blue3)">£20.6k</div><div class="kpi-sub">▼ £2.4k saved</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--amber2)"><div class="kpi-icon">⏱️</div><div class="kpi-label">Avg Response</div><div class="kpi-value" style="color:var(--amber2)">18 min</div><div class="kpi-sub">HTM target: 30 min ✅</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--green2)"><div class="kpi-icon">📋</div><div class="kpi-label">WOs This Month</div><div class="kpi-value" style="color:var(--green2)">89</div><div class="kpi-sub">▲ 12% vs last month</div></div>
+      </div>
+      <div class="card"><div class="card-header"><div class="card-title">📊 Monthly KPI Overview</div><button class="btn-demo" style="font-size:12px;padding:7px 16px" onclick="exportReport()">📥 Export PDF for CQC</button></div>
+      <div class="progress-item"><div class="progress-header"><span>Critical Equipment Uptime</span><span style="color:var(--green2)">99.8%</span></div><div class="progress-bar"><div class="progress-fill" style="width:99.8%;background:var(--green2)"></div></div></div>
+      <div class="progress-item"><div class="progress-header"><span>Statutory Compliance</span><span style="color:var(--teal2)">97%</span></div><div class="progress-bar"><div class="progress-fill" style="width:97%;background:var(--teal2)"></div></div></div>
+      <div class="progress-item"><div class="progress-header"><span>PPM Completion Rate</span><span style="color:var(--blue3)">91%</span></div><div class="progress-bar"><div class="progress-fill" style="width:91%;background:var(--blue3)"></div></div></div>
+      <div class="progress-item"><div class="progress-header"><span>CQC Readiness Score</span><span style="color:var(--purple)">94%</span></div><div class="progress-bar"><div class="progress-fill" style="width:94%;background:var(--purple)"></div></div></div>
+      <div class="progress-item"><div class="progress-header"><span>Planned vs Reactive Ratio</span><span style="color:var(--amber2)">76%</span></div><div class="progress-bar"><div class="progress-fill" style="width:76%;background:var(--amber2)"></div></div></div>
+      </div>
+    </div>
+
+    <!-- ENGINEERS TAB -->
+    <div class="page" id="tab-engineers">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px"><h2 style="font-size:18px;font-weight:800">👷 Engineer Profiles</h2><button class="btn-demo" onclick="showToast('Invite sent!')">+ Add Engineer</button></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="eng-card-sm" onclick="showEngineerModal('sarah')"><div class="eng-avatar" style="background:linear-gradient(135deg,#0d9488,#14b8a6)">ST</div><div class="eng-info"><div class="eng-name">Sarah Thompson</div><div class="eng-role">Electrical Engineer · Theatres & ICU · 🟢 On Call</div><div class="eng-certs"><span class="eng-cert">HTM 06-01</span><span class="eng-cert">Medical Gas</span></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">96%</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div>
+        <div class="eng-card-sm" onclick="showEngineerModal('raj')"><div class="eng-avatar" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6)">RP</div><div class="eng-info"><div class="eng-name">Raj Patel</div><div class="eng-role">Mechanical Engineer · Wards & Plant · 🟢 On Call</div><div class="eng-certs"><span class="eng-cert">HTM 04-01</span><span class="eng-cert">Legionella</span></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">93%</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div>
+        <div class="eng-card-sm" onclick="showEngineerModal('mike')"><div class="eng-avatar" style="background:linear-gradient(135deg,#0891b2,#06b6d4)">MO</div><div class="eng-info"><div class="eng-name">Mike Okafor</div><div class="eng-role">Multi-skilled · Lab & A&E · 🟢 On Call</div><div class="eng-certs"><span class="eng-cert">HTM 01-01</span><span class="eng-cert">Infection Ctrl</span></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">89%</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div>
+        <div class="eng-card-sm" onclick="showEngineerModal('claire')"><div class="eng-avatar" style="background:linear-gradient(135deg,#be185d,#ec4899)">CW</div><div class="eng-info"><div class="eng-name">Claire Wilson</div><div class="eng-role">Compliance Engineer · Water & Fire · 🟢 On Call</div><div class="eng-certs"><span class="eng-cert">Water Hygiene</span><span class="eng-cert">Fire Safety</span></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">98%</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal"><div class="modal"><button class="modal-close" onclick="closeModal()">✕</button><div class="modal-title">➕ Raise Work Order</div><div class="form-row"><div class="form-group"><label class="form-label">Priority</label><select class="form-select"><option>🔴 Life Critical</option><option>🟠 Urgent</option><option selected>🟡 Routine</option><option>🟢 Planned</option></select></div><div class="form-group"><label class="form-label">Department</label><select class="form-select"><option>Theatres & ICU</option><option>Ward A</option><option>Ward B</option><option>Ward C</option><option>A&E</option><option>Plant Room</option><option>Pathology Lab</option></select></div></div><div class="form-group"><label class="form-label">Equipment</label><select class="form-select"><option>Emergency Generator B</option><option>Theatre HVAC</option><option>Medical Gas System</option><option>Nurse Call System</option><option>Fire Suppression</option><option>Water System</option><option>Other</option></select></div><div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" placeholder="Describe the fault or task..."></textarea></div><div class="form-row"><div class="form-group"><label class="form-label">Assign To</label><select class="form-select"><option>Sarah Thompson</option><option>Raj Patel</option><option>Mike Okafor</option><option>Claire Wilson</option></select></div><div class="form-group"><label class="form-label">Due Date</label><input class="form-input" type="date" value="2026-05-15"/></div></div><button class="btn-primary" onclick="submitWO()">✅ Submit Work Order</button></div></div>
+<div class="modal-overlay" id="eng-modal"><div class="modal" style="width:540px;max-height:88vh;overflow-y:auto"><button class="modal-close" onclick="document.getElementById('eng-modal').classList.remove('open')">✕</button><div id="eng-content"></div></div></div>
+<div class="modal-overlay" id="settings-modal"><div class="modal" style="width:520px"><button class="modal-close" onclick="closeSettings()">✕</button><div class="modal-title">⚙️ System Settings</div><div class="form-row"><div class="form-group"><label class="form-label">Hospital Name</label><input class="form-input" value="Nachi Healthcare Trust"/></div><div class="form-group"><label class="form-label">Estates Manager</label><input class="form-input" value="Godswill Iweajunwa"/></div></div><div class="form-row"><div class="form-group"><label class="form-label">CQC Registration</label><input class="form-input" value="1-234567890"/></div><div class="form-group"><label class="form-label">HTM Compliance Target</label><input class="form-input" value="98%"/></div></div><div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;font-family:'Syne',sans-serif">Notifications</div><div style="display:flex;flex-direction:column;gap:10px"><label style="display:flex;align-items:center;justify-content:space-between;font-size:13px;cursor:pointer;color:var(--text)"><span>Life-critical equipment alerts</span><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--teal)"/></label><label style="display:flex;align-items:center;justify-content:space-between;font-size:13px;cursor:pointer;color:var(--text)"><span>Statutory compliance overdue</span><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--teal)"/></label><label style="display:flex;align-items:center;justify-content:space-between;font-size:13px;cursor:pointer;color:var(--text)"><span>CQC inspection reminders</span><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--teal)"/></label><label style="display:flex;align-items:center;justify-content:space-between;font-size:13px;cursor:pointer;color:var(--text)"><span>Daily board-level KPI report</span><input type="checkbox" style="width:16px;height:16px;accent-color:var(--teal)"/></label></div></div><button class="btn-primary" onclick="saveSettings()">💾 Save Settings</button></div></div>
+<div class="toast" id="toast">✅ <span id="toast-msg"></span></div>
+
+<script>
+// THEME
+function setTheme(t,btn){document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(t==='system'){const p=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',p);}else{document.documentElement.setAttribute('data-theme',t);}showToast('Theme: '+t);}
+
+// TAB NAV
+function showTab(id,tab){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');if(tab)tab.classList.add('active');}
+
+// DEPARTMENT DATA
+const depts={
+  all:{label:'All Hospital Overview',tag:'🏥 All Hospital Overview',cqc:'94%',color:'var(--teal)',status:'⚠️ 1 Life Critical — Generator B Overdue',statusBg:'rgba(239,68,68,0.15)',statusColor:'var(--red2)',
+    desc:'Complete overview of all hospital departments. Click any individual department on the sidebar to see its full dedicated data, assets, work orders and compliance status.',
+    kpis:[{l:'Critical Equip Uptime',v:'99.8%',c:'var(--green2)',i:'⚡',s:'▲ Excellent across all depts'},{l:'Overdue PPMs',v:'3',c:'var(--red2)',i:'🚨',s:'▼ Requires immediate action'},{l:'Avg Response Time',v:'18 min',c:'var(--amber2)',i:'⏱️',s:'HTM target: 30 min ✅'},{l:'Statutory Compliance',v:'97%',c:'var(--purple)',i:'✅',s:'▲ 4% this quarter'}],
+    equip:[{n:'Main Generator — Block A',d:'Plant Room · Last tested 7 May',s:'ok',b:'OPERATIONAL',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'},{n:'Emergency Generator — Block B',d:'Plant Room · Service OVERDUE 14 days',s:'crit',b:'OVERDUE',bc:'rgba(239,68,68,0.2)',btc:'var(--red2)',crit:true},{n:'Medical Gas System — HTM 02',d:'All zones · Pressure: Normal',s:'ok',b:'NORMAL',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'},{n:'Theatre HVAC — Laminar Flow',d:'Theatres 3 & 4 · Filter due 5 days',s:'warn',b:'DUE SOON',bc:'rgba(245,158,11,0.15)',btc:'var(--amber2)'}],
+    wos:[{p:'life',t:'WO-H441 · Emergency Generator B — Service Overdue 14 Days',m:'Theatres Block B · UNASSIGNED · ESCALATED',s:'lifecrit',lc:true},{p:'urgent',t:'WO-H440 · Theatre HVAC — Laminar Flow Filter',m:'Sarah Thompson · Theatres 3 & 4 · Due 19 May',s:'progress'},{p:'routine',t:'WO-H438 · Nurse Call System — Ward C Check',m:'Raj Patel · Due 22 May',s:'scheduled'},{p:'planned',t:'WO-H436 · Pathology Lab — Centrifuge Service',m:'Mike Okafor · Completed 13 May ✓',s:'done'}],
+    ppm:'91%',assets:'124',breakdowns:'3',cqc_score:'94%',eng:null},
+
+  theatres:{label:'Theatres & ICU',tag:'🔬 Theatres & ICU',cqc:'92%',color:'#ef4444',status:'🚨 Life Critical — Generator B Overdue · Theatres at Risk',statusBg:'rgba(239,68,68,0.15)',statusColor:'var(--red2)',
+    desc:'Theatres & ICU is the highest risk area on site. Emergency Generator Block B is 14 days overdue for its statutory service — this puts all theatre operations at risk. Theatre HVAC laminar flow filter replacement is also in progress.',
+    kpis:[{l:'Theatre Uptime',v:'97.2%',c:'var(--amber2)',i:'⚡',s:'▼ Generator risk degrading score'},{l:'Life Critical Issues',v:'2',c:'var(--red2)',i:'🚨',s:'Generator + HVAC both flagged'},{l:'Emergency Response',v:'12 min',c:'var(--green2)',i:'⏱️',s:'▲ Faster than HTM target'},{l:'CQC — Theatres',v:'92%',c:'var(--amber2)',i:'⭐',s:'▼ Generator pulling score down'}],
+    equip:[{n:'Emergency Generator — Block B',d:'Service OVERDUE 14 days · HTM 06-01',s:'crit',b:'OVERDUE',bc:'rgba(239,68,68,0.2)',btc:'var(--red2)',crit:true},{n:'Theatre HVAC — Laminar Flow T3',d:'Theatres 3 — Supply temp 28°C (should be 16°C)',s:'crit',b:'CRITICAL',bc:'rgba(239,68,68,0.15)',btc:'var(--red2)',crit:true},{n:'Theatre HVAC — Laminar Flow T4',d:'Theatres 4 — Also flagged high temp',s:'warn',b:'WARNING',bc:'rgba(245,158,11,0.15)',btc:'var(--amber2)'},{n:'Theatre Lighting — T1-T6',d:'All 6 theatres · Last tested: 2 May 2026',s:'ok',b:'COMPLIANT',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'}],
+    wos:[{p:'life',t:'WO-H441 · Emergency Generator Block B — Service Overdue 14 Days',m:'UNASSIGNED · Raised 30 Apr · HTM 06-01 · Assign immediately',s:'lifecrit',lc:true},{p:'urgent',t:'WO-H440 · Theatre HVAC — Laminar Flow HEPA Filter Replacement (T3 & T4)',m:'Sarah Thompson · Must complete before 13:00 theatre list',s:'progress'},{p:'urgent',t:'WO-H443 · Theatre 3 — Supply Air Temp Sensor Check Post Filter',m:'Sarah Thompson · Due today after filter replacement',s:'scheduled'}],
+    ppm:'88%',assets:'18',breakdowns:'2',cqc_score:'92%',
+    eng:{id:'sarah',n:'Sarah Thompson',r:'Electrical Engineer',a:'ST',c:'linear-gradient(135deg,#0d9488,#14b8a6)',certs:['HTM 06-01 LV Electrical','Medical Gas','Theatre HVAC','18th Edition'],status:'🟢 On Call'}},
+
+  wards:{label:'Wards A–F',tag:'🛏️ Wards A–F',cqc:'98%',color:'#8b5cf6',status:'✅ All Wards Operating Normally',statusBg:'rgba(16,185,129,0.15)',statusColor:'var(--green2)',
+    desc:'All 6 wards are operating normally. Water hygiene checks are coming up on Ward D. The nurse call system annual check is scheduled for Ward C. Two minor maintenance requests from ward managers are currently in progress.',
+    kpis:[{l:'Ward Equipment Uptime',v:'100%',c:'var(--green2)',i:'⚡',s:'▲ All assets fully operational'},{l:'Open Work Orders',v:'3',c:'var(--blue3)',i:'📋',s:'2 minor, 1 scheduled PPM'},{l:'Ward Response Time',v:'22 min',c:'var(--green2)',i:'⏱️',s:'Within HTM target of 30 min'},{l:'CQC — Wards',v:'98%',c:'var(--green2)',i:'⭐',s:'▲ Highest scoring area'}],
+    equip:[{n:'Nurse Call System — Ward C',d:'Annual check due 22 May 2026 · Scheduled',s:'warn',b:'DUE SOON',bc:'rgba(245,158,11,0.15)',btc:'var(--amber2)'},{n:'Ward HVAC — Wards A-F',d:'All 6 wards · Last serviced 1 May 2026',s:'ok',b:'COMPLIANT',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'},{n:'Patient Bed Hoists — All Wards',d:'68 units · All tested and compliant',s:'ok',b:'COMPLIANT',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'},{n:'Ceiling Lights — Ward B Bay 3',d:'Flickering reported by ward manager today',s:'warn',b:'FAULT LOGGED',bc:'rgba(245,158,11,0.15)',btc:'var(--amber2)'}],
+    wos:[{p:'routine',t:'WO-H438 · Nurse Call System — Ward C Annual Check',m:'Raj Patel · Due 22 May 2026',s:'scheduled'},{p:'routine',t:'WO-H445 · Ward B — Ceiling Light Bay 3 & Dripping Tap Bay 6',m:'Mike Okafor · Logged by Sr. Okafor · Due this afternoon',s:'progress'},{p:'planned',t:'WO-H439 · Legionella Risk Assessment — Ward D Water System',m:'Claire Wilson · Due 20 May 2026',s:'scheduled'}],
+    ppm:'95%',assets:'82',breakdowns:'1',cqc_score:'98%',
+    eng:{id:'raj',n:'Raj Patel',r:'Mechanical Engineer',a:'RP',c:'linear-gradient(135deg,#7c3aed,#8b5cf6)',certs:['HTM 04-01 Water Hygiene','Legionella Risk Assessor','HVAC Level 3'],status:'🟢 On Call'}},
+
+  plant:{label:'Plant & Utilities',tag:'⚡ Plant & Utilities',cqc:'91%',color:'#f59e0b',status:'⚠️ Emergency Generator B — OVERDUE · Action Required Now',statusBg:'rgba(239,68,68,0.15)',statusColor:'var(--red2)',
+    desc:'The Plant Room manages all critical building services. Emergency Generator Block B is 14 days overdue for its statutory service under HTM 06-01 — this is the most urgent issue on site and must be assigned immediately. All other plant assets are operational.',
+    kpis:[{l:'Plant Uptime',v:'97.4%',c:'var(--amber2)',i:'⚡',s:'▼ Generator B dragging score'},{l:'Overdue Statutory',v:'1',c:'var(--red2)',i:'⚠️',s:'Generator B — 14 days overdue'},{l:'UPS Battery Health',v:'94%',c:'var(--green2)',i:'🔋',s:'All 3 UPS units healthy'},{l:'Plant Cost MTD',v:'£6,100',c:'var(--blue3)',i:'💷',s:'Month to date spending'}],
+    equip:[{n:'Emergency Generator — Block B',d:'SERVICE OVERDUE 14 DAYS · HTM 06-01 · Assign engineer immediately',s:'crit',b:'OVERDUE',bc:'rgba(239,68,68,0.2)',btc:'var(--red2)',crit:true},{n:'Main Generator — Block A',d:'Operational · Monthly load test: 7 May 2026',s:'ok',b:'OPERATIONAL',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'},{n:'Medical Gas System',d:'HTM 02-01 · All pressures normal · Next service: 1 Aug',s:'ok',b:'COMPLIANT',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'},{n:'Air Handling Units (x3)',d:'Rooftop units · All running within tolerance',s:'ok',b:'OPERATIONAL',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'}],
+    wos:[{p:'life',t:'WO-H441 · Emergency Generator Block B — Statutory Service OVERDUE',m:'HTM 06-01 · 14 days overdue · Must be completed this week · UNASSIGNED',s:'lifecrit',lc:true},{p:'planned',t:'WO-H435 · Main Generator Block A — Monthly Load Test',m:'Sarah Thompson · Completed 07 May 2026 ✓',s:'done'},{p:'routine',t:'WO-H442 · AHU Filter Check — All 3 Rooftop Units',m:'Raj Patel · Due 26 May 2026',s:'scheduled'}],
+    ppm:'82%',assets:'24',breakdowns:'1',cqc_score:'91%',
+    eng:{id:'sarah',n:'Sarah Thompson',r:'Electrical Engineer',a:'ST',c:'linear-gradient(135deg,#0d9488,#14b8a6)',certs:['HTM 06-01 LV Electrical','Medical Gas','HV Approved'],status:'🟢 On Call'}},
+
+  lab:{label:'Pathology Lab',tag:'🧪 Pathology Lab',cqc:'100%',color:'#06b6d4',status:'✅ All Lab Equipment Compliant',statusBg:'rgba(16,185,129,0.15)',statusColor:'var(--green2)',
+    desc:'The Pathology Lab is the best compliant area on site with a 100% CQC score. The centrifuge annual service was completed yesterday. All lab equipment is operational and fully calibrated. No open work orders.',
+    kpis:[{l:'Lab Equipment Uptime',v:'100%',c:'var(--green2)',i:'⚡',s:'▲ All assets fully operational'},{l:'Open Work Orders',v:'0',c:'var(--green2)',i:'📋',s:'Zero open issues'},{l:'Next PM Due',v:'13 Aug',c:'var(--blue3)',i:'📅',s:'Centrifuge next annual service'},{l:'CQC — Lab',v:'100%',c:'var(--green2)',i:'⭐',s:'▲ Perfect score this quarter'}],
+    equip:[{n:'Centrifuge — Pathology C1',d:'Annual service completed 13 May 2026 · Calibrated ✓',s:'ok',b:'COMPLIANT',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'},{n:'Centrifuge — Pathology C2',d:'Service due 20 Jun 2026 · Currently operational',s:'ok',b:'OPERATIONAL',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'},{n:'Blood Gas Analyser',d:'Calibration: 10 May 2026 · Next: 10 Jun 2026',s:'ok',b:'CALIBRATED',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'},{n:'Lab Refrigeration Units (x4)',d:'All 4 units within temp range · Last checked 12 May',s:'ok',b:'COMPLIANT',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'}],
+    wos:[{p:'planned',t:'WO-H436 · Pathology Centrifuge C1 — Annual Service & Calibration',m:'Mike Okafor · Completed 13 May 2026 ✓ · Certificate uploaded',s:'done'},{p:'routine',t:'WO-H444 · Blood Gas Analyser — Monthly Calibration Check',m:'Mike Okafor · Due 10 Jun 2026 · Auto-scheduled',s:'scheduled'}],
+    ppm:'100%',assets:'12',breakdowns:'0',cqc_score:'100%',
+    eng:{id:'mike',n:'Mike Okafor',r:'Multi-skilled Engineer',a:'MO',c:'linear-gradient(135deg,#0891b2,#06b6d4)',certs:['HTM 01-01 Decontamination','Infection Control','Lab Equipment Cert'],status:'🟢 On Call'}},
+
+  ae:{label:'A&E Department',tag:'🚑 A&E Department',cqc:'99%',color:'#10b981',status:'✅ A&E Fully Operational — 24hr Service',statusBg:'rgba(16,185,129,0.15)',statusColor:'var(--green2)',
+    desc:'The A&E Department operates 24 hours a day. All critical equipment is fully operational with no open work orders. Trauma lights service is scheduled for later this month. Response times are the fastest on site at 8 minutes average.',
+    kpis:[{l:'A&E Equipment Uptime',v:'100%',c:'var(--green2)',i:'⚡',s:'▲ All assets operational 24/7'},{l:'Open Work Orders',v:'0',c:'var(--green2)',i:'📋',s:'Zero outstanding issues'},{l:'Emergency Response',v:'8 min',c:'var(--green2)',i:'⏱️',s:'▲ Fastest response on site'},{l:'CQC — A&E',v:'99%',c:'var(--green2)',i:'⭐',s:'▲ Outstanding rating'}],
+    equip:[{n:'Trauma Lights (x4)',d:'A&E Bays 1-4 · Annual service due 25 May 2026',s:'warn',b:'DUE SOON',bc:'rgba(245,158,11,0.15)',btc:'var(--amber2)'},{n:'Resus Bay Equipment',d:'All 3 bays · Weekly checks passed · 14 May 2026',s:'ok',b:'COMPLIANT',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'},{n:'A&E HVAC System',d:'Air changes compliant · HTM 03-01 · Next: 1 Sep 2026',s:'ok',b:'COMPLIANT',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'},{n:'Emergency Lighting — A&E',d:'Monthly test passed 1 May 2026',s:'ok',b:'COMPLIANT',bc:'rgba(16,185,129,0.15)',btc:'var(--green2)'}],
+    wos:[{p:'routine',t:'WO-H437 · A&E Trauma Lights (x4) — Annual Service',m:'Mike Okafor · Due 25 May 2026 · Scheduled',s:'scheduled'},{p:'planned',t:'WO-H433 · A&E Emergency Lighting — Monthly Function Test',m:'Claire Wilson · Completed 01 May 2026 ✓',s:'done'}],
+    ppm:'97%',assets:'10',breakdowns:'0',cqc_score:'99%',
+    eng:{id:'mike',n:'Mike Okafor',r:'Multi-skilled Engineer',a:'MO',c:'linear-gradient(135deg,#0891b2,#06b6d4)',certs:['Infection Control','Working at Height','COSHH'],status:'🟢 On Call'}}
+};
+
+
+function renderHospitalHeatmap() {
+  const depts = ['Theatres','Wards','Plant','Lab','A&E','Admin'];
+  // 6 depts x 8 weeks = 48 cells, vals represent issues/incidents
+  const vals = [
+    4,5,3,6,8,5, // Theatres - highest issues (generator, HVAC)
+    2,1,2,1,2,1, // Wards - low steady
+    3,2,4,2,3,7, // Plant - spike in week 6 (generator overdue)
+    1,1,1,1,1,1, // Lab - consistently low
+    1,2,1,1,2,1, // A&E - low
+    1,1,1,1,1,1  // Admin - minimal
+  ];
+  const cells = vals.map((v,i) => {
+    const dept = depts[i % 6];
+    const week = Math.floor(i / 6) + 1;
+    const intensity = Math.min(v/8, 1);
+    const bg = v >= 6 ? `rgba(239,68,68,${0.1+intensity*0.85})` : v >= 3 ? `rgba(245,158,11,${0.15+intensity*0.6})` : `rgba(20,184,166,${0.1+intensity*0.5})`;
+    return `<div class="hm-cell" style="background:${bg}" title="${dept}: ${v} issue${v!==1?'s':''} — Week ${week}" onclick="showToast('${dept}: ${v} issue${v!==1?'s':''} in week ${week}')"></div>`;
+  }).join('');
+  const labels = depts.map(d => `<div class="hm-label">${d}</div>`).join('');
+  const legend = [['Low','rgba(20,184,166,0.4)'],['Medium','rgba(245,158,11,0.5)'],['High','rgba(239,68,68,0.7)']].map(([l,c]) => `<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--grey2)"><span style="width:10px;height:10px;background:${c};border-radius:2px;display:inline-block"></span>${l}</span>`).join('');
+  return `<div class="card" style="margin-top:0">
+    <div class="card-header">
+      <div class="card-title">🔥 Incident Frequency Heatmap — Last 8 Weeks by Department</div>
+      <div style="display:flex;gap:10px;align-items:center">${legend}</div>
+    </div>
+    <div class="heatmap-grid" style="margin-bottom:6px">${cells}</div>
+    <div class="heatmap-grid">${labels}</div>
+    <div style="margin-top:10px;font-size:11px;color:var(--grey2)">Each row = 1 week · Theatres & Plant showing elevated activity · Hover for details</div>
+  </div>`;
+}
+
+function showDept(id,clickedEl){
+  document.querySelectorAll('.sidebar-section:first-child .sidebar-item').forEach(el=>el.classList.remove('active'));
+  if(clickedEl)clickedEl.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-dashboard').classList.add('active');
+  document.querySelectorAll('.nav-tab')[0].classList.add('active');
+  const d=depts[id];
+  document.getElementById('industry-tag').textContent=d.tag;
+  document.getElementById('cqc-badge').textContent='⭐ CQC Ready: '+d.cqc;
+  const statusMap={open:'OPEN',progress:'IN PROGRESS',done:'COMPLETE',scheduled:'SCHEDULED',lifecrit:'LIFE CRIT'};
+  const ppmColor=parseInt(d.ppm)>=95?'var(--green2)':parseInt(d.ppm)>=85?'var(--amber2)':'var(--red2)';
+  const kpiHTML=d.kpis.map(k=>`<div class="kpi-card" style="--kpi-color:${k.c}"><div class="kpi-icon">${k.i}</div><div class="kpi-label">${k.l}</div><div class="kpi-value" style="color:${k.c}">${k.v}</div><div class="kpi-sub">${k.s}</div></div>`).join('');
+  const equipHTML=d.equip.map(e=>`<div class="equip-item${e.crit?' crit-eq':''}"><div class="equip-dot ${e.s}"></div><div class="equip-info"><div class="equip-name">${e.n}</div><div class="equip-meta">${e.d}</div></div><span class="equip-badge" style="background:${e.bc};color:${e.btc}">${e.b}</span></div>`).join('');
+  const woHTML=d.wos.map(w=>`<div class="wo-item${w.lc?' lifecrit':''}"><div class="wo-priority ${w.p}"></div><div class="wo-info"><div class="wo-title">${w.t}</div><div class="wo-meta">${w.m}</div></div><span class="wo-status ${w.s}">${statusMap[w.s]}</span></div>`).join('');
+  const engHTML=d.eng?`<div class="card"><div class="card-header"><div class="card-title">👷 Assigned Engineer — ${d.label}</div></div><div class="eng-card-sm" onclick="showEngineerModal('${d.eng.id}')"><div class="eng-avatar" style="background:${d.eng.c}">${d.eng.a}</div><div class="eng-info"><div class="eng-name">${d.eng.n}</div><div class="eng-role">${d.eng.r} · ${d.eng.status}</div><div class="eng-certs">${d.eng.certs.map(c=>`<span class="eng-cert">${c}</span>`).join('')}</div></div><div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0"><button class="btn-demo" style="font-size:11px;padding:5px 12px" onclick="event.stopPropagation();showToast('📞 Calling ${d.eng.n}...')">📞 Call</button><button class="btn-demo" style="font-size:11px;padding:5px 12px;background:var(--surface2);color:var(--grey2)" onclick="event.stopPropagation();showTab('messaging',document.querySelectorAll('.nav-tab')[6])">💬 Message</button></div></div></div>`:'';
+  document.getElementById('dept-content').innerHTML=`
+    <div class="dept-hero" style="--dept-color:${d.color}">
+      <div class="dept-hero-top">
+        <div><div class="dept-title">${d.label}</div><div class="dept-subtitle">${d.desc}</div></div>
+        <div class="dept-status" style="background:${d.statusBg};color:${d.statusColor}">${d.status}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px">
+        <div style="text-align:center;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border)"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:${ppmColor}">${d.ppm}</div><div style="font-size:10px;color:var(--grey2)">PPM Compliance</div></div>
+        <div style="text-align:center;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border)"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--teal2)">${d.assets}</div><div style="font-size:10px;color:var(--grey2)">Assets in Dept</div></div>
+        <div style="text-align:center;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border)"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:${d.breakdowns==='0'?'var(--green2)':'var(--amber2)'}">${d.breakdowns}</div><div style="font-size:10px;color:var(--grey2)">Breakdowns This Month</div></div>
+        <div style="text-align:center;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border)"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--purple)">${d.cqc_score}</div><div style="font-size:10px;color:var(--grey2)">CQC Score</div></div>
+      </div>
+    </div>
+    <div class="kpi-grid">${kpiHTML}</div>
+    <div class="grid-2">
+      <div class="card"><div class="card-header"><div class="card-title">⚡ ${id==='all'?'Critical Equipment':''+d.label+' — Equipment'}</div><div class="card-action" onclick="showTab('assets',document.querySelectorAll('.nav-tab')[1])">View All Assets →</div></div><div class="equip-list">${equipHTML}</div></div>
+      <div class="card"><div class="card-header"><div class="card-title">📋 ${id==='all'?'Active Work Orders':''+d.label+' — Work Orders'}</div><div class="card-action" onclick="showTab('workorders',document.querySelectorAll('.nav-tab')[2])">View All →</div></div><div class="wo-list">${woHTML}</div></div>
+    </div>
+    ${engHTML}`;
+}
+
+// INIT
+showDept('all',document.getElementById('sb-all'));
+
+// MESSAGING
+const hthreads={
+  sarah:{n:'Sarah Thompson',r:'Electrical Engineer · Theatres · 🟢 On Call',av:'ST',msgs:[{t:'received',nm:'Sarah Thompson',m:'Theatre 3 HVAC showing temperature spike on supply air sensor.',tm:'09:12'},{t:'sent',m:'Check supply air temp sensor and filter differential pressure.',tm:'09:15'},{t:'received',nm:'Sarah Thompson',m:'Sensor reading 28°C on supply — should be 16°C. Filter blocked.',tm:'09:22'},{t:'urgent',nm:'⚠️ URGENT',m:'Theatre 4 also flagged high temp. Both need filter before 13:00 list.',tm:'09:28'},{t:'sent',m:'Understood — critical. Raising P1 WO. Check HEPA filters in stores now.',tm:'09:30'}]},
+  raj:{n:'Raj Patel',r:'Mechanical Engineer · Wards & Plant · 🟢 On Call',av:'RP',msgs:[{t:'received',nm:'Raj Patel',m:'Nurse call system Ward C annual check complete. 28 call points all passed.',tm:'08:45'},{t:'sent',m:'Great. Close WO-H438 and log the test certificate.',tm:'08:48'},{t:'received',nm:'Raj Patel',m:'Done. Moving to Ward D water outlet temperature checks.',tm:'08:50'}]},
+  ward:{n:'Sr. L. Okafor',r:'Ward B Manager · Surgical Ward',av:'LO',msgs:[{t:'received',nm:'Sr. L. Okafor',m:'Bay 3 ceiling light has been flickering since last night. Can someone look today?',tm:'07:42'},{t:'sent',m:'WO raised — WO-H445. Mike Okafor will attend 14:00-16:00 today.',tm:'07:50'},{t:'received',nm:'Sr. L. Okafor',m:'Thank you! Also the hand basin tap in Bay 6 is dripping.',tm:'07:55'},{t:'sent',m:'Added to same work order. Both sorted on one visit.',tm:'07:58'},{t:'received',nm:'Sr. L. Okafor',m:'Brilliant, thank you! The system makes reporting so much easier!',tm:'08:00'}]},
+  team:{n:'🏥 All Engineers',r:'Group · 4 members on call',av:'👷',msgs:[{t:'received',nm:'System Alert',m:'⚠️ REMINDER: Emergency Generator Block B is 14 days overdue. Theatres at risk. Assign immediately.',tm:'06:00'},{t:'received',nm:'Raj Patel',m:'I am on water checks today. Can Sarah or Mike pick up the generator?',tm:'06:15'},{t:'sent',m:'Mike — assign yourself to WO-H441 (Generator B) as priority 1. Sarah — continue HVAC.',tm:'07:00'}]},
+  mike:{n:'Mike Okafor',r:'Multi-skilled Engineer · Lab & A&E · 🟢 On Call',av:'MO',msgs:[{t:'received',nm:'Mike Okafor',m:'Pathology centrifuge service complete. Calibration certificate updated.',tm:'10:30'},{t:'sent',m:'Close WO-H436 and upload the cert to the asset record.',tm:'10:33'},{t:'received',nm:'Mike Okafor',m:'Done. Heading to Ward B for the bay 3 light and tap.',tm:'10:35'}]}
+};
+let curHThread='sarah';
+function loadThread(id,el){curHThread=id;const t=hthreads[id];document.getElementById('hmsg-av').textContent=t.av;document.getElementById('hmsg-nm').textContent=t.n;document.getElementById('hmsg-rl').textContent=t.r;const body=document.getElementById('hmsg-body');body.innerHTML='';t.msgs.forEach(m=>{const div=document.createElement('div');if(m.t==='urgent'){div.className='msg-bubble urgent-msg';div.innerHTML=`<div class="msg-bubble-name">${m.nm}</div>${m.m}<div class="msg-bubble-time">${m.tm}</div>`;}else{div.className='msg-bubble '+m.t;div.innerHTML=(m.t==='received'?`<div class="msg-bubble-name">${m.nm}</div>`:'')+m.m+`<div class="msg-bubble-time">${m.tm}</div>`;}body.appendChild(div);});body.scrollTop=body.scrollHeight;document.querySelectorAll('.msg-thread').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');}
+function sendHMsg(){const inp=document.getElementById('hmsg-in');const text=inp.value.trim();if(!text)return;const body=document.getElementById('hmsg-body');const div=document.createElement('div');div.className='msg-bubble sent';const now=new Date();div.innerHTML=text+`<div class="msg-bubble-time">${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}</div>`;body.appendChild(div);body.scrollTop=body.scrollHeight;inp.value='';setTimeout(()=>{const r=document.createElement('div');r.className='msg-bubble received';r.innerHTML=`<div class="msg-bubble-name">${hthreads[curHThread].n.split(' ')[0]}</div>Understood — actioning now and will update the system.<div class="msg-bubble-time">${now.getHours().toString().padStart(2,'0')}:${(now.getMinutes()+1).toString().padStart(2,'0')}</div>`;body.appendChild(r);body.scrollTop=body.scrollHeight;},1500);}
+function handleHKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendHMsg();}}
+
+// ENGINEER PROFILES
+const hengineers={
+  sarah:{n:'Sarah Thompson',r:'Electrical Engineer',d:'Theatres & ICU',c:'linear-gradient(135deg,#0d9488,#14b8a6)',av:'ST',wos:28,open:2,rating:'4.9',comp:'96%',bio:'Senior electrical engineer specialising in life-critical systems including theatre HVAC, emergency power and medical equipment. HTM 06-01 certified and primary contact for Theatres and ICU.',certs:['HTM 06-01 LV Electrical','Medical Gas Competent','Theatre HVAC','18th Edition','First Aid'],recent:['WO-H440 · Theatre HVAC Filter · In Progress','WO-H435 · Generator Load Test · Complete','WO-H429 · Emergency Lighting · Complete']},
+  raj:{n:'Raj Patel',r:'Mechanical Engineer',d:'Wards & Plant Room',c:'linear-gradient(135deg,#7c3aed,#8b5cf6)',av:'RP',wos:22,open:1,rating:'4.7',comp:'93%',bio:'Lead engineer for all mechanical maintenance across wards and plant. HTM 04-01 compliance lead and Legionella risk assessment qualified with 6 years of healthcare estates experience.',certs:['HTM 04-01 Water Hygiene','Legionella Risk Assessor','HVAC Level 3','Manual Handling','Confined Space'],recent:['WO-H438 · Nurse Call System · Complete','WO-H433 · Ward HVAC Service · Complete','WO-H428 · Legionella Check · Complete']},
+  mike:{n:'Mike Okafor',r:'Multi-skilled Engineer',d:'Lab & A&E',c:'linear-gradient(135deg,#0891b2,#06b6d4)',av:'MO',wos:19,open:0,rating:'4.8',comp:'89%',bio:'Versatile engineer covering pathology lab, A&E and general ward maintenance. Infection control certified with specialist qualifications for laboratory and clinical equipment servicing.',certs:['HTM 01-01 Decontamination','Infection Control','Working at Height','COSHH','Lab Equipment Cert'],recent:['WO-H436 · Centrifuge Service · Complete','WO-H431 · A&E Trauma Light · Complete','WO-H425 · Lab Fridge Service · Complete']},
+  claire:{n:'Claire Wilson',r:'Compliance Engineer',d:'Water, Fire & Safety',c:'linear-gradient(135deg,#be185d,#ec4899)',av:'CW',wos:31,open:1,rating:'5.0',comp:'98%',bio:'Compliance lead for all statutory and regulatory requirements. 10 years experience in water hygiene, fire safety and CQC audit preparation. 100% compliance record over 3 years.',certs:['Water Hygiene Specialist','Fire Safety Inspector','HTM 04-01','HTM 05-03','CQC Audit Prep'],recent:['WO-H439 · Legionella Risk Assessment · Scheduled','WO-H434 · Fire Detection Test · Complete','WO-H430 · Water Outlet Temps · Complete']}
+};
+function showEngineerModal(id){const e=hengineers[id];document.getElementById('eng-content').innerHTML=`<div style="display:flex;gap:14px;align-items:center;margin-bottom:18px"><div style="width:60px;height:60px;border-radius:14px;background:${e.c};display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;font-family:'Syne',sans-serif;flex-shrink:0">${e.av}</div><div><div style="font-size:19px;font-weight:800;font-family:'Syne',sans-serif;color:var(--text)">${e.n}</div><div style="font-size:12px;color:var(--grey2);margin-top:2px">${e.r} · ${e.d}</div><div style="font-size:11px;color:var(--green2);margin-top:4px;font-weight:600">🟢 On Call</div></div></div><p style="font-size:13px;color:var(--grey2);line-height:1.7;margin-bottom:16px;padding:12px;background:var(--surface2);border-radius:10px">${e.bio}</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px"><div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--text)">${e.wos}</div><div style="font-size:10px;color:var(--grey2)">WOs This Month</div></div><div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--teal2)">${e.rating}★</div><div style="font-size:10px;color:var(--grey2)">Rating</div></div><div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">${e.comp}</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div><div style="margin-bottom:14px"><div style="font-size:11px;font-weight:700;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;font-family:'Syne',sans-serif">Certifications</div><div style="display:flex;flex-wrap:wrap;gap:6px">${e.certs.map(c=>`<span class="eng-cert">${c}</span>`).join('')}</div></div><div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;font-family:'Syne',sans-serif">Recent Work Orders</div>${e.recent.map(r=>`<div style="font-size:12px;color:var(--grey2);padding:7px 10px;background:var(--surface2);border-radius:8px;margin-bottom:5px">${r}</div>`).join('')}</div><div style="display:flex;gap:8px;padding-top:14px;border-top:1px solid var(--border)"><button class="btn-primary" style="flex:1" onclick="showToast('📞 Calling ${e.n.split(' ')[0]}...');document.getElementById('eng-modal').classList.remove('open')">📞 Call</button><button class="btn-primary" style="flex:1;background:var(--surface2);color:var(--grey2)" onclick="showTab('messaging',document.querySelectorAll('.nav-tab')[6]);document.getElementById('eng-modal').classList.remove('open')">💬 Message</button></div>`;document.getElementById('eng-modal').classList.add('open');}
+
+// MODALS
+function openModal(){document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function submitWO(){closeModal();showToast('✅ Work Order raised!');}
+function openSettings(){document.getElementById('settings-modal').classList.add('open')}
+function closeSettings(){document.getElementById('settings-modal').classList.remove('open')}
+function saveSettings(){closeSettings();showToast('✅ Settings saved!');}
+
+// TOAST
+function showToast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+
+// EXPORT PDF
+function exportReport(){showToast('📥 Generating CQC PDF...');setTimeout(()=>{const{jsPDF}=window.jspdf;const doc=new jsPDF();const pageW=doc.internal.pageSize.getWidth();const today=new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});doc.setFillColor(6,10,18);doc.rect(0,0,pageW,42,'F');doc.setFillColor(20,184,166);doc.roundedRect(14,8,6,26,1,1,'F');doc.setTextColor(255,255,255);doc.setFontSize(16);doc.setFont('helvetica','bold');doc.text('NACHI ENG LTD',26,20);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(20,184,166);doc.text('NachiCMMS — Hospital & Healthcare Report',26,28);doc.setTextColor(122,150,184);doc.text('Generated: '+today,26,35);doc.setDrawColor(20,184,166);doc.setLineWidth(1.5);doc.line(0,42,pageW,42);let y=54;const sections=[['CQC & COMPLIANCE',[['CQC Readiness Score','94%',[139,92,246]],['HTM Statutory Compliance','97%',[20,184,166]],['Critical Equipment Uptime','99.8%',[16,185,129]],['Overdue PPMs','3',[239,68,68]],['Avg Emergency Response','18 minutes',[245,158,11]]]],['STATUTORY HTM STATUS',[['HTM 06-01 Electrical','ACTION NEEDED',[239,68,68]],['HTM 04-01 Water Hygiene','COMPLIANT',[16,185,129]],['HTM 03-01 Ventilation','DUE SOON',[245,158,11]],['HTM 05-03 Fire Safety','COMPLIANT',[16,185,129]],['HTM 02-01 Medical Gas','COMPLIANT',[16,185,129]]]],['WORK ORDERS',[['WOs Completed This Month','89',[16,185,129]],['Life Critical Open','1',[239,68,68]],['Urgent Open','2',[245,158,11]],['Scheduled','4',[59,130,246]]]]];sections.forEach(([title,rows])=>{doc.setFillColor(13,22,38);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(20,184,166);doc.text(title,18,y);y+=10;rows.forEach(([l,v,rgb])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,pageW-18,y,{align:'right'});doc.setDrawColor(30,50,80);doc.setLineWidth(0.3);doc.line(18,y+2,pageW-18,y+2);y+=9;});y+=6;});const fY=doc.internal.pageSize.getHeight()-18;doc.setFillColor(6,10,18);doc.rect(0,fY-6,pageW,24,'F');doc.setDrawColor(20,184,166);doc.setLineWidth(1);doc.line(0,fY-6,pageW,fY-6);doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(122,150,184);doc.text('NachiCMMS  |  Nachi Eng Ltd  |  nachieng.co.uk  |  info@nachieng.co.uk  |  +44 (0) 7480286830',pageW/2,fY+2,{align:'center'});doc.setTextColor(20,184,166);doc.text('Registered in England & Wales | Company No. 16567818',pageW/2,fY+8,{align:'center'});doc.save('NachiCMMS-Hospital-Report-'+new Date().toISOString().slice(0,10)+'.pdf');showToast('PDF downloaded!');},500);}
+
+// Init messaging
+setTimeout(()=>loadThread('sarah',document.querySelector('.msg-thread')),100);
+
+// Patch showDept to append hospital heatmap for 'all' view
+const _origHShowDept = showDept;
+showDept = function(id, el) {
+  _origHShowDept(id, el);
+  if(id === 'all') {
+    const extra = document.createElement('div');
+    extra.innerHTML = renderHospitalHeatmap();
+    document.getElementById('dept-content').appendChild(extra.firstChild);
+  }
+};
+</script>
+</body>
+</html>
