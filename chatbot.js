@@ -246,11 +246,11 @@
         <div class="ne-sub">Get instant answers about CMMS and how Nachi Eng can transform your operations. Tell us about yourself first.</div>
 
         <label class="ne-label">Your Name</label>
-        <input class="ne-input" id="ne-name" type="text" placeholder="e.g. John Smith" />
+        <input class="ne-input" id="ne-name" type="text" placeholder="e.g. Andrew Carter" />
         <label class="ne-label">Company</label>
         <input class="ne-input" id="ne-company" type="text" placeholder="e.g. NHS South East Coast" />
         <label class="ne-label">Work Email</label>
-        <input class="ne-input" id="ne-email" type="email" placeholder="e.g. john@company.co.uk" />
+        <input class="ne-input" id="ne-email" type="email" placeholder="e.g. andrew@company.co.uk" />
 
         <span class="ne-sector-label">Your Sector</span>
         <div class="ne-sector-grid">
@@ -398,17 +398,19 @@ CRITICAL RULES:
           messages: neHistory
         })
       });
-      if (!res.ok) throw new Error();
       const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Status ' + res.status);
       const reply = data.content[0].text;
       neHistory.push({ role: 'assistant', content: reply });
       neRemoveTyping();
       neAddBot(reply);
       const kws = ['book','call','calendly','schedule','meeting','speak','demo','chat'];
       if (kws.some(k => (text + reply).toLowerCase().includes(k))) neAddCalendly();
-    } catch {
+    } catch (err) {
       neRemoveTyping();
-      $('ne-err').style.display = 'block';
+      const errEl = document.getElementById('ne-err');
+      errEl.textContent = 'Error: ' + (err.message || 'Connection failed');
+      errEl.style.display = 'block';
     } finally { neSetLoading(false); }
   }
 
