@@ -390,7 +390,7 @@ CRITICAL RULES:
 - Always be confident, knowledgeable and helpful`;
 
     try {
-      const res = await fetch('/api/chat', {
+      const res = await fetch('/API/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
