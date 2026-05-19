@@ -250,7 +250,7 @@
         <label class="ne-label">Company</label>
         <input class="ne-input" id="ne-company" type="text" placeholder="e.g. NHS South East Coast" />
         <label class="ne-label">Work Email</label>
-        <input class="ne-input" id="ne-email" type="email" placeholder="e.g. smith@company.co.uk" />
+        <input class="ne-input" id="ne-email" type="email" placeholder="e.g. john@company.co.uk" />
 
         <span class="ne-sector-label">Your Sector</span>
         <div class="ne-sector-grid">
