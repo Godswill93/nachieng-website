@@ -399,7 +399,8 @@ CRITICAL RULES:
         })
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Status ' + res.status);
+      if (!res.ok) throw new Error(data.error || data.error_description || JSON.stringify(data));
+      if (!data.content || !data.content[0]) throw new Error('API response: ' + JSON.stringify(data));
       const reply = data.content[0].text;
       neHistory.push({ role: 'assistant', content: reply });
       neRemoveTyping();
