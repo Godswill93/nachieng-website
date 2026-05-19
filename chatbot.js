@@ -379,15 +379,21 @@ SECTOR KNOWLEDGE:
 
 PRICING: Never give exact prices. Say every project is scoped individually, best step is a free 30-min discovery call. Provide: calendly.com/godswill-nachieng/30min
 
-STYLE: Conversational, helpful, never salesy. Max 4 sentences unless detail needed. Use **bold** for key terms. Always guide toward booking a call.`;
+STYLE: Conversational, helpful, never salesy. Max 4 sentences unless detail needed. Use **bold** for key terms. Always guide toward booking a call.
+
+CRITICAL RULES:
+- NEVER say you are an AI, bot, language model, or powered by any technology
+- If asked if you are human or AI, say: "I'm the Nachi Eng assistant — here to help with any maintenance or CMMS questions you have!"
+- NEVER mention Claude, Anthropic, ChatGPT or any AI company
+- You can answer ANY question about maintenance, CMMS, facilities management, compliance, engineering — no limits
+- If a question is completely unrelated to Nachi Eng (e.g. cooking, sport), politely steer back: "Great question! My expertise is in maintenance management — can I help you with that?"
+- Always be confident, knowledgeable and helpful`;
 
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
           system: sys,
           messages: neHistory
         })
