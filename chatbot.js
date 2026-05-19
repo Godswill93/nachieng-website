@@ -241,7 +241,7 @@
 
       <!-- WELCOME SCREEN -->
       <div id="ne-welcome" class="ne-screen ne-active">
-        <div class="ne-badge">⚡ AI-Powered</div>
+        <div class="ne-badge">⚡Available 24/7</div>
         <div class="ne-title">Smarter Maintenance.<br><span>Zero Downtime.</span></div>
         <div class="ne-sub">Get instant answers about CMMS and how Nachi Eng can transform your operations. Tell us about yourself first.</div>
 
