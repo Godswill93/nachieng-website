@@ -3,7 +3,7 @@
   const style = document.createElement('style');
   style.textContent = `
     @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
-
+ 
     #ne-trigger {
       position: fixed; bottom: 28px; right: 28px;
       width: 62px; height: 62px;
@@ -19,13 +19,13 @@
     #ne-trigger .ne-close { display: none; }
     #ne-trigger.ne-open .ne-chat-icon { display: none; }
     #ne-trigger.ne-open .ne-close { display: block; }
-
+ 
     @keyframes ne-pulse {
       0%   { box-shadow: 0 4px 24px rgba(26,107,255,0.5), 0 0 0 0 rgba(26,107,255,0.3); }
       70%  { box-shadow: 0 4px 24px rgba(26,107,255,0.5), 0 0 0 14px rgba(26,107,255,0); }
       100% { box-shadow: 0 4px 24px rgba(26,107,255,0.5), 0 0 0 0 rgba(26,107,255,0); }
     }
-
+ 
     #ne-window {
       position: fixed; bottom: 104px; right: 28px;
       width: 370px; max-width: calc(100vw - 40px);
@@ -40,7 +40,7 @@
       font-family: 'DM Sans', sans-serif;
     }
     #ne-window.ne-open { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
-
+ 
     .ne-header {
       background: linear-gradient(135deg,#0d1526,#0a1a3a);
       padding: 14px 18px; display: flex; align-items: center; gap: 12px;
@@ -66,11 +66,11 @@
       animation: ne-blink 1.8s ease infinite;
     }
     @keyframes ne-blink { 0%,100%{opacity:1}50%{opacity:0.3} }
-
+ 
     /* SCREENS */
     .ne-screen { flex: 1; display: none; flex-direction: column; overflow: hidden; }
     .ne-screen.ne-active { display: flex; }
-
+ 
     /* WELCOME */
     #ne-welcome { padding: 20px; overflow-y: auto; }
     .ne-badge {
@@ -89,7 +89,7 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     .ne-sub { font-size: 12px; color: #6b7a99; line-height: 1.5; margin-bottom: 18px; }
-
+ 
     .ne-label {
       display: block; font-size: 10px; font-weight: 600; color: #6b7a99;
       text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px;
@@ -103,7 +103,7 @@
     }
     .ne-input::placeholder { color: #6b7a99; }
     .ne-input:focus { border-color: #1a6bff; background: rgba(26,107,255,0.07); }
-
+ 
     .ne-sector-label {
       font-size: 10px; font-weight: 600; color: #6b7a99;
       text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; display: block;
@@ -118,7 +118,7 @@
     .ne-sbtn:hover { border-color: #1a6bff; color: #e8edf8; background: rgba(26,107,255,0.1); }
     .ne-sbtn.ne-sel { border-color: #00d4ff; background: rgba(0,212,255,0.1); color: #00d4ff; }
     .ne-sbtn .ne-si { font-size: 16px; display: block; margin-bottom: 3px; }
-
+ 
     .ne-start {
       width: 100%; padding: 13px;
       background: linear-gradient(135deg,#1a6bff,#00d4ff);
@@ -129,7 +129,7 @@
     }
     .ne-start:hover { opacity: 0.9; transform: translateY(-1px); }
     .ne-start:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-
+ 
     /* CHAT SCREEN */
     .ne-stag {
       margin: 10px 14px 0; display: inline-flex; align-items: center; gap: 5px;
@@ -144,7 +144,7 @@
     }
     .ne-msgs::-webkit-scrollbar { width: 4px; }
     .ne-msgs::-webkit-scrollbar-thumb { background: rgba(26,107,255,0.3); border-radius: 2px; }
-
+ 
     .ne-msg {
       max-width: 88%; padding: 9px 13px; border-radius: 13px;
       font-size: 13px; line-height: 1.55;
@@ -160,7 +160,7 @@
       color: #fff; border-radius: 13px 4px 13px 13px; align-self: flex-end;
     }
     .ne-msg.ne-bot strong { color: #00d4ff; }
-
+ 
     .ne-typing {
       display: flex; gap: 4px; padding: 11px 14px;
       background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
@@ -174,7 +174,7 @@
     .ne-typing span:nth-child(2) { animation-delay: 0.15s; }
     .ne-typing span:nth-child(3) { animation-delay: 0.3s; }
     @keyframes ne-bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
-
+ 
     .ne-cal-btn {
       display: inline-flex; align-items: center; gap: 6px;
       background: linear-gradient(135deg,#1a6bff,#00d4ff);
@@ -183,7 +183,7 @@
       transition: opacity 0.2s; align-self: flex-start;
     }
     .ne-cal-btn:hover { opacity: 0.85; }
-
+ 
     .ne-input-area {
       padding: 10px 12px; border-top: 1px solid rgba(26,107,255,0.2);
       display: flex; gap: 8px; align-items: flex-end; flex-shrink: 0;
@@ -209,7 +209,7 @@
     .ne-send:hover { opacity: 0.85; transform: scale(1.05); }
     .ne-send:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
     .ne-send svg { width: 15px; height: 15px; fill: #fff; }
-
+ 
     .ne-powered {
       text-align: center; padding: 5px; font-size: 10px;
       color: rgba(107,122,153,0.5); flex-shrink: 0;
@@ -221,7 +221,7 @@
     }
   `;
   document.head.appendChild(style);
-
+ 
   // ── INJECT HTML ──
   const wrap = document.createElement('div');
   wrap.innerHTML = `
@@ -229,7 +229,7 @@
       <svg class="ne-chat-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 10H6V10h12v2zm0-3H6V7h12v2z"/></svg>
       <svg class="ne-close" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
     </button>
-
+ 
     <div id="ne-window">
       <div class="ne-header">
         <div class="ne-logo">NE</div>
@@ -238,20 +238,20 @@
           <div class="ne-hstatus"><span class="ne-sdot"></span> Online — Ready to Help</div>
         </div>
       </div>
-
+ 
       <!-- WELCOME SCREEN -->
       <div id="ne-welcome" class="ne-screen ne-active">
         <div class="ne-badge">⚡ Available 24/7</div>
         <div class="ne-title">Smarter Maintenance.<br><span>Zero Downtime.</span></div>
         <div class="ne-sub">Get instant answers about CMMS and how Nachi Eng can transform your operations. Tell us about yourself first.</div>
-
+ 
         <label class="ne-label">Your Name</label>
         <input class="ne-input" id="ne-name" type="text" placeholder="e.g. Andrew Carter" />
         <label class="ne-label">Company</label>
         <input class="ne-input" id="ne-company" type="text" placeholder="e.g. NHS South East Coast" />
         <label class="ne-label">Work Email</label>
         <input class="ne-input" id="ne-email" type="email" placeholder="e.g. andrew@company.co.uk" />
-
+ 
         <span class="ne-sector-label">Your Sector</span>
         <div class="ne-sector-grid">
           <button class="ne-sbtn" data-sector="NHS / Healthcare"><span class="ne-si">🏥</span>NHS / Healthcare</button>
@@ -263,7 +263,7 @@
         </div>
         <button class="ne-start" id="ne-start" disabled>START CONVERSATION →</button>
       </div>
-
+ 
       <!-- CHAT SCREEN -->
       <div id="ne-chat" class="ne-screen">
         <div class="ne-stag" id="ne-stag">🏥 NHS / Healthcare</div>
@@ -280,18 +280,18 @@
     </div>
   `;
   document.body.appendChild(wrap);
-
+ 
   // ── LOGIC ──
   let neOpen = false, neSector = '', neHistory = [], neLead = {}, neLoading = false;
-
+ 
   const $ = id => document.getElementById(id);
-
+ 
   $('ne-trigger').addEventListener('click', () => {
     neOpen = !neOpen;
     $('ne-window').classList.toggle('ne-open', neOpen);
     $('ne-trigger').classList.toggle('ne-open', neOpen);
   });
-
+ 
   document.querySelectorAll('.ne-sbtn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.ne-sbtn').forEach(b => b.classList.remove('ne-sel'));
@@ -300,18 +300,18 @@
       neValidate();
     });
   });
-
+ 
   ['ne-name','ne-email','ne-company'].forEach(id => {
     $(id).addEventListener('input', neValidate);
   });
-
+ 
   function neValidate() {
     const n = $('ne-name').value.trim();
     const e = $('ne-email').value.trim();
     const c = $('ne-company').value.trim();
     $('ne-start').disabled = !(n && e && c && neSector && e.includes('@'));
   }
-
+ 
   $('ne-start').addEventListener('click', () => {
     neLead = {
       name: $('ne-name').value.trim(),
@@ -322,7 +322,7 @@
     $('ne-welcome').classList.remove('ne-active');
     $('ne-chat').classList.add('ne-active');
     $('ne-stag').textContent = neEmoji(neSector) + ' ' + neSector;
-
+ 
     const greet = `Hi ${neLead.name}! 👋 Welcome to Nachi Eng. I'm here to help you explore how a **CMMS** can transform maintenance at **${neLead.company}**.\n\nYou're in the **${neSector}** sector — one of the core areas we specialise in. Whether you have questions about how it works, what's involved, or how we'd implement it for your team — just ask. What's on your mind?`;
     neAddBot(greet);
     neHistory = [
@@ -331,11 +331,11 @@
     ];
     setTimeout(() => $('ne-ci').focus(), 300);
   });
-
+ 
   function neEmoji(s) {
     return {'NHS / Healthcare':'🏥','Hotels / Hospitality':'🏨','Manufacturing / Industrial':'🏭','Property / Real Estate':'🏢','Logistics / Transport':'🚛','Other':'🔧'}[s]||'🔧';
   }
-
+ 
   $('ne-ci').addEventListener('keydown', e => {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); neSend(); }
   });
@@ -344,7 +344,7 @@
     this.style.height = Math.min(this.scrollHeight, 80) + 'px';
   });
   $('ne-send').addEventListener('click', neSend);
-
+ 
   async function neSend() {
     const input = $('ne-ci');
     const text = input.value.trim();
@@ -354,9 +354,9 @@
     neHistory.push({ role: 'user', content: text });
     neSetLoading(true);
     $('ne-err').style.display = 'none';
-
+ 
     const sys = `You are the virtual assistant for Nachi Eng Ltd, a UK-based Maintenance Management Systems consultancy.
-
+ 
 ABOUT NACHI ENG:
 - Company: Nachi Eng Ltd (Company No. 16567818)
 - Founder: Godswill Iweajunwa — BEng (Hons) First Class, MIET, 18th Edition qualified
@@ -365,22 +365,22 @@ ABOUT NACHI ENG:
 - Calendly: calendly.com/godswill-nachieng/30min
 - Tagline: "Smarter Maintenance. Zero Downtime."
 - Based: Southend-on-Sea, UK. Serving all UK operations
-
+ 
 THIS VISITOR: Name: ${neLead.name} | Company: ${neLead.company} | Sector: ${neLead.sector}
-
+ 
 WHAT IS CMMS: A Computerised Maintenance Management System centralises maintenance info — asset management, PPM scheduling, work orders, parts inventory, compliance. Converts reactive to planned maintenance.
-
+ 
 SECTOR KNOWLEDGE:
 - NHS/Healthcare: HTM compliance, PPM for critical equipment, CQC, asset lifecycle
 - Hotels/Hospitality: Guest experience, multi-site asset tracking, reactive vs planned balance
 - Manufacturing: OEE improvement, production uptime, ISO 55001, shift scheduling
 - Property/Real Estate: Portfolio visibility, compliance, energy management, contractor management
 - Logistics/Transport: Fleet maintenance, HGV compliance, depot management
-
+ 
 PRICING: Never give exact prices. Say every project is scoped individually, best step is a free 30-min discovery call. Provide: calendly.com/godswill-nachieng/30min
-
+ 
 STYLE: Conversational, helpful, never salesy. Max 4 sentences unless detail needed. Use **bold** for key terms. Always guide toward booking a call.
-
+ 
 CRITICAL RULES:
 - NEVER say you are an AI, bot, language model, or powered by any technology
 - If asked if you are human or AI, say: "I'm the Nachi Eng assistant — here to help with any maintenance or CMMS questions you have!"
@@ -388,7 +388,7 @@ CRITICAL RULES:
 - You can answer ANY question about maintenance, CMMS, facilities management, compliance, engineering — no limits
 - If a question is completely unrelated to Nachi Eng (e.g. cooking, sport), politely steer back: "Great question! My expertise is in maintenance management — can I help you with that?"
 - Always be confident, knowledgeable and helpful`;
-
+ 
     try {
       const res = await fetch('/API/chat', {
         method: 'POST',
@@ -411,7 +411,7 @@ CRITICAL RULES:
       $('ne-err').style.display = 'block';
     } finally { neSetLoading(false); }
   }
-
+ 
   function neAddUser(t) {
     const d = document.createElement('div');
     d.className = 'ne-msg ne-user'; d.textContent = t;
@@ -444,3 +444,4 @@ CRITICAL RULES:
   function neRemoveTyping() { const t = $('ne-typing'); if(t) t.remove(); }
   function neScroll() { const m = $('ne-msgs'); m.scrollTop = m.scrollHeight; }
 })();
+ 
