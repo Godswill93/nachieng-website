@@ -592,6 +592,17 @@ footer{
 .mobile-menu a:hover{background:rgba(26,86,219,0.15);border-color:rgba(26,86,219,0.3);color:#60a5fa}
 .mobile-cta{background:#1a56db!important;color:white!important;margin-top:16px;font-size:18px!important}
 .mobile-cta:hover{background:#3b82f6!important}
+.mobile-close{
+  position:absolute;top:24px;right:24px;
+  width:44px;height:44px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:20px;color:#fff;
+  transition:all 0.2s;z-index:260;
+}
+.mobile-close:hover{background:rgba(26,86,219,0.3);border-color:#1a56db;}
 
 /* ═══════════════════════════════════
    COMPREHENSIVE MOBILE FIXES
@@ -855,6 +866,7 @@ img{max-width:100%;height:auto}
 </nav>
 <!-- MOBILE MENU OVERLAY -->
 <div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-close" onclick="closeMenu()" aria-label="Close menu">✕</button>
   <a href="#about" onclick="closeMenu()">About</a>
   <a href="#services" onclick="closeMenu()">Services</a>
   <a href="#features" onclick="closeMenu()">MMS Platform</a>
@@ -1704,6 +1716,5 @@ function closeMenu(){
 // Close menu on escape key
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeMenu(); });
 </script>
-<script src="chatbot.js"></script>
 </body>
 </html>
