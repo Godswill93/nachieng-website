@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: "Archivo";
+    src: url("./fonts/archivo-var.woff2") format("woff2");
+    font-weight: 100 900;
+    font-stretch: 62% 125%;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "IBM Plex Mono";
+    src: url("./fonts/plex-mono-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "IBM Plex Mono";
+    src: url("./fonts/plex-mono-500.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@layer base {
+    :root {
+        --background: 43 11% 95%;
+        --foreground: 220 14% 8%;
+        --card: 43 11% 95%;
+        --card-foreground: 220 14% 8%;
+        --popover: 43 11% 97%;
+        --popover-foreground: 220 14% 8%;
+        --primary: 229 73% 45%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 40 6% 89%;
+        --secondary-foreground: 220 14% 8%;
+        --muted: 40 6% 90%;
+        --muted-foreground: 224 5% 38%;
+        --accent: 40 6% 90%;
+        --accent-foreground: 220 14% 8%;
+        --destructive: 0 72% 45%;
+        --destructive-foreground: 0 0% 100%;
+        --border: 40 7% 84%;
+        --input: 40 7% 80%;
+        --ring: 229 73% 45%;
+        --chart-1: 229 73% 45%;
+        --chart-2: 220 14% 8%;
+        --chart-3: 222 6% 57%;
+        --chart-4: 40 6% 89%;
+        --chart-5: 229 40% 70%;
+        --radius: 0.125rem;
+
+        --paper: 43 11% 95%;
+        --ink: 220 14% 8%;
+        --signal: 229 73% 45%;
+        --signal-hi: 229 84% 68%;
+        --steel: 222 6% 57%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+    ::selection {
+        background: hsl(var(--signal));
+        color: #fff;
+    }
+    :focus-visible {
+        outline: 2px solid hsl(var(--signal));
+        outline-offset: 3px;
+        border-radius: 1px;
+    }
+}
+
+@layer components {
+    .font-expanded {
+        font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
+        font-stretch: 118%;
+    }
+    .container-shell {
+        @apply mx-auto w-full max-w-[1200px] px-6 md:px-10;
+    }
+    .eyebrow {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        @apply text-xs font-normal uppercase tracking-[0.18em];
+    }
+    .h-display {
+        font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
+        font-stretch: 118%;
+        font-size: clamp(2.25rem, 5.2vw, 3.75rem);
+        line-height: 1.04;
+        letter-spacing: -0.015em;
+        font-weight: 640;
+    }
+    .h-section {
+        font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
+        font-stretch: 112%;
+        font-size: clamp(1.6rem, 3vw, 2.4rem);
+        line-height: 1.12;
+        letter-spacing: -0.01em;
+        font-weight: 620;
+    }
+}
+
+@layer base {
+    [data-debug-wrapper="true"] {
+        display: contents !important;
+    }
+
+    [data-debug-wrapper="true"] > * {
+        margin-left: inherit;
+        margin-right: inherit;
+        margin-top: inherit;
+        margin-bottom: inherit;
+        padding-left: inherit;
+        padding-right: inherit;
+        padding-top: inherit;
+        padding-bottom: inherit;
+        column-gap: inherit;
+        row-gap: inherit;
+        gap: inherit;
+        border-left-width: inherit;
+        border-right-width: inherit;
+        border-top-width: inherit;
+        border-bottom-width: inherit;
+        border-left-style: inherit;
+        border-right-style: inherit;
+        border-top-style: inherit;
+        border-bottom-style: inherit;
+        border-left-color: inherit;
+        border-right-color: inherit;
+        border-top-color: inherit;
+        border-bottom-color: inherit;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

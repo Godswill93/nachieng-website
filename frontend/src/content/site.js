@@ -1,0 +1,62 @@
+export const COMPANY = {
+    name: "Nachi Eng Ltd",
+    registration: "16567818",
+    incorporated: "July 2025",
+    status: "Active",
+    location: "Southend-on-Sea, Essex, United Kingdom",
+    serviceArea: "London, Essex and the wider South East, with UK projects considered by agreement",
+    email: "info@nachieng.co.uk",
+    phoneDisplay: "+44 (0) 7480 286 830",
+    phoneHref: "tel:+447480286830",
+    linkedin: "https://www.linkedin.com/company/nachi-eng-ltd",
+    calendly: "https://calendly.com/godswill-nachieng/30min",
+    responseCommitment: "within two working days",
+    canonicalOrigin: "https://nachieng.co.uk",
+};
+
+export const FOUNDER = {
+    name: "Godswill C. Iweajunwa",
+    role: "Founder & Director",
+};
+
+export const CREDENTIALS = [
+    "BEng (Hons) Electrical & Electronic Engineering — First Class",
+    "Member of the Institution of Engineering and Technology — MIET",
+    "18th Edition electrical qualification — currently held and valid",
+];
+
+export const EXPERIENCE_STATEMENT =
+    "Hands-on industrial maintenance experience across manufacturing and commercial environments.";
+
+export const NAV_LINKS = [
+    { label: "Services", to: "/services", testId: "nav-services" },
+    { label: "TMMS", to: "/tmms", testId: "nav-tmms" },
+    { label: "About", to: "/about", testId: "nav-about" },
+    { label: "Insights", to: "/insights", testId: "nav-insights" },
+];
+
+export const PRIMARY_CTA = {
+    label: "Discuss an Engineering Requirement",
+    to: "/contact",
+    testId: "cta-discuss-requirement",
+};
+
+export const SECONDARY_CTA = {
+    label: "Explore TMMS",
+    to: "/tmms",
+    testId: "cta-explore-tmms",
+};
+
+export const INDUSTRIES = [
+    { name: "Factories and manufacturing", future: false },
+    { name: "Warehouses, logistics and distribution", future: false },
+    { name: "Commercial and industrial facilities", future: false },
+    { name: "Hotels and hospitality facilities", future: false },
+    { name: "Facilities-management environments", future: false },
+    { name: "Healthcare estates", future: true },
+];
+
+export const ARTICLES = [
+    { title: "What is a CMMS?", to: "/insights" },
+    { title: "The 2am Phone Call That's Costing Your Facility a Fortune", to: "/insights" },
+];
