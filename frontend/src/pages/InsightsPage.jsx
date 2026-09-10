@@ -39,8 +39,8 @@ export default function InsightsPage() {
 
                     <ul className="mt-16 border-t border-ink/10">
                         {INSIGHTS.map((a, i) => (
-                            <Reveal key={a.slug} delay={i * 0.05}>
-                                <li className="border-b border-ink/10">
+                            <li key={a.slug} className="border-b border-ink/10">
+                                <Reveal delay={i * 0.05}>
                                     <Link
                                         to={`/insights/${a.slug}`}
                                         data-testid={`insights-article-${a.slug}`}
@@ -48,7 +48,7 @@ export default function InsightsPage() {
                                     >
                                         <div className="md:col-span-3">
                                             <p className="eyebrow text-signal">{a.tag}</p>
-                                            <p className="mt-3 font-mono text-xs tracking-[0.12em] text-ink/50">
+                                            <p className="mt-3 font-mono text-xs tracking-[0.12em] text-ink/60">
                                                 {a.date} · {a.readingTime}
                                             </p>
                                         </div>
@@ -68,8 +68,8 @@ export default function InsightsPage() {
                                             </span>
                                         </div>
                                     </Link>
-                                </li>
-                            </Reveal>
+                                </Reveal>
+                            </li>
                         ))}
                     </ul>
                 </div>

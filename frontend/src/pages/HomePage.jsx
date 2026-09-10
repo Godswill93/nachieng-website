@@ -130,7 +130,7 @@ const Hero = () => (
                         />
                     </Link>
                 </div>
-                <p className="mt-8 font-mono text-xs tracking-[0.12em] text-white/40">
+                <p className="mt-8 font-mono text-xs tracking-[0.12em] text-white/60">
                     Response {COMPANY.responseCommitment}
                 </p>
             </Reveal>
@@ -246,7 +246,7 @@ const Credibility = () => (
                 <dl className="mt-12 grid gap-px border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-4">
                     {COMPANY_FACTS.map((f) => (
                         <div key={f.label} className="bg-paper p-6">
-                            <dt className="eyebrow text-ink/50">{f.label}</dt>
+                            <dt className="eyebrow text-ink/70">{f.label}</dt>
                             <dd className="font-expanded mt-3 text-base font-semibold leading-6">{f.value}</dd>
                         </div>
                     ))}
@@ -348,8 +348,8 @@ const Insights = () => (
                                     {a.title}
                                 </span>
                                 <span className="flex shrink-0 items-center gap-3">
-                                    <span className="eyebrow hidden text-ink/50 sm:inline">Article</span>
-                                    <ArrowUpRight className="h-5 w-5 text-ink/40 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-signal" aria-hidden="true" />
+                                    <span className="eyebrow hidden text-ink/70 sm:inline">Article</span>
+                                    <ArrowUpRight className="h-5 w-5 text-ink/60 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-signal" aria-hidden="true" />
                                 </span>
                             </Link>
                         </li>

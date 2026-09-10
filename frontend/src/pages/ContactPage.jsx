@@ -13,9 +13,9 @@ const Field = ({ id, label, optional, error, children, hint }) => (
     <div>
         <label htmlFor={id} className="eyebrow flex items-baseline gap-2 text-ink/70">
             {label}
-            {optional && <span className="font-mono text-[10px] normal-case tracking-normal text-ink/40">optional</span>}
+            {optional && <span className="font-mono text-[10px] normal-case tracking-normal text-ink/60">optional</span>}
         </label>
-        {hint && <p className="mt-1 text-xs text-ink/50">{hint}</p>}
+        {hint && <p className="mt-1 text-xs text-ink/60">{hint}</p>}
         <div className="mt-2">{children}</div>
         {error && (
             <p id={`${id}-error`} role="alert" data-testid={`enquiry-error-${id}`} className="mt-2 text-xs text-signal">
@@ -26,7 +26,7 @@ const Field = ({ id, label, optional, error, children, hint }) => (
 );
 
 const inputClass =
-    "w-full border border-ink/20 bg-transparent px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink/30 focus:border-signal";
+    "w-full border border-ink/20 bg-transparent px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink/60 focus:border-signal focus-visible:ring-2 focus-visible:ring-signal/50";
 
 export default function ContactPage() {
     const [values, setValues] = useState(initialValues);
@@ -98,22 +98,22 @@ export default function ContactPage() {
 
                     <ul className="mt-10 divide-y divide-ink/10 border-y border-ink/10">
                         <li className="flex flex-wrap items-baseline justify-between gap-2 py-4">
-                            <span className="eyebrow text-ink/50">Email</span>
+                            <span className="eyebrow text-ink/70">Email</span>
                             <a data-testid="contact-email-link" className="text-sm underline-offset-4 hover:underline" href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
                         </li>
                         <li className="flex flex-wrap items-baseline justify-between gap-2 py-4">
-                            <span className="eyebrow text-ink/50">Phone</span>
+                            <span className="eyebrow text-ink/70">Phone</span>
                             <a data-testid="contact-phone-link" className="text-sm underline-offset-4 hover:underline" href={COMPANY.phoneHref}>{COMPANY.phoneDisplay}</a>
                         </li>
                         <li className="flex flex-wrap items-baseline justify-between gap-2 py-4">
-                            <span className="eyebrow text-ink/50">Book a call</span>
+                            <span className="eyebrow text-ink/70">Book a call</span>
                             <a data-testid="contact-calendly-link" className="group inline-flex items-center gap-1.5 text-sm underline-offset-4 hover:underline" href={COMPANY.calendly} target="_blank" rel="noopener noreferrer">
                                 30 minutes, via Calendly
                                 <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                             </a>
                         </li>
                     </ul>
-                    <p className="mt-6 font-mono text-xs leading-6 tracking-[0.12em] text-ink/50">
+                    <p className="mt-6 font-mono text-xs leading-6 tracking-[0.12em] text-ink/70">
                         Response {COMPANY.responseCommitment} · {COMPANY.location}
                     </p>
                 </div>
@@ -128,7 +128,7 @@ export default function ContactPage() {
                             <p className="mt-4 text-sm leading-6 text-ink/70 md:text-base md:leading-7">
                                 We will read it carefully and respond {COMPANY.responseCommitment}. There is no automated reply — a real response will follow from the engineer.
                             </p>
-                            <p className="mt-6 font-mono text-xs tracking-[0.12em] text-ink/50">
+                            <p className="mt-6 font-mono text-xs tracking-[0.12em] text-ink/70">
                                 Need to add something? Email {COMPANY.email}.
                             </p>
                         </div>
@@ -175,7 +175,7 @@ export default function ContactPage() {
                                 )}
                             </div>
 
-                            <p id="privacy-note" data-testid="enquiry-privacy-note" className="border-l-2 border-ink/15 pl-4 text-xs leading-5 text-ink/55">
+                            <p id="privacy-note" data-testid="enquiry-privacy-note" className="border-l-2 border-ink/15 pl-4 text-xs leading-5 text-ink/70">
                                 Privacy: your details are used only to respond to this enquiry. They are emailed to us and are not added to any database or marketing list, and you will not be subscribed to anything. See our{" "}
                                 <a href="/privacy" className="underline underline-offset-4 hover:text-ink">Privacy Policy</a>.
                             </p>

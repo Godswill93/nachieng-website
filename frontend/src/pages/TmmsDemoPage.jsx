@@ -71,7 +71,7 @@ export default function TmmsDemoPage() {
                         loading="lazy"
                         className="h-[70vh] min-h-[560px] w-full border border-ink/15 bg-ink md:h-[78vh] md:min-h-[680px]"
                     />
-                    <p className="mt-3 font-mono text-xs tracking-[0.12em] text-ink/50">
+                    <p className="mt-3 font-mono text-xs tracking-[0.12em] text-ink/70">
                         Runs in an isolated frame. Nothing entered here is stored or transmitted.
                     </p>
                 </div>

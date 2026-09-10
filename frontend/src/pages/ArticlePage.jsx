@@ -48,7 +48,7 @@ const Block = ({ block }) => {
             return (
                 <blockquote className="my-12 border-l-2 border-ink/20 pl-6">
                     <p className="font-expanded text-xl font-medium leading-snug text-ink md:text-2xl">{block.text}</p>
-                    <cite className="mt-3 block font-mono text-xs not-italic tracking-[0.12em] text-ink/50">{block.cite}</cite>
+                    <cite className="mt-3 block font-mono text-xs not-italic tracking-[0.12em] text-ink/70">{block.cite}</cite>
                 </blockquote>
             );
         case "list":
@@ -69,7 +69,7 @@ const Block = ({ block }) => {
                         <thead>
                             <tr>
                                 {block.head.map((h, idx) => (
-                                    <th key={idx} className="eyebrow border-b border-ink/15 bg-ink/[0.03] px-4 py-3 text-ink/70">
+                                    <th key={idx} scope="col" className="eyebrow border-b border-ink/15 bg-ink/[0.03] px-4 py-3 text-ink/70">
                                         {h}
                                     </th>
                                 ))}
@@ -78,11 +78,17 @@ const Block = ({ block }) => {
                         <tbody>
                             {block.rows.map((row, ri) => (
                                 <tr key={ri} className="border-b border-ink/10 last:border-b-0">
-                                    {row.map((cell, ci) => (
-                                        <td key={ci} className={`px-4 py-3 align-top ${ci === 0 ? "font-medium text-ink" : "text-ink/70"}`}>
-                                            {cell}
-                                        </td>
-                                    ))}
+                                    {row.map((cell, ci) =>
+                                        ci === 0 ? (
+                                            <th key={ci} scope="row" className="px-4 py-3 text-left align-top font-medium text-ink">
+                                                {cell}
+                                            </th>
+                                        ) : (
+                                            <td key={ci} className="px-4 py-3 align-top text-ink/70">
+                                                {cell}
+                                            </td>
+                                        )
+                                    )}
                                 </tr>
                             ))}
                         </tbody>
@@ -157,7 +163,7 @@ export default function ArticlePage() {
                     <p className="eyebrow text-signal">{article.tag}</p>
                     <h1 className="h-display mt-6 max-w-4xl">{article.title}</h1>
                     <p className="mt-6 max-w-2xl text-base leading-7 text-ink/70 md:text-lg md:leading-8">{article.dek}</p>
-                    <p className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-ink/10 pt-6 font-mono text-xs tracking-[0.12em] text-ink/50">
+                    <p className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-ink/10 pt-6 font-mono text-xs tracking-[0.12em] text-ink/70">
                         <span data-testid="article-author">{FOUNDER.name}</span>
                         <span aria-hidden="true">·</span>
                         <span data-testid="article-date">{article.date}</span>
@@ -203,7 +209,7 @@ export default function ArticlePage() {
 
                     {related && (
                         <div className="mt-16 border-t border-ink/10 pt-8">
-                            <p className="eyebrow text-ink/50">Read next</p>
+                            <p className="eyebrow text-ink/70">Read next</p>
                             <Link
                                 to={`/insights/${related.slug}`}
                                 data-testid={`article-related-${related.slug}`}
@@ -212,7 +218,7 @@ export default function ArticlePage() {
                                 <span className="font-expanded text-lg font-semibold tracking-tight transition-colors duration-200 group-hover:text-signal md:text-2xl">
                                     {related.title}
                                 </span>
-                                <ArrowUpRight className="h-5 w-5 shrink-0 text-ink/40 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-signal" aria-hidden="true" />
+                                <ArrowUpRight className="h-5 w-5 shrink-0 text-ink/60 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-signal" aria-hidden="true" />
                             </Link>
                         </div>
                     )}

@@ -111,13 +111,13 @@ export const DemoTour = ({ sector }) => {
                                 onClick={dismiss}
                                 data-testid="demo-tour-close"
                                 aria-label="Close tour"
-                                className="-mr-1 -mt-1 flex h-9 w-9 shrink-0 items-center justify-center text-ink/50 transition-colors hover:text-ink"
+                                className="-mr-1 -mt-1 flex h-9 w-9 shrink-0 items-center justify-center text-ink/70 transition-colors hover:text-ink"
                             >
                                 <X className="h-5 w-5" aria-hidden="true" />
                             </button>
                         </div>
 
-                        <p className="mt-2 font-mono text-[11px] tracking-[0.12em] text-ink/45">
+                        <p className="mt-2 font-mono text-[11px] tracking-[0.12em] text-ink/70">
                             Sample data only — nothing here is a live or real system.
                         </p>
 
@@ -139,7 +139,7 @@ export const DemoTour = ({ sector }) => {
                                 type="button"
                                 onClick={dismiss}
                                 data-testid="demo-tour-skip"
-                                className="text-sm text-ink/50 underline-offset-4 transition-colors hover:text-ink hover:underline"
+                                className="text-sm text-ink/70 underline-offset-4 transition-colors hover:text-ink hover:underline"
                             >
                                 Skip tour
                             </button>

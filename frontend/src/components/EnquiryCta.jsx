@@ -30,7 +30,7 @@ export const EnquiryCta = ({ num }) => (
                         />
                     </a>
                 </div>
-                <p className="mt-10 font-mono text-xs leading-6 tracking-[0.12em] text-white/40">
+                <p className="mt-10 font-mono text-xs leading-6 tracking-[0.12em] text-white/60">
                     {COMPANY.email} · {COMPANY.phoneDisplay}
                     <br />
                     Response {COMPANY.responseCommitment}

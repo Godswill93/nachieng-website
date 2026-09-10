@@ -1,0 +1,51 @@
+{
+  "summary": "Retest of iteration_4 WCAG 2.2 AA fixes. All 5 previously-serious violations are RESOLVED: /insights list/listitem = 0, and color-contrast on /insights/what-is-a-cmms, /insights/reactive-vs-preventive-maintenance, /contact, /tmms/demos/factory = 0. Keyboard flows, regression content and mobile nav testid fix all PASS. One remaining violation on '/' (color-contrast, serious, at rest — different from the previous flaky mid-animation one).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/ (home hero)", "issues": ["axe 'color-contrast' (serious) 3.81:1 on <p class='mt-8 font-mono text-xs tracking-[0.12em] text-white/40'> containing 'Response within two working days'. Foreground rgba(255,255,255,0.4) => #717174 on background #121317. This is present at REST (verified after 3s wait, no animation), i.e. blocking. Fix: bump text-white/40 -> text-white/60 (or use a solid #B5B5B5) to reach >= 4.5:1."]}
+    ]
+  },
+  "wcag_audit_details": {
+    "tags": ["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"],
+    "tool": "axe-core 4.10.2 (CDN)",
+    "routes_audited": ["/","/services","/tmms","/about","/insights","/insights/what-is-a-cmms","/insights/reactive-vs-preventive-maintenance","/contact","/privacy","/cookies","/tmms/demos/factory"],
+    "clean_routes": ["/services","/tmms","/about","/insights","/insights/what-is-a-cmms","/insights/reactive-vs-preventive-maintenance","/contact","/privacy","/cookies","/tmms/demos/factory"],
+    "violations_by_route": {
+      "/": [{"rule": "color-contrast", "impact": "serious", "count": 1, "target": "p[x-id=\"HomePage_133_16\"]", "ratio": "3.81:1", "at_rest": true, "note": "Persistent after 3s wait — NOT mid-animation. Different from iteration_4 flaky violation."}]
+    },
+    "previously_failing_routes_now_clean": ["/insights (list/listitem)","/insights/what-is-a-cmms (color-contrast)","/insights/reactive-vs-preventive-maintenance (color-contrast)","/contact (color-contrast)","/tmms/demos/factory (color-contrast)"]
+  },
+  "keyboard_audit": {
+    "skip_link": "PASS — first Tab focuses [data-testid=skip-to-content].",
+    "mobile_menu_390": "PASS — opens, mobile-nav-contact testid present (no duplicate prefix), Escape returns focus to mobile-menu-button.",
+    "contact_empty_submit": "PASS — 4 role='alert' errors: enquiry-error-{name,email,message,consent}.",
+    "demo_tour": "PASS — next, skip, close testids present; Next advances; Escape dismisses.",
+    "article_copy_link": "PASS — 'Copy link' -> 'Link copied' on /insights/what-is-a-cmms."
+  },
+  "regression_checks": {
+    "brand_preview_applied_wording": true,
+    "brand_preview_no_not_yet_applied": true,
+    "forbidden_terms_clean_on_all_pages": true,
+    "demo_sim_banner_present": true,
+    "header_wordmark": "/brand/nachi-eng-wordmark-ink.svg",
+    "footer_wordmark": "/brand/nachi-eng-wordmark-paper.svg",
+    "mobile_nav_contact_testid_fixed": true
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix /home color-contrast: raise the 'Response within two working days' <p> from text-white/40 to at least text-white/60 (or a solid ~#B5B5B5) — currently 3.81:1 vs required 4.5:1 (WCAG 1.4.3). This is the ONLY remaining WCAG 2.2 AA violation across the 11 audited routes."
+  ],
+  "critical_code_review_comments": [
+    "Pattern of using low Tailwind opacity utilities (text-white/40, text-ink/50) recurs across the app. Consider adding a single design token pair for muted-on-dark and muted-on-paper that already meets 4.5:1 to prevent regressions."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a", "frontend": "axe: 10/11 routes CLEAN (1 remaining serious color-contrast on /); keyboard 5/5 PASS; regression 100% PASS"},
+  "seed_data_creation": "",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Only remaining WCAG issue: /home hero <p class='...text-white/40'> 'Response within two working days'. selectorable via p[x-id=\"HomePage_133_16\"] or the class combo font-mono+text-white/40 inside the dark hero. All other 10 routes are clean under axe-core 4.10.2 with wcag2a/aa + wcag21a/aa + wcag22aa. Iteration_4's flaky Reveal-mid-animation violation on '/' did not reproduce this run.",
+  "rca of the issue": "Home hero note uses Tailwind text-white/40 which computes to #717174 on the near-black hero bg #121317 = 3.81:1. Needs >= 4.5:1 for AA on small text. Fix: change text-white/40 → text-white/60 (or /70) on that <p>."
+}

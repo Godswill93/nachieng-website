@@ -12,14 +12,14 @@ export const SiteFooter = () => {
                     <p className="mt-4 max-w-sm text-sm leading-6 text-white/60">
                         Industrial engineering and engineering technology, based in {COMPANY.location}.
                     </p>
-                    <p className="mt-6 font-mono text-xs leading-6 tracking-[0.12em] text-white/40">
+                    <p className="mt-6 font-mono text-xs leading-6 tracking-[0.12em] text-white/60">
                         Registered in England and Wales
                         <br />
                         Company No. {COMPANY.registration}
                     </p>
                 </div>
                 <div className="md:col-span-3">
-                    <h2 className="eyebrow text-white/40">Contact</h2>
+                    <h2 className="eyebrow text-white/60">Contact</h2>
                     <ul className="mt-5 space-y-3 text-sm">
                         <li>
                             <a data-testid="footer-email-link" href={`mailto:${COMPANY.email}`} className="text-white/80 underline-offset-4 transition-colors hover:text-white hover:underline">
@@ -46,7 +46,7 @@ export const SiteFooter = () => {
                     </ul>
                 </div>
                 <div className="md:col-span-2">
-                    <h2 className="eyebrow text-white/40">Site</h2>
+                    <h2 className="eyebrow text-white/60">Site</h2>
                     <ul className="mt-5 space-y-3 text-sm">
                         {NAV_LINKS.map((l) => (
                             <li key={l.to}>
@@ -63,7 +63,7 @@ export const SiteFooter = () => {
                     </ul>
                 </div>
                 <div className="md:col-span-2">
-                    <h2 className="eyebrow text-white/40">Legal</h2>
+                    <h2 className="eyebrow text-white/60">Legal</h2>
                     <ul className="mt-5 space-y-3 text-sm">
                         <li>
                             <Link data-testid="footer-privacy-link" to="/privacy" className="text-white/80 underline-offset-4 transition-colors hover:text-white hover:underline">
@@ -80,10 +80,10 @@ export const SiteFooter = () => {
             </div>
             <div className="border-t border-white/10">
                 <div className="container-shell flex flex-wrap items-center justify-between gap-2 py-6">
-                    <p data-testid="footer-copyright" className="font-mono text-xs tracking-[0.12em] text-white/40">
+                    <p data-testid="footer-copyright" className="font-mono text-xs tracking-[0.12em] text-white/60">
                         © 2025–{year} Nachi Eng Ltd
                     </p>
-                    <p className="font-mono text-xs tracking-[0.12em] text-white/40">
+                    <p className="font-mono text-xs tracking-[0.12em] text-white/60">
                         Response {COMPANY.responseCommitment}
                     </p>
                 </div>

@@ -42,7 +42,7 @@ const MobileMenu = ({ onClose, closeRef }) => (
             </button>
         </div>
         <nav aria-label="Mobile" className="container-shell mt-8 flex flex-col">
-            {[...NAV_LINKS, { label: "Contact", to: "/contact", testId: "mobile-nav-contact" }].map((l, i) => (
+            {[...NAV_LINKS, { label: "Contact", to: "/contact", testId: "nav-contact" }].map((l, i) => (
                 <Link
                     key={l.to}
                     to={l.to}
@@ -124,7 +124,7 @@ export const SiteHeader = () => {
                             data-testid={l.testId}
                             className={({ isActive }) =>
                                 `text-sm transition-colors duration-200 ${
-                                    isActive ? "text-ink" : "text-ink/60 hover:text-ink"
+                                    isActive ? "text-ink" : "text-ink/70 hover:text-ink"
                                 }`
                             }
                         >

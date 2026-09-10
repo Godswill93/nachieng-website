@@ -117,7 +117,7 @@ const CompanySection = () => (
                 <dl className="mt-12 grid gap-px border border-ink/10 bg-ink/10 sm:grid-cols-2 lg:grid-cols-4">
                     {COMPANY_FACTS.map((f) => (
                         <div key={f.label} className="bg-paper p-6">
-                            <dt className="eyebrow text-ink/50">{f.label}</dt>
+                            <dt className="eyebrow text-ink/70">{f.label}</dt>
                             <dd className="font-expanded mt-3 text-base font-semibold leading-6">{f.value}</dd>
                         </div>
                     ))}

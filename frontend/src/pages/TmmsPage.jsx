@@ -124,7 +124,7 @@ const Status = () => (
                         ["Future target sector", TMMS.futureSectors.join(", ")],
                     ].map(([k, v]) => (
                         <div key={k} className="bg-paper p-6">
-                            <dt className="eyebrow text-ink/50">{k}</dt>
+                            <dt className="eyebrow text-ink/70">{k}</dt>
                             <dd className="font-expanded mt-3 text-base font-semibold leading-6">{v}</dd>
                         </div>
                     ))}
