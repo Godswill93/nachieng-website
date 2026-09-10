@@ -118,6 +118,26 @@ function mockFetch(response) {
   check("routes to TEST destination when not live", Array.isArray(sent.to) && sent.to[0] === "delivered@resend.dev");
   check("does NOT route to live destination when not live", sent.to && sent.to[0] !== "info@nachieng.co.uk");
   check("reply_to is enquirer email", sent.reply_to === "jane@example.com");
+
+  // 11b. Plain-text formatting: proper blank-line (\n\n) breaks between sections
+  setEnv(goodEnv); mockFetch({ ok: true, status: 200 }); lastFetch = null;
+  res = makeRes();
+  await handler(makeReq({ body: { ...validBody, organisation: "Acme Manufacturing" } }), res);
+  const fmt = JSON.parse(lastFetch.opts.body).text;
+  check("text: Name and Email separated by blank line", fmt.includes("Name: Jane Engineer\n\nEmail: jane@example.com"));
+  check("text: Email and Organisation separated by blank line", fmt.includes("Email: jane@example.com\n\nOrganisation: Acme Manufacturing"));
+  check("text: blank line before Enquiry", fmt.includes("\n\nEnquiry:\n"));
+  check("text: blank line before footer", fmt.includes("\n\n— Sent from the Nachi Eng Ltd website enquiry form."));
+  check("text: first line is Name only (fields not run together)", fmt.split("\n")[0] === "Name: Jane Engineer");
+
+  // 11c. reply_to is ONLY the enquirer email even when EMAIL_REPLY_TO is configured
+  setEnv({ ...goodEnv, EMAIL_REPLY_TO: "info@nachieng.co.uk" }); mockFetch({ ok: true, status: 200 }); lastFetch = null;
+  res = makeRes();
+  await handler(makeReq({ body: { ...validBody } }), res);
+  const rt = JSON.parse(lastFetch.opts.body).reply_to;
+  check("reply_to is exactly the enquirer email (string)", rt === "jane@example.com");
+  check("reply_to is not an array", !Array.isArray(rt));
+  check("reply_to excludes EMAIL_REPLY_TO", JSON.stringify(rt).indexOf("info@nachieng.co.uk") === -1);
   check("Authorization bearer header set", lastFetch.opts.headers.Authorization === "Bearer test_key");
 
   // 12. Live routing check

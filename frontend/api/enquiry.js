@@ -116,7 +116,6 @@ module.exports = async (req, res) => {
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
     const EMAIL_FROM = process.env.EMAIL_FROM;
     const EMAIL_FROM_NAME = process.env.EMAIL_FROM_NAME || "Nachi Eng Ltd";
-    const EMAIL_REPLY_TO = process.env.EMAIL_REPLY_TO; // optional fallback reply-to
     const ENQUIRY_LIVE = String(process.env.ENQUIRY_LIVE || "false").toLowerCase() === "true";
     const ENQUIRY_DESTINATION = process.env.ENQUIRY_DESTINATION;
     const ENQUIRY_TEST_DESTINATION = process.env.ENQUIRY_TEST_DESTINATION || "delivered@resend.dev";
@@ -130,18 +129,16 @@ module.exports = async (req, res) => {
     const subject = `Website enquiry — ${name}`.replace(/[\r\n]/g, " ");
     const fromHeader = `${EMAIL_FROM_NAME} <${EMAIL_FROM}>`;
 
-    const textLines = [
+    const textParts = [
         `Name: ${name}`,
         `Email: ${email}`,
-        organisation ? `Organisation: ${organisation}` : null,
-        phone ? `Phone: ${phone}` : null,
-        "",
-        "Enquiry:",
-        message,
-        "",
-        "— Sent from the Nachi Eng Ltd website enquiry form.",
-    ].filter((l) => l !== null);
-    const text = textLines.join("\n");
+    ];
+    if (organisation) textParts.push(`Organisation: ${organisation}`);
+    if (phone) textParts.push(`Phone: ${phone}`);
+    textParts.push(`Enquiry:\n${message}`);
+    textParts.push("— Sent from the Nachi Eng Ltd website enquiry form.");
+    // Blank line (\n\n) between each section so no email client collapses them onto one line.
+    const text = textParts.join("\n\n");
 
     const safeMsg = escapeHtml(message).replace(/\n/g, "<br>");
     const html =
@@ -160,7 +157,7 @@ module.exports = async (req, res) => {
     const payload = {
         from: fromHeader,
         to: [recipient],
-        reply_to: EMAIL_REPLY_TO ? [email, EMAIL_REPLY_TO] : email, // validated enquirer email
+        reply_to: email, // validated enquirer email only
         subject,
         text,
         html,
