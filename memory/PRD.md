@@ -71,6 +71,14 @@ Full rebuild of the NACHI ENG LTD marketing website (industrial engineering & te
 - WEBSITE DNS ALREADY POINTS TO VERCEL and must remain unchanged — no Namecheap edits to deploy the site. Resend sender-domain verification records (DKIM/SPF/DMARC) are additive and SEPARATE from website-hosting records; they never replace/alter them.
 - Kinetic hero must stay subtle/mobile-safe; drop motion before budget
 
+## 2026-06 (batch 8) — LinkedIn company-page branding pack (deliverable only, website unchanged)
+- Generated from the APPROVED existing vector logo system (public/brand N-mark geometry + Archivo/IBM Plex Mono, all text converted to outlines). No logo redesign, no photos/AI imagery. Script: scripts/build_linkedin_brand.py. Outputs in /app/assets/linkedin/ (outside frontend — website/build untouched, not pushed).
+  - nachi-eng-linkedin-banner-1128x191.png (paper bg, ink wordmark + signal divider, mono descriptor, positioning line, small www ref; left ~300px kept clear for profile-logo overlap; faint right grid + subtle N echo + drawing-frame crop marks)
+  - nachi-eng-linkedin-profile-300x300.png (approved N mark only — ink tile, paper uprights, signal diagonal — centred with generous safe spacing)
+  - nachi-eng-linkedin-preview.png (illustrative placement mock, explicitly labelled NOT a real LinkedIn screenshot)
+  - editable SVG sources: nachi-eng-linkedin-banner.svg / -profile.svg / -preview.svg
+  - Excluded all forbidden claims (24/7, 99%, 6+ industries, zero-downtime, stats, Taiko, NHS Trust, MMS, old gear logo). Awaiting owner approval; nothing uploaded to LinkedIn.
+
 ## 2026-06 (batch 7) — Vercel cleanup + verification (preview only, nothing pushed/deployed)
 - Removed unused REACT_APP_BACKEND_URL from frontend/.env (frontend calls same-origin /api/enquiry; zero code references remained). Only other REACT_APP_* var is REACT_APP_PREVIEW_MEDIA (unrelated).
 - Updated memory/LAUNCH_CHECKLIST.md: explicit DNS section — website DNS unchanged (points to Vercel); Resend records kept separate; canonical section reworded (301 host choice via Vercel, not DNS).
