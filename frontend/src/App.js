@@ -6,6 +6,7 @@ import Lenis from "lenis";
 import { Layout } from "@/components/layout/Layout";
 import HomePage from "@/pages/HomePage";
 import ServicesPage from "@/pages/ServicesPage";
+import AboutPage from "@/pages/AboutPage";
 import { StubPage } from "@/pages/StubPage";
 import NotFound from "@/pages/NotFound";
 import { COMPANY, ARTICLES } from "@/content/site";
@@ -105,18 +106,7 @@ function App() {
                                 />
                             }
                         />
-                        <Route
-                            path="/about"
-                            element={
-                                <StubPage
-                                    title="About"
-                                    eyebrow="Phase 7 — in the build queue"
-                                    path="/about"
-                                    testId="page-about"
-                                    description="The founder story, credentials and company approach arrive in Phase 7."
-                                />
-                            }
-                        />
+                        <Route path="/about" element={<AboutPage />} />
                         <Route path="/insights" element={<InsightsStub />} />
                         <Route path="/contact" element={<ContactStub />} />
                         <Route

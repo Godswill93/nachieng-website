@@ -83,7 +83,7 @@ export const FAQS = [
     },
     {
         q: "Who carries out the work?",
-        a: "Nachi Eng Ltd is built around one qualified engineer — founder Godswill C. Iweajunwa, BEng (Hons) Electrical & Electronic Engineering (First Class), MIET, with a current 18th Edition electrical qualification. You deal directly with the person who does the work.",
+        a: "Nachi Eng Ltd is built around one qualified engineer — founder Godswill C. Iweajunwa, BEng (Hons) Electrical & Electronic Engineering (First Class), MIET, and an 18th Edition electrical qualification. You deal directly with the person who does the work.",
     },
     {
         q: "What should I include in an enquiry?",

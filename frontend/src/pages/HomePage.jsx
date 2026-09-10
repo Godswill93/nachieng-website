@@ -12,6 +12,7 @@ import {
     CREDENTIALS,
     EXPERIENCE_STATEMENT,
     FOUNDER,
+    FOUNDER_BIO,
     ARTICLES,
     SECONDARY_CTA,
 } from "../content/site";
@@ -305,10 +306,7 @@ const Founder = () => (
                     <h2 className="h-section">{FOUNDER.name}</h2>
                     <p className="eyebrow mt-4 text-ink/60">{FOUNDER.role}</p>
                     <p className="mt-6 max-w-md text-sm leading-6 text-ink/70 md:text-base md:leading-7">
-                        A first-class graduate in electrical and electronic engineering and a Member of the
-                        Institution of Engineering and Technology, he formed Nachi Eng Ltd in 2025 to bring
-                        rigorous, accountable engineering support to industrial environments — and to develop
-                        maintenance technology shaped by real maintenance work.
+                        {FOUNDER_BIO}
                     </p>
                 </Reveal>
                 <Reveal delay={0.1} className="md:col-span-7">
