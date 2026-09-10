@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "create-react-app",
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "^/$", "dest": "/index.html" },
+    { "src": "^/(services|tmms|demonstrations|about|insights|contact|privacy|cookies)/?$", "dest": "/index.html" },
+    { "src": "^/insights/(what-is-a-cmms|reactive-vs-preventive-maintenance)/?$", "dest": "/index.html" },
+    { "src": "^/tmms/demos/(factory|warehouse|hotel|hospital)/?$", "dest": "/index.html" },
+    { "src": "^/.*$", "status": 404, "dest": "/index.html" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "summary": "Full-site WCAG 2.2 AA re-audit (axe-core 4.10.2, tags wcag2a/aa,wcag21a/aa,wcag22aa) on all 12 public routes at desktop 1440x900 and mobile 390x844, plus keyboard/focus/structure spot-checks and content verification of the revised Privacy + Cookie policies. Initial scan found 1 violation (scrollable-region-focusable on mobile /insights/reactive-vs-preventive-maintenance) — the article-table wrapper (overflow-x-auto div) had no keyboard access. Fixed by adding tabIndex=0 + role='region' + aria-label to the wrapper in ArticlePage.jsx. Re-scan: 0 violations everywhere (24 route*viewport combos). All Privacy and Cookie wording assertions pass. All keyboard/focus/reduced-motion/iframe-title/sim-banner spot-checks pass. No forbidden terms on any of the 12 routes.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Fixed: /app/frontend/src/pages/ArticlePage.jsx table wrapper (block-type 'table') was overflow-x-auto without keyboard access. Added tabIndex={0} role='region' aria-label={block.caption || 'Data table'} so keyboard-only users can scroll horizontally. This was the sole axe violation this iteration (mobile only, because desktop had enough width). Consider using block.caption where present for a more descriptive region name."
+  ],
+  "updated_files": ["/app/frontend/src/pages/ArticlePage.jsx"],
+  "success_rate": {"backend": "N/A", "frontend": "100%"},
+  "seed_data_creation": "None.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "axe-core 4.10.2 WCAG 2.2 AA = 0 violations on / , /services , /tmms , /demonstrations , /about , /insights , /insights/what-is-a-cmms , /insights/reactive-vs-preventive-maintenance , /contact , /privacy , /cookies , /tmms/demos/factory — at both 1440x900 and 390x844 (reduced_motion=no-preference, localStorage cleared, 1500ms settle). Privacy policy now cites legitimate interest (NOT consent), has voluntary+necessary note, exact 12-month retention sentence, England & Wales + Company No. 16567818 + info@nachieng.co.uk (no street address), Resend/US transfer with UK SCC Addendum + UK Extension to EU–U.S. DPF, full 8-point rights list incl. withdraw-consent-where-used + ICO, DRAFT banner present. Cookie policy declares verified no analytics/adv/tracking cookies + no other storage/pixels/analytics/marketing tech beyond one essential TMMS-intro-tour local-storage flag, Calendly cookies only after leaving, no consent banner, DRAFT banner present. Skip link -> #main-content first Tab. Mobile menu Escape returns focus to mobile-menu-button. aria-current='page' on active nav item. Contact form: all 7 fields (name/email/organisation/phone/message/consent/honeypot) have programmatic labels. iframe title = 'TMMS simulated demonstration — Factory & manufacturing'. demo-sim-banner rendered. reduced-motion=reduce suppresses the demo tour dialog. No forbidden terms.",
+  "rca_of_the_issue": "Single WCAG violation RCA: In ArticlePage.jsx the 'table' block type wraps <table> in <div className='my-10 overflow-x-auto'>. On mobile the table overflows horizontally, making the div a scrollable region. axe-core rule scrollable-region-focusable (WCAG 2.1 2.1.1 Keyboard) requires such regions to be reachable by keyboard. Fix: add tabIndex={0} role='region' aria-label to the wrapper. Verified 0 violations after fix."
+}

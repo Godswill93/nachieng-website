@@ -1,0 +1,76 @@
+{
+  "summary": "WCAG 2.2 AA axe-core audit across 11 routes + /brand-preview bug-fix verification + keyboard flows (skip link, nav aria-current, mobile menu focus trap, contact form inline errors, demo tour trap/Escape, article copy-link). Brand-preview bug is FIXED. Keyboard flows all pass. Regression content (no forbidden claims) and wordmark imgs are clean. axe reports 5 real accessibility violations (all serious): 1 list/listitem structural bug on /insights and 4 colour-contrast issues on articles, /contact and /tmms/demos/factory caused by text-ink/50 (#838384) and text-ink/45 (#878788) on paper (#f4f3f1) — 3.03–3.41:1 vs required 4.5:1.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/insights (articles list)", "issues": ["axe rule 'list' + 'listitem' (serious): the <ul.mt-16> wraps each <li> inside a <div> (Reveal component) so <li> is not a direct child of <ul>. Either render Reveal as a fragment/li, or change the list container to <div> with role='list' and children role='listitem'."]},
+      {"screen": "/insights/what-is-a-cmms & /insights/reactive-vs-preventive-maintenance", "issues": ["axe 'color-contrast' (serious) 3.41:1 on span[data-testid=article-author], span[data-testid=article-date], span[data-testid=article-reading-time] and the 'Read next' <p.eyebrow.text-ink/50>. Colour text-ink/50 (#838384) on paper (#f4f3f1). Bump to text-ink/70 or darker (>=#5f5f60) to reach 4.5:1."]},
+      {"screen": "/contact", "issues": ["axe 'color-contrast' (serious) 3.41:1 on the Email / Phone / Book a call eyebrow labels and the privacy-note-like mono <p> (line 116) — all text-ink/50. Change to text-ink/70+ on paper."]},
+      {"screen": "/tmms/demos/factory (DemoTour + demo page)", "issues": ["axe 'color-contrast' (serious): DemoTour line 120 'Sample data only …' uses text-ink/45 (#878788) 3.03:1; TmmsDemoPage line 74 'Runs in an isolated…' uses text-ink/50 3.41:1. demo-tour-skip button text is also flagged. Increase opacity to ink/70+."]},
+      {"screen": "/ (home)", "issues": ["axe 'color-contrast' (serious) was reported once on a <p> (HomePage_133_16) during the first pass but did NOT reproduce on retry — likely a Reveal component reading mid-animation opacity. Verify whether Reveal children hold opacity<1 in the DOM at any time (axe will still measure). Consider marking Reveal opacity transitions as inert-to-axe or ensuring the final resting colour meets contrast even during fade-in."]}
+    ]
+  },
+  "wcag_audit_details": {
+    "tags": ["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"],
+    "tool": "axe-core 4.10.2 (CDN)",
+    "routes_audited": ["/","/services","/tmms","/about","/insights","/insights/what-is-a-cmms","/insights/reactive-vs-preventive-maintenance","/contact","/privacy","/cookies","/tmms/demos/factory"],
+    "clean_routes": ["/services","/tmms","/about","/privacy","/cookies"],
+    "violations_by_route": {
+      "/": [{"rule": "color-contrast", "impact": "serious", "count": 1, "note": "flaky — likely Reveal animation"}],
+      "/insights": [{"rule": "list", "impact": "serious", "count": 1}, {"rule": "listitem", "impact": "serious", "count": 2}],
+      "/insights/what-is-a-cmms": [{"rule": "color-contrast", "impact": "serious", "count": 4}],
+      "/insights/reactive-vs-preventive-maintenance": [{"rule": "color-contrast", "impact": "serious", "count": 4}],
+      "/contact": [{"rule": "color-contrast", "impact": "serious", "count": 4}],
+      "/tmms/demos/factory": [{"rule": "color-contrast", "impact": "serious", "count": 3}]
+    },
+    "severity_categorisation": {
+      "launch_blockers_serious": ["list/listitem on /insights (structural — screen-reader list semantics broken)", "color-contrast on articles/contact/demo (repeated, deterministic)"],
+      "monitor_non_blockers": ["flaky color-contrast on /"]
+    }
+  },
+  "keyboard_audit": {
+    "skip_link": "PASS — first Tab focuses [data-testid=skip-to-content]; Enter moves focus to #main-content (MAIN element).",
+    "header_nav_aria_current": "PASS — nav-services on /services carries aria-current='page'; other nav testids present and reachable.",
+    "mobile_menu": "PASS — button opens menu on Enter, Tab loops (services→tmms→about→insights→contact→wordmark→close→back to services), Escape closes and returns focus to mobile-menu-button. Minor: contact link testid is 'mobile-mobile-nav-contact' (double prefix, likely typo).",
+    "contact_form_empty_submit": "PASS — 4 role='alert' inline errors shown (enquiry-error-name/email/message/consent). Honeypot input name='company_website' present inside aria-hidden container.",
+    "demo_tour": "PASS — under reduced-motion no-preference + cleared localStorage, tour appears; Tab cycles skip→next→close→skip; Enter on demo-tour-next advances to step 2 ('Raise a work order'); Escape dismisses tour.",
+    "article_copy_link": "PASS — reachable, Enter toggles text 'Copy link' → 'Link copied'."
+  },
+  "brand_preview_bug_fix": {
+    "status": "FIXED",
+    "checks": {
+      "not_yet_applied_absent": true,
+      "brand_applied_to_live_site_present": true,
+      "as_applied_labels_present": true,
+      "applied_to_live_header_footer_favicon_present": true,
+      "meta_robots": "noindex, nofollow"
+    }
+  },
+  "regression_checks": {
+    "forbidden_terms_absent_on_all_pages": ["HV Authorised Person","studies show","NHS Trust","Phase 1/2/3","build queue"],
+    "demo_sim_banner_present": true,
+    "header_wordmark_img": "/brand/nachi-eng-wordmark-ink.svg",
+    "footer_wordmark_img": "/brand/nachi-eng-wordmark-paper.svg"
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix /insights list semantics: either render InsightsPage list items directly under <ul> (unwrap the Reveal <div>) OR change the container to a role='list' <div> with role='listitem' children.",
+    "Raise contrast of muted eyebrow/meta text on paper background: replace text-ink/50 with text-ink/70 (or darker) at least in these locations — ArticlePage (author/date/reading-time spans, 'Read next' eyebrow), ContactPage (Email/Phone/Book a call eyebrow labels + mono <p> line 116), TmmsDemoPage line 74 mono note, DemoTour line 120 mono note (text-ink/45 → text-ink/70+).",
+    "Consider marking Reveal fade-in components with inert or ensuring final resting colour on home <p> to avoid axe flagging during animation.",
+    "Optional: rename mobile nav contact testid 'mobile-mobile-nav-contact' → 'mobile-nav-contact' for consistency.",
+    "Consider aligning submit-button testid: docs reference 'enquiry-submit' but code uses 'enquiry-submit-button'."
+  ],
+  "critical_code_review_comments": [
+    "InsightsPage.jsx wraps each <li> in a Reveal <div>, breaking <ul>→<li> semantics (screen readers will not announce list role/count).",
+    "Tailwind opacity utilities like text-ink/50 look nice on paper but fall below WCAG 1.4.3 (4.5:1). A single design-token pass (paper-muted-fg = #5a5a5b) would fix half the audit.",
+    "SiteHeader mobile nav has a duplicated 'mobile-' prefix on the contact link testid — cosmetic but should be normalised."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a", "frontend": "keyboard 6/6 PASS; axe 5/11 routes with violations (all serious contrast + 1 list-structure)"},
+  "seed_data_creation": "",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "axe-core 4.10.2 via CDN, tags wcag2a/wcag2aa/wcag21a/wcag21aa/wcag22aa. Retest same 11 routes. Focus: (1) /insights list/listitem cleared, (2) all four contrast-flagged pages return 0 color-contrast violations, (3) /brand-preview text still correct, (4) keyboard flows unchanged. Use viewport 1440x900 for desktop routes and 390x844 for mobile menu; reduced-motion='no-preference' + localStorage.clear() before /tmms/demos/factory. Contact form testids: enquiry-form, enquiry-input-{name,email,organisation,phone,message,consent}, enquiry-submit-button, enquiry-error-{name,email,message,consent}. Honeypot input name='company_website' inside aria-hidden wrapper."
+}

@@ -1,0 +1,30 @@
+{
+  "summary": "Final WCAG 2.2 AA re-audit with axe-core 4.10.2 across all 11 routes (desktop 1440x900). All routes returned 0 violations, including home '/' where the previously flagged 'Response within two working days' note now uses text-white/60. Regression checks pass: EnquiryCta present on /, header/footer wordmark imgs present, /brand-preview shows 'applied', demo-sim-banner present on /tmms/demos/factory, and no forbidden terms found on any of the 11 routes.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "axe_results_per_route": {
+    "/": 0, "/services": 0, "/tmms": 0, "/about": 0, "/insights": 0,
+    "/insights/what-is-a-cmms": 0, "/insights/reactive-vs-preventive-maintenance": 0,
+    "/contact": 0, "/privacy": 0, "/cookies": 0, "/tmms/demos/factory": 0
+  },
+  "regression_checks": {
+    "enquiry_cta_present_on_home": true,
+    "header_footer_wordmark_imgs_present": true,
+    "brand_preview_has_applied": true,
+    "demo_sim_banner_present": true,
+    "forbidden_terms_found": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "100%"},
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "WCAG 2.2 AA is fully clean across all 11 routes with axe-core 4.10.2 (tags wcag2a/aa, wcag21a/aa, wcag22aa). The prior home hero color-contrast issue on the 'Response within two working days' note is resolved (text-white/60). Enquiries remain OFF by design."
+}
