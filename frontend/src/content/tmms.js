@@ -73,3 +73,45 @@ export const WALKTHROUGH = {
 };
 
 export const SHOW_PREVIEW_MEDIA = process.env.REACT_APP_PREVIEW_MEDIA === "true";
+
+export const DEMO_LAB = {
+    eyebrow: "Demonstration Lab",
+    title: "The TMMS Demonstration Lab.",
+    lead:
+        "TMMS — Maintenance Management System, by Nachi Eng Ltd — is a configurable maintenance management system in the CMMS category. It is in active development, and every demonstration on this page runs on sample data.",
+    configurable:
+        "TMMS is designed to be configured to each organisation — its assets, workflows, roles, permissions and reporting needs — rather than sold as a fixed, finished product for every sector. The sector demonstrations below show how one system can be shaped around different environments. They are illustrations on fictional data, not released sector products.",
+    recordingNote:
+        "Short walkthrough recordings are being prepared from the real demonstration interface. Until each recording is approved, its player appears here as a clearly marked, unpublished placeholder and is hidden on the production site. No footage, screen or figure is invented.",
+};
+
+const DEMO_INTERACTIONS = [
+    "Open an asset and view its details and service history",
+    "Raise or update a work order and set its priority",
+    "Move through the preventive-maintenance schedule",
+    "Check inventory levels and reorder prompts",
+    "Scroll the interface and return to the main dashboard view",
+];
+
+const DEMO_CATEGORY = {
+    factory: "Manufacturing",
+    warehouse: "Logistics & distribution",
+    hotel: "Hospitality",
+    hospital: "Healthcare estates",
+};
+
+export const DEMONSTRATIONS = TMMS_DEMOS.map((d) => ({
+    ...d,
+    category: DEMO_CATEGORY[d.slug],
+    interactions: DEMO_INTERACTIONS,
+    media: {
+        id: `demo-${d.slug}`,
+        title: `${d.label} — walkthrough`,
+        published: false,
+        poster: null,
+        sources: [],
+        captions: null,
+        transcript: null,
+        caption: "Walkthrough recording — pending approval.",
+    },
+}));

@@ -1,4 +1,6 @@
 import { Seo } from "../components/seo/Seo";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import { Reveal } from "../components/motion/Reveal";
 import { Chapter } from "../components/layout/Chapter";
 import { EnquiryCta } from "../components/EnquiryCta";
@@ -100,6 +102,14 @@ const Demos = () => (
                     <p data-testid="tmms-demo-notice" className="mt-5 border-l-2 border-signal pl-5 text-sm leading-6 text-ink/80">
                         {DEMO_NOTICE}
                     </p>
+                    <Link
+                        to="/demonstrations"
+                        data-testid="tmms-demo-lab-link"
+                        className="group mt-6 inline-flex items-center gap-2 text-sm font-medium text-ink underline-offset-4 hover:text-signal hover:underline"
+                    >
+                        Visit the Demonstration Lab
+                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+                    </Link>
                 </Reveal>
                 <Reveal delay={0.1} className="md:col-span-7">
                     <DemoGrid />

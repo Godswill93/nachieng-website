@@ -34,6 +34,7 @@ export const EXPERIENCE_STATEMENT =
 export const NAV_LINKS = [
     { label: "Services", to: "/services", testId: "nav-services" },
     { label: "TMMS", to: "/tmms", testId: "nav-tmms" },
+    { label: "Demonstrations", to: "/demonstrations", testId: "nav-demonstrations" },
     { label: "About", to: "/about", testId: "nav-about" },
     { label: "Insights", to: "/insights", testId: "nav-insights" },
 ];

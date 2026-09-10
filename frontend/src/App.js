@@ -9,6 +9,7 @@ import ServicesPage from "@/pages/ServicesPage";
 import AboutPage from "@/pages/AboutPage";
 import TmmsPage from "@/pages/TmmsPage";
 import TmmsDemoPage from "@/pages/TmmsDemoPage";
+import DemonstrationLabPage from "@/pages/DemonstrationLabPage";
 import BrandPreviewPage from "@/pages/BrandPreviewPage";
 import InsightsPage from "@/pages/InsightsPage";
 import ArticlePage from "@/pages/ArticlePage";
@@ -54,6 +55,7 @@ function App() {
                         <Route index element={<HomePage />} />
                         <Route path="/services" element={<ServicesPage />} />
                         <Route path="/tmms" element={<TmmsPage />} />
+                        <Route path="/demonstrations" element={<DemonstrationLabPage />} />
                         <Route path="/tmms/demos/:sector" element={<TmmsDemoPage />} />
                         <Route path="/brand-preview" element={<BrandPreviewPage />} />
                         <Route path="/about" element={<AboutPage />} />
