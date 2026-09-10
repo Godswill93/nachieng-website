@@ -1,0 +1,20 @@
+{
+  "summary": "Frontend-only regression for Vercel-readiness batch. Verified (a) homepage hero + logo visibility bug fix (desktop 1440x900 & mobile 390x844, no-preference and reduced-motion), (b) Contact aria-current='page' active state on desktop and mobile, (c) www canonical + og:url on 11 routes, (d) og:image www URL on 2 article pages, (e) robots.txt and sitemap.xml served correctly, (f) axe-core 4.10.2 accessibility on / and /contact desktop+mobile, (g) forbidden term regression, (h) header/footer wordmark present. All checks PASS.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "100%"},
+  "test_credentials": "N/A - public marketing site",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Iteration 9 verified: homepage hero (KineticLines h1) renders fully visible within 700ms of DOMContentLoaded (measured minSpanOpacity=1 at ~700ms) on both 1440x900 desktop and 390x844 mobile with reduced_motion=no-preference. Under prefers-reduced-motion=reduce, h1/lead/logo all have opacity 1. Header logo image naturalWidth=816 and opacity=1 immediately. On /contact: desktop nav-contact-cta and mobile mobile-nav-contact both carry aria-current='page'; on /about the Contact links do NOT carry aria-current while nav-about / mobile-nav-about do (bidirectional check passed). Canonical + og:url on 11 routes (/, /services, /tmms, /demonstrations, /about, /insights, /insights/what-is-a-cmms, /insights/reactive-vs-preventive-maintenance, /contact, /privacy, /cookies) all equal the exact https://www.nachieng.co.uk<path> URL. og:image on both articles begins with https://www.nachieng.co.uk/brand/og-. robots.txt served 200 text/plain (Cloudflare preamble prepended by preview proxy as expected; our required lines 'Disallow: /brand-preview', 'Disallow: /tmms/demos/', and 'Sitemap: https://www.nachieng.co.uk/sitemap.xml' all present after preamble). sitemap.xml served 200 application/xml, contains all 11 www URLs, no /brand-preview or /tmms/demos. Axe-core 4.10.2 (wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa) on / and /contact at desktop and mobile => 0 violations. Forbidden terms scan on /, /contact, /about => none. Enquiries remained OFF (not exercised). Nothing to fix.",
+  "rca of the issue": "N/A - all reported bugs resolved and confirmed by tests."
+}

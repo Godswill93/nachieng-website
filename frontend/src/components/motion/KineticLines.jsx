@@ -10,7 +10,7 @@ export const KineticLines = ({ lines, className = "" }) => {
                         className="block"
                         initial={reduce ? false : { y: "112%" }}
                         animate={{ y: "0%" }}
-                        transition={{ duration: 0.95, delay: 0.2 + i * 0.13, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: 0.5, delay: 0.04 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
                     >
                         {line}
                     </m.span>

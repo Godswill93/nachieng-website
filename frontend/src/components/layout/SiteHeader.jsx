@@ -43,17 +43,21 @@ const MobileMenu = ({ onClose, closeRef }) => (
         </div>
         <nav aria-label="Mobile" className="container-shell mt-8 flex flex-col">
             {[...NAV_LINKS, { label: "Contact", to: "/contact", testId: "nav-contact" }].map((l, i) => (
-                <Link
+                <NavLink
                     key={l.to}
                     to={l.to}
                     data-testid={l.testId ? l.testId.replace("nav-", "mobile-nav-") : `mobile-nav-${i}`}
                     className="group flex min-h-[56px] items-baseline gap-4 border-t border-white/10 py-5"
                 >
-                    <span className="font-mono text-xs text-signalhi">0{i + 1}</span>
-                    <span className="font-expanded text-3xl font-semibold tracking-tight transition-colors duration-200 group-hover:text-signalhi">
-                        {l.label}
-                    </span>
-                </Link>
+                    {({ isActive }) => (
+                        <>
+                            <span className={`font-mono text-xs ${isActive ? "text-signalhi" : "text-signalhi"}`}>0{i + 1}</span>
+                            <span className={`font-expanded text-3xl font-semibold tracking-tight transition-colors duration-200 group-hover:text-signalhi ${isActive ? "text-signalhi" : ""}`}>
+                                {l.label}
+                            </span>
+                        </>
+                    )}
+                </NavLink>
             ))}
         </nav>
         <div className="container-shell mb-10 mt-auto border-t border-white/10 pt-6">
@@ -131,13 +135,17 @@ export const SiteHeader = () => {
                             {l.label}
                         </NavLink>
                     ))}
-                    <Link
+                    <NavLink
                         to="/contact"
                         data-testid="nav-contact-cta"
-                        className="inline-flex min-h-[44px] items-center rounded-full bg-ink px-5 text-sm font-medium text-paper transition-colors duration-300 hover:bg-signal hover:text-white"
+                        className={({ isActive }) =>
+                            `inline-flex min-h-[44px] items-center rounded-full px-5 text-sm font-medium transition-colors duration-300 ${
+                                isActive ? "bg-signal text-white" : "bg-ink text-paper hover:bg-signal hover:text-white"
+                            }`
+                        }
                     >
                         Contact
-                    </Link>
+                    </NavLink>
                 </nav>
                 <button
                     type="button"

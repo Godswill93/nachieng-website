@@ -108,14 +108,14 @@ const Hero = () => (
             <h1 className="h-display mt-8 max-w-4xl">
                 <KineticLines lines={["When production equipment stops,", "everything else stops with it."]} />
             </h1>
-            <Reveal delay={0.55}>
+            <Reveal delay={0.18} duration={0.4}>
                 <p className="mt-8 max-w-xl text-base leading-7 text-white/70 md:text-lg md:leading-8">
                     Nachi Eng Ltd provides industrial electrical and mechanical maintenance, fault-finding and
                     maintenance improvement for factories, warehouses and commercial facilities across London,
                     Essex and the South East.
                 </p>
             </Reveal>
-            <Reveal delay={0.7}>
+            <Reveal delay={0.26} duration={0.4}>
                 <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
                     <PrimaryButton dark />
                     <Link

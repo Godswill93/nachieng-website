@@ -3,7 +3,7 @@
 Status: DRAFT — for owner review. **Do not deploy, publish, connect the production domain, or change DNS** until the owner authorises. This document is a plan only; no action has been taken.
 
 Preview environment (source of truth for content): the Emergent preview URL in `frontend/.env` (`REACT_APP_BACKEND_URL`).
-Production domain (NOT to be touched yet): `https://nachieng.co.uk`.
+Production domain (NOT to be touched yet): `https://www.nachieng.co.uk`.
 
 ---
 
@@ -32,20 +32,20 @@ Map any legacy URLs from the previous site to the new routes (confirm exact old 
 ## 3. robots.txt
 - [ ] Allow crawling of public routes.
 - [ ] Disallow the internal brand route: `Disallow: /brand-preview` (route is already `noindex`, unlinked — consider removing entirely at launch).
-- [ ] Reference the sitemap: `Sitemap: https://nachieng.co.uk/sitemap.xml`.
+- [ ] Reference the sitemap: `Sitemap: https://www.nachieng.co.uk/sitemap.xml`.
 - [ ] Confirm the demo routes (`/tmms/demos/*`) are `noindex` (already set in-page) and decide whether to also disallow in robots.
 
 ## 4. sitemap.xml
 - [ ] Include public routes: `/`, `/services`, `/tmms`, `/demonstrations`, `/about`, `/insights`, `/insights/what-is-a-cmms`, `/insights/reactive-vs-preventive-maintenance`, `/contact`, `/privacy`, `/cookies`.
 - [ ] EXCLUDE: `/brand-preview`, `/tmms/demos/*` (noindex).
-- [ ] Use absolute `https://nachieng.co.uk/...` URLs. Set `lastmod`. Submit in Google Search Console after go-live.
+- [ ] Use absolute `https://www.nachieng.co.uk/...` URLs. Set `lastmod`. Submit in Google Search Console after go-live.
 
 ## 5. Canonical URLs
-- [ ] Each page already emits `<link rel="canonical">` via the Seo component using `canonicalOrigin = https://nachieng.co.uk`.
+- [ ] Each page already emits `<link rel="canonical">` via the Seo component using `canonicalOrigin = https://www.nachieng.co.uk`.
 - [ ] After domain connect, confirm canonicals resolve (no trailing-slash mismatch, no duplicate http/https or www/non-www — pick one host and 301 the other).
 
 ## 6. Open Graph / social previews
-- [ ] Article OG images point to `https://nachieng.co.uk/brand/og-what-is-a-cmms.jpg` and `.../og-reactive-vs-preventive.jpg` — these only resolve once the domain is live.
+- [ ] Article OG images point to `https://www.nachieng.co.uk/brand/og-what-is-a-cmms.jpg` and `.../og-reactive-vs-preventive.jpg` — these only resolve once the domain is live.
 - [ ] After go-live, re-scrape both article URLs in the LinkedIn Post Inspector and (optional) Facebook Sharing Debugger to refresh caches and confirm image + title + description render.
 - [ ] Confirm `og:type`, `og:title`, `og:description`, `og:url`, `twitter:card=summary_large_image` present on articles.
 - [ ] Consider adding a default site-wide OG image for non-article pages (optional, owner decision).

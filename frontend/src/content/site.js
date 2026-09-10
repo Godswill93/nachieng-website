@@ -11,7 +11,7 @@ export const COMPANY = {
     linkedin: "https://www.linkedin.com/company/nachi-eng-ltd",
     calendly: "https://calendly.com/godswill-nachieng/30min",
     responseCommitment: "within two working days",
-    canonicalOrigin: "https://nachieng.co.uk",
+    canonicalOrigin: "https://www.nachieng.co.uk",
 };
 
 export const FOUNDER = {

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /brand-preview
+Disallow: /tmms/demos/
+
+Sitemap: https://www.nachieng.co.uk/sitemap.xml
