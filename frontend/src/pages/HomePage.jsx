@@ -3,14 +3,16 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Seo } from "../components/seo/Seo";
 import { Reveal } from "../components/motion/Reveal";
 import { KineticLines } from "../components/motion/KineticLines";
+import { Chapter } from "../components/layout/Chapter";
+import { IndustryGrid } from "../components/IndustryGrid";
+import { PrimaryButton } from "../components/PrimaryButton";
+import { EnquiryCta } from "../components/EnquiryCta";
 import {
     COMPANY,
     CREDENTIALS,
     EXPERIENCE_STATEMENT,
     FOUNDER,
-    INDUSTRIES,
     ARTICLES,
-    PRIMARY_CTA,
     SECONDARY_CTA,
 } from "../content/site";
 
@@ -74,26 +76,6 @@ const HOME_JSONLD = {
         },
     ],
 };
-
-const Chapter = ({ num, label, dark = false }) => (
-    <div className={`flex items-baseline gap-4 border-t pt-4 ${dark ? "border-white/15" : "border-ink/15"}`}>
-        <span className={`eyebrow ${dark ? "text-signalhi" : "text-signal"}`}>{num}</span>
-        <span className={`eyebrow ${dark ? "text-white/60" : "text-ink/60"}`}>{label}</span>
-    </div>
-);
-
-const PrimaryButton = ({ dark = false }) => (
-    <Link
-        to={PRIMARY_CTA.to}
-        data-testid={PRIMARY_CTA.testId}
-        className={`group inline-flex min-h-[48px] items-center gap-2 rounded-full px-7 py-3 text-sm font-medium transition-colors duration-300 ${
-            dark ? "bg-signal text-white hover:bg-paper hover:text-ink" : "bg-ink text-paper hover:bg-signal hover:text-white"
-        }`}
-    >
-        {PRIMARY_CTA.label}
-        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
-    </Link>
-);
 
 const HeroDecor = () => (
     <svg
@@ -304,19 +286,9 @@ const Industries = () => (
                 </div>
             </Reveal>
             <Reveal delay={0.1}>
-                <ul className="mt-12 grid gap-x-10 md:grid-cols-2">
-                    {INDUSTRIES.map((ind, i) => (
-                        <li key={ind.name} className="flex items-center gap-4 border-t border-ink/10 py-5">
-                            <span className="font-mono text-xs text-signal">{String(i + 1).padStart(2, "0")}</span>
-                            <span className="font-expanded text-lg font-semibold tracking-tight md:text-xl">{ind.name}</span>
-                            {ind.future && (
-                                <span className="eyebrow ml-auto shrink-0 border border-signal px-2 py-1 text-[10px] text-signal">
-                                    Future target sector
-                                </span>
-                            )}
-                        </li>
-                    ))}
-                </ul>
+                <div className="mt-12">
+                    <IndustryGrid />
+                </div>
             </Reveal>
         </div>
     </section>
@@ -390,39 +362,6 @@ const Insights = () => (
     </section>
 );
 
-const EnquiryCta = () => (
-    <section data-testid="home-enquiry-cta" className="bg-ink text-paper">
-        <div className="container-shell py-24 md:py-32">
-            <Reveal>
-                <Chapter num="08" label="Enquiry" dark />
-            </Reveal>
-            <Reveal delay={0.05}>
-                <h2 className="h-display mt-12 max-w-3xl">Discuss an engineering requirement.</h2>
-            </Reveal>
-            <Reveal delay={0.15}>
-                <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
-                    <PrimaryButton dark />
-                    <a
-                        href={COMPANY.calendly}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-testid="cta-book-call"
-                        className="group inline-flex min-h-[48px] items-center gap-2 px-2 py-3 text-sm text-white/80 transition-colors duration-200 hover:text-white"
-                    >
-                        Book a 30-minute call
-                        <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
-                    </a>
-                </div>
-                <p className="mt-10 font-mono text-xs leading-6 tracking-[0.12em] text-white/40">
-                    {COMPANY.email} · {COMPANY.phoneDisplay}
-                    <br />
-                    Response {COMPANY.responseCommitment}
-                </p>
-            </Reveal>
-        </div>
-    </section>
-);
-
 export default function HomePage() {
     return (
         <>
@@ -440,7 +379,7 @@ export default function HomePage() {
             <Industries />
             <Founder />
             <Insights />
-            <EnquiryCta />
+            <EnquiryCta num="08" />
         </>
     );
 }

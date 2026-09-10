@@ -5,6 +5,7 @@ import { LazyMotion, domAnimation } from "framer-motion";
 import Lenis from "lenis";
 import { Layout } from "@/components/layout/Layout";
 import HomePage from "@/pages/HomePage";
+import ServicesPage from "@/pages/ServicesPage";
 import { StubPage } from "@/pages/StubPage";
 import NotFound from "@/pages/NotFound";
 import { COMPANY, ARTICLES } from "@/content/site";
@@ -91,18 +92,7 @@ function App() {
                 <Routes>
                     <Route element={<Layout />}>
                         <Route index element={<HomePage />} />
-                        <Route
-                            path="/services"
-                            element={
-                                <StubPage
-                                    title="Services"
-                                    eyebrow="Phase 5 — in the build queue"
-                                    path="/services"
-                                    testId="page-services"
-                                    description="The full services page — scope, exclusions, the enquiry process and FAQ — is built next, in Phase 5 of the approved sequence."
-                                />
-                            }
-                        />
+                        <Route path="/services" element={<ServicesPage />} />
                         <Route
                             path="/tmms"
                             element={
