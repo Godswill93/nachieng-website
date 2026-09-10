@@ -84,6 +84,7 @@ export const SiteHeader = () => {
     useEffect(() => {
         if (!open) return undefined;
         const el = dialogRef.current;
+        const toggleEl = toggleRef.current;
         const getFocusables = () => el.querySelectorAll('a[href], button:not([disabled])');
         firstRef.current?.focus();
         const onKey = (e) => {
@@ -108,7 +109,7 @@ export const SiteHeader = () => {
         return () => {
             document.removeEventListener("keydown", onKey);
             document.body.style.overflow = "";
-            toggleRef.current?.focus();
+            toggleEl?.focus();
         };
     }, [open]);
 
