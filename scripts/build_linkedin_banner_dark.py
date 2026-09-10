@@ -63,15 +63,15 @@ for (cx, cy, dx, dy) in [(17, 17, 1, 1), (W-17, 17, -1, 1), (17, H-17, 1, -1), (
 cm.append("</g>")
 s.append("".join(cm))
 
-# --- two-line lockup, enlarged; left edge 300 keeps the lower-left logo-overlap zone clear ---
+# --- two-line lockup: compact + shifted up so LinkedIn's top/bottom crop can't clip it ---
 LX = 300
-BIG = 60
-g1, w1 = text_group(archivo700, "NACHI ENG", BIG, LX, 88, PAPER, tr=-0.02)
+BIG = 52
+g1, w1 = text_group(archivo700, "NACHI ENG", BIG, LX, 74, PAPER, tr=-0.02)
 s.append(g1)
-g1b, _ = text_group(plex500, "LTD", BIG * 0.5, LX + w1 + 16, 88, PAPER, tr=0.16, opacity=0.72)
+g1b, _ = text_group(plex500, "LTD", BIG * 0.5, LX + w1 + 15, 74, PAPER, tr=0.16, opacity=0.72)
 s.append(g1b)
-s.append(f'<rect x="{LX}" y="104" width="70" height="4" fill="{SIGNAL}"/>')
-g2, _ = text_group(plex500, "INDUSTRIAL ENGINEERING & MAINTENANCE", 24, LX, 150, LINE2, tr=0.09)
+s.append(f'<rect x="{LX}" y="88" width="62" height="4" fill="{SIGNAL}"/>')
+g2, _ = text_group(plex500, "INDUSTRIAL ENGINEERING & MAINTENANCE", 20, LX, 120, LINE2, tr=0.09)
 s.append(g2)
 
 s.append("</svg>")
