@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Nachi Eng Ltd">
+
+<rect class="tile" width="64" height="64" rx="0" fill="#F4F3F0"/>
+<polygon points="13,14 26,14 51,50 38,50" fill="#1D44C8"/>
+<rect class="bar" x="13" y="14" width="10" height="36" fill="#101216"/>
+<rect class="bar" x="41" y="14" width="10" height="36" fill="#101216"/>
+</svg>

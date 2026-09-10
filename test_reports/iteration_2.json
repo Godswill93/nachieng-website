@@ -1,0 +1,36 @@
+{
+  "summary": "Backend+frontend testing of NACHI ENG LTD marketing site batch: /api/enquiry pipeline, Insights index + two articles, and first-visit demo guided tour on /tmms/demos/factory. Backend: 5/6 pytest passed (honeypot, too-fast, invalid email, short message, empty name all correctly return 200/422). Rate-limit test did NOT reach 429 within 8 valid submissions — see RCA below. Frontend: Contact form UI, inline validation, Insights index, both articles (all data-testids, dates 'May 2026', reading time, forbidden-claims check clean, no emoji, internal TMMS link, related link, calendly link, back link), Demo tour full flow (appears ~550ms after load, correct label 'SIMULATED DEMONSTRATION — A QUICK TOUR' rendered uppercase via eyebrow class, 3-step advance, skip/close/Escape all dismiss, localStorage key nachi-demo-tour-factory=1 persists, no re-show on reload), TMMS regression (wordmark plain text, demo-sim-banner, demo-iframe on /tmms/demos/warehouse) all PASS. Contact happy-path front-end submit returned 502 during my session because Emergent email provider (integrations.emergentagent.com) rate-limited us after my pytest burst — root cause is UPSTREAM, not app code. Main agent's earlier manual curls confirmed 200 + 202 Accepted delivery.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/enquiry", "issue": "Per-IP rate limit (5/hour) uses request.client.host which under the K8s ingress rotates between at least two upstream proxy IPs (observed 10.66.7.130 and 10.66.7.133). Effective limit is ~5*(ingress-pods) per real client and never triggered within 8 valid submissions during test. To rate-limit on true client IP, honour X-Forwarded-For (leftmost) after establishing trusted proxies."},
+      {"endpoint": "POST /api/enquiry", "issue": "When upstream Emergent email service returns 429 (rate_limited), our endpoint surfaces 502 to the browser and the user sees a generic 'Something went wrong' error. Consider a friendlier retry-later message or a short backoff/retry."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Contact happy-path submit during testing session", "issue": "UI showed error banner because backend returned 502 (upstream email provider rate-limited — not an app bug). Once quota resets, the success flow works (confirmed by main agent's prior 202 Accepted responses).", "affected_selectors": ["[data-testid=enquiry-success]"]}
+    ],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/backend/tests/test_enquiry.py", "/app/test_reports/pytest/enquiry_results.xml"],
+  "action_items": [
+    "Consider fixing the per-IP rate limit to honour X-Forwarded-For so the documented 5/hour limit actually applies to real clients (currently effectively doubled/tripled across ingress pods).",
+    "Consider mapping upstream 429 from Emergent email service to a 429/503 with a specific 'temporarily unavailable, please email us directly' user message rather than 502.",
+    "No other action items — Insights articles, demo tour, and Contact form UI all match spec."
+  ],
+  "critical_code_review_comments": [
+    "server.py: `_enquiry_hits` is an in-process dict — will not survive worker restarts or scale beyond 1 process. Fine for MVP but note it's non-durable.",
+    "server.py: rate-limit key = raw request.client.host — behind ingress this is the proxy IP, so the 5/hour limit is per proxy pod, not per real user. Use X-Forwarded-For with a trusted-proxy allowlist.",
+    "Insights content free of all forbidden claims/emoji — verified programmatically."
+  ],
+  "updated_files": ["/app/backend/tests/test_enquiry.py"],
+  "success_rate": {"backend": "83% (5/6 pytest, 1 rate-limit test failed due to ingress-IP rotation, not a code error against the API contract)", "frontend": "100% for verifiable checks; Contact happy-path blocked by transient upstream email 429"},
+  "test_credentials": "N/A (public marketing site, no auth)",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend: /api/enquiry works end-to-end (honeypot silent-drop, elapsed<1500 silent-drop, 422 for invalid email/short-message/empty-name all confirmed via pytest at /app/backend/tests/test_enquiry.py). Rate-limit test likely to keep failing until app uses X-Forwarded-For. When testing happy-path via UI, expect intermittent 502 for a while if previous burst has exhausted Emergent email provider's per-account quota — wait several minutes or use fewer test submissions. Frontend: Insights and both articles fully verified for structure and forbidden-claim absence. Demo tour verified with all 4 dismissal paths (Next-through-3-steps, Skip, Close, Escape) and localStorage persistence key nachi-demo-tour-factory. Header/footer wordmark is plain-text 'NACHI ENG LTD' as required.",
+  "rca of the issue": "Rate-limit non-trigger RCA: Under K8s ingress the FastAPI app sees `request.client.host` as the internal ingress-controller pod IP. Backend log confirms two rotating source IPs (10.66.7.130 and 10.66.7.133) for a single test client; each accumulates its own hit count in `_enquiry_hits`, effectively doubling the documented 5/hour cap. Mitigation: enable `ProxyHeadersMiddleware`/trusted-hosts and derive client IP from X-Forwarded-For's leftmost trusted entry. Contact 502 RCA: my pytest burst caused upstream Emergent email API (integrations.emergentagent.com/api/v1/email/send) to return 429 rate_limited; server.py's send_email translates that to HTTPException 502. Not an app defect."
+}

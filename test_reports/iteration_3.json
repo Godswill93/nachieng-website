@@ -1,0 +1,20 @@
+{
+  "summary": "Frontend-only regression for wordmark logo swap, favicon/apple-touch-icon, Privacy + Cookie legal drafts, article OG images and article copy-link. All acceptance criteria verified via Playwright on preview URL. No issues found.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Seo.jsx: image dependency is fine but note the meta[name='twitter:card'] is only set when image is provided; acceptable since only article pages need it and index.html already sets a default."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a", "frontend": "100%"},
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Verified: header <img src=/brand/nachi-eng-wordmark-ink.svg> (naturalWidth=816), footer <img src=/brand/nachi-eng-wordmark-paper.svg> (naturalWidth=816). No plain-text 'NACHI ENG' span in header/footer DOM. Favicon svg + apple-touch-icon return HTTP 200 from preview host. /privacy shows draft banner, includes 'Who we are', 'What we collect and why', mentions Resend + Calendly, links to /cookies, and does not mention analytics/advertising or third parties beyond Resend/Calendly. /cookies shows draft banner, states no analytics/advertising cookies, mentions local storage flag, mentions Calendly (external) and Resend (server-side). Both articles: meta og:image ends with expected /brand/og-*.jpg, twitter:card=summary_large_image; both og image URLs return 200. Copy-link button toggles 'Copy link' -> 'Link copied' -> back to 'Copy link' after ~2s without error. Insights index lists both articles; dates 'May 2026'; reading times present; no forbidden claims/emoji in article body. /tmms and /tmms/demos/factory render with demo-sim-banner. Demo tour appears after localStorage clear + reload."
+}
