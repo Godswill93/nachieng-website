@@ -35,7 +35,7 @@ export default function PrivacyPage() {
 
                     <Section heading="Who we are">
                         <p>
-                            {COMPANY.name}, registered in England and Wales (Company No. {COMPANY.registration}), based in {COMPANY.location}.
+                            {COMPANY.name}, registered in England and Wales (Company No. {COMPANY.registration}).
                             For any question about your personal data, contact <a className="text-signal underline underline-offset-4" href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>.
                         </p>
                     </Section>
@@ -55,15 +55,28 @@ export default function PrivacyPage() {
                         </p>
                         <p>
                             We use these details only to read and respond to your enquiry. We do not add you to any marketing list, and
-                            you are not subscribed to anything. Our lawful basis is your consent (given when you submit the form) and our
-                            legitimate interest in responding to enquiries about our services.
+                            you are not subscribed to anything.
+                        </p>
+                        <p>
+                            Our lawful basis for handling these details is our legitimate interest in responding to business enquiries,
+                            communicating with you, and taking steps at your request before entering into a possible contract.
+                        </p>
+                        <p>
+                            Providing these details is voluntary. However, the required fields (your name, email address and message)
+                            are necessary for us to be able to respond.
                         </p>
                     </Section>
 
                     <Section heading="How your enquiry is handled">
                         <p>
-                            Enquiries are delivered to us by email using <a className="text-signal underline underline-offset-4" href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Resend</a>, an email delivery service that transmits the
-                            contents of your enquiry to our inbox. The enquiry is not stored in a website database.
+                            Enquiries are delivered to us by email using <a className="text-signal underline underline-offset-4" href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Resend</a> (operated by Plus Five Five, Inc.), an email delivery service
+                            that transmits the contents of your enquiry to our inbox. The enquiry is not stored in a website database.
+                        </p>
+                        <p>
+                            Resend may process and store relevant data, including the contents of your enquiry, in the United States.
+                            Where personal data is transferred outside the UK, it is protected by appropriate safeguards — the UK Addendum
+                            to the EU Standard Contractual Clauses and Resend&rsquo;s certification under the UK Extension to the EU–U.S. Data
+                            Privacy Framework — based on Resend&rsquo;s current published terms.
                         </p>
                         <p>
                             If you choose to book a call, our booking link takes you to <a className="text-signal underline underline-offset-4" href="https://calendly.com/privacy" target="_blank" rel="noopener noreferrer">Calendly</a>, which processes the booking details you
@@ -73,16 +86,27 @@ export default function PrivacyPage() {
 
                     <Section heading="How long we keep it">
                         <p>
-                            We keep enquiry correspondence only for as long as needed to deal with your enquiry and any resulting
-                            work or follow-up, after which it is deleted.
+                            We normally retain enquiry correspondence for up to 12 months after the enquiry has been closed. If the enquiry
+                            results in work, we may retain relevant records for longer where necessary for contract administration,
+                            accounting, legal or regulatory obligations.
                         </p>
                     </Section>
 
                     <Section heading="Your rights">
+                        <p>Under UK data protection law (UK GDPR) you have the right to:</p>
+                        <ul className="list-disc space-y-2 pl-5">
+                            <li>be informed about how your personal data is used (this policy);</li>
+                            <li>access the personal data we hold about you;</li>
+                            <li>have inaccurate data corrected (rectification);</li>
+                            <li>have your data erased in certain circumstances;</li>
+                            <li>restrict our processing of your data in certain circumstances;</li>
+                            <li>object to processing based on our legitimate interests;</li>
+                            <li>data portability, where applicable;</li>
+                            <li>withdraw consent at any time, where our processing is based on consent; and</li>
+                            <li>complain to the Information Commissioner&rsquo;s Office (ICO) at ico.org.uk.</li>
+                        </ul>
                         <p>
-                            Under UK data protection law you have the right to access, correct or ask us to delete the personal data we
-                            hold about you, to object to or restrict our use of it, and to complain to the Information Commissioner&rsquo;s
-                            Office (ICO). To exercise any of these, contact <a className="text-signal underline underline-offset-4" href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>.
+                            To exercise any of these rights, contact <a className="text-signal underline underline-offset-4" href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>.
                         </p>
                     </Section>
 

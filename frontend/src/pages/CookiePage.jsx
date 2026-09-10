@@ -36,23 +36,29 @@ export default function CookiePage() {
                     <Section heading="No analytics or advertising cookies">
                         <p>
                             This website does not use analytics, advertising or tracking cookies, and it does not build a profile of
-                            your activity. Because no non-essential cookies are set, no cookie consent banner is shown.
+                            your activity. We have verified that no such cookies are set by this website. Because no non-essential
+                            cookies are set, no cookie consent banner is shown.
+                        </p>
+                        <p>
+                            We have also confirmed that no other local storage, session storage, tracking pixels, analytics scripts or
+                            marketing technologies are active on this website, beyond the single essential item described below.
                         </p>
                     </Section>
 
-                    <Section heading="Browser storage we do use">
+                    <Section heading="Essential browser storage we do use">
                         <p>
                             When you view a TMMS demonstration, we store a small flag in your browser (using local storage, not a
-                            cookie) to remember that you have seen the short introductory tour, so it does not appear again. This flag
-                            contains no personal data and is never sent to us. You can clear it at any time through your browser
-                            settings.
+                            cookie) to remember that you have seen the short introductory tour, so it does not appear again. This is
+                            used only for that essential user-interface function: it contains no personal data, is never sent to us and
+                            is not used for tracking. You can clear it at any time through your browser settings.
                         </p>
                     </Section>
 
                     <Section heading="Third-party services">
                         <p>
-                            If you follow our booking link, you are taken to <a className="text-signal underline underline-offset-4" href="https://calendly.com/privacy" target="_blank" rel="noopener noreferrer">Calendly</a>, which may set its own cookies on its own
-                            platform under its own cookie policy. That happens on Calendly&rsquo;s website, not this one.
+                            If you follow our booking link, you are taken to <a className="text-signal underline underline-offset-4" href="https://calendly.com/privacy" target="_blank" rel="noopener noreferrer">Calendly</a>. Any Calendly cookies apply only after you leave
+                            this website and arrive on Calendly&rsquo;s own platform, under its own cookie policy. They are not set by this
+                            website.
                         </p>
                         <p>
                             Enquiries are delivered by email using <a className="text-signal underline underline-offset-4" href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Resend</a>. This is a server-side email service and does not set

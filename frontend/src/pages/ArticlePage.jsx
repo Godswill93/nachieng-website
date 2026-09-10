@@ -64,7 +64,7 @@ const Block = ({ block }) => {
             );
         case "table":
             return (
-                <div className="my-10 overflow-x-auto">
+                <div className="my-10 overflow-x-auto" tabIndex={0} role="region" aria-label={block.caption || "Data table"}>
                     <table className="w-full border-collapse border border-ink/15 text-left text-sm">
                         <thead>
                             <tr>
