@@ -3,8 +3,6 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { Seo } from "../components/seo/Seo";
 import { COMPANY } from "../content/site";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const initialValues = { name: "", email: "", organisation: "", phone: "", message: "", consent: false, company_website: "" };
@@ -58,7 +56,7 @@ export default function ContactPage() {
         if (!validate()) return;
         setStatus("submitting");
         try {
-            const res = await fetch(`${API}/enquiry`, {
+            const res = await fetch(`/api/enquiry`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
