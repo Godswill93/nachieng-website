@@ -1,12 +1,6 @@
 import { Seo } from "../components/seo/Seo";
 import { COMPANY } from "../content/site";
 
-const DraftBanner = () => (
-    <p data-testid="legal-draft-banner" className="mb-10 border-l-2 border-signal bg-signal/[0.06] px-5 py-4 font-mono text-xs leading-6 tracking-[0.08em] text-ink/70">
-        DRAFT FOR OWNER REVIEW — not yet legal advice. Please review and confirm before this policy is treated as published.
-    </p>
-);
-
 const Section = ({ heading, children }) => (
     <section className="border-t border-ink/10 py-8">
         <h2 className="font-expanded text-xl font-semibold tracking-tight text-ink md:text-2xl">{heading}</h2>
@@ -19,7 +13,7 @@ export default function CookiePage() {
         <section data-testid="page-cookies" className="bg-paper">
             <Seo
                 title="Cookie Policy | Nachi Eng Ltd"
-                description="This website sets no analytics or advertising cookies. How this website uses browser storage. Draft for owner review."
+                description="This website sets no analytics or advertising cookies. How this website uses browser storage."
                 path="/cookies"
             />
             <div className="container-shell max-w-3xl py-24 md:py-32">
@@ -31,7 +25,6 @@ export default function CookiePage() {
                 </p>
 
                 <div className="mt-12">
-                    <DraftBanner />
 
                     <Section heading="No analytics or advertising cookies">
                         <p>
