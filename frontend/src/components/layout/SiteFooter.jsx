@@ -8,9 +8,7 @@ export const SiteFooter = () => {
         <footer data-testid="site-footer" className="bg-ink text-paper">
             <div className="container-shell grid gap-12 py-16 md:grid-cols-12 md:py-20">
                 <div className="md:col-span-5">
-                    <p className="font-expanded text-lg font-bold tracking-tight">
-                        NACHI ENG <span className="font-mono text-[10px] font-normal tracking-[0.18em] text-white/50">LTD</span>
-                    </p>
+                    <img src="/brand/nachi-eng-wordmark-paper.svg" alt="Nachi Eng Ltd" className="h-[22px] w-auto" />
                     <p className="mt-4 max-w-sm text-sm leading-6 text-white/60">
                         Industrial engineering and engineering technology, based in {COMPANY.location}.
                     </p>

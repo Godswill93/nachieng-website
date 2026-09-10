@@ -8,14 +8,13 @@ const Wordmark = ({ light = false }) => (
         to="/"
         data-testid="site-wordmark-link"
         aria-label="Nachi Eng Ltd — home"
-        className="flex items-baseline gap-1.5"
+        className="inline-flex items-center"
     >
-        <span className={`font-expanded text-lg font-bold tracking-tight ${light ? "text-paper" : "text-ink"}`}>
-            NACHI ENG
-        </span>
-        <span className={`font-mono text-[10px] tracking-[0.18em] ${light ? "text-white/50" : "text-ink/50"}`}>
-            LTD
-        </span>
+        <img
+            src={light ? "/brand/nachi-eng-wordmark-paper.svg" : "/brand/nachi-eng-wordmark-ink.svg"}
+            alt="Nachi Eng Ltd"
+            className="h-5 w-auto md:h-[22px]"
+        />
     </Link>
 );
 

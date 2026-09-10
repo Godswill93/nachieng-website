@@ -13,7 +13,8 @@ import BrandPreviewPage from "@/pages/BrandPreviewPage";
 import InsightsPage from "@/pages/InsightsPage";
 import ArticlePage from "@/pages/ArticlePage";
 import ContactPage from "@/pages/ContactPage";
-import { StubPage } from "@/pages/StubPage";
+import PrivacyPage from "@/pages/PrivacyPage";
+import CookiePage from "@/pages/CookiePage";
 import NotFound from "@/pages/NotFound";
 
 const SmoothScroll = () => {
@@ -59,30 +60,8 @@ function App() {
                         <Route path="/insights" element={<InsightsPage />} />
                         <Route path="/insights/:slug" element={<ArticlePage />} />
                         <Route path="/contact" element={<ContactPage />} />
-                        <Route
-                            path="/privacy"
-                            element={
-                                <StubPage
-                                    title="Privacy Policy"
-                                    eyebrow="Legal"
-                                    path="/privacy"
-                                    testId="page-privacy"
-                                    description="The privacy policy for this website is being prepared and will be published here. For any question about personal data, contact info@nachieng.co.uk."
-                                />
-                            }
-                        />
-                        <Route
-                            path="/cookies"
-                            element={
-                                <StubPage
-                                    title="Cookie Policy"
-                                    eyebrow="Legal"
-                                    path="/cookies"
-                                    testId="page-cookies"
-                                    description="The cookie policy for this website is being prepared and will be published here. This website currently sets no analytics or advertising cookies."
-                                />
-                            }
-                        />
+                        <Route path="/privacy" element={<PrivacyPage />} />
+                        <Route path="/cookies" element={<CookiePage />} />
                         <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>

@@ -11,7 +11,7 @@ const upsertMeta = (attr, key, content) => {
     el.setAttribute("content", content);
 };
 
-export const Seo = ({ title, description, path = "/", jsonLd = null, noindex = false }) => {
+export const Seo = ({ title, description, path = "/", jsonLd = null, noindex = false, image = null }) => {
     const jsonLdString = jsonLd ? JSON.stringify(jsonLd) : null;
     useEffect(() => {
         document.title = title;
@@ -22,6 +22,12 @@ export const Seo = ({ title, description, path = "/", jsonLd = null, noindex = f
         upsertMeta("property", "og:url", `${COMPANY.canonicalOrigin}${path}`);
         upsertMeta("name", "twitter:title", title);
         upsertMeta("name", "twitter:description", description);
+        if (image) {
+            const abs = image.startsWith("http") ? image : `${COMPANY.canonicalOrigin}${image}`;
+            upsertMeta("property", "og:image", abs);
+            upsertMeta("name", "twitter:image", abs);
+            upsertMeta("name", "twitter:card", "summary_large_image");
+        }
         let canonical = document.head.querySelector('link[rel="canonical"]');
         if (!canonical) {
             canonical = document.createElement("link");
@@ -29,8 +35,7 @@ export const Seo = ({ title, description, path = "/", jsonLd = null, noindex = f
             document.head.appendChild(canonical);
         }
         canonical.setAttribute("href", `${COMPANY.canonicalOrigin}${path}`);
-        let script;
-        if (jsonLdString) {
+        let script;        if (jsonLdString) {
             document.getElementById("page-jsonld")?.remove();
             script = document.createElement("script");
             script.type = "application/ld+json";
@@ -41,6 +46,6 @@ export const Seo = ({ title, description, path = "/", jsonLd = null, noindex = f
         return () => {
             script?.remove();
         };
-    }, [title, description, path, jsonLdString, noindex]);
+    }, [title, description, path, jsonLdString, noindex, image]);
     return null;
 };

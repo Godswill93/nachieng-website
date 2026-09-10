@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Link2, Check } from "lucide-react";
 import { Seo } from "../components/seo/Seo";
 import { Reveal } from "../components/motion/Reveal";
 import { PrimaryButton } from "../components/PrimaryButton";
@@ -98,7 +99,24 @@ const Block = ({ block }) => {
 export default function ArticlePage() {
     const { slug } = useParams();
     const article = getArticle(slug);
+    const [copied, setCopied] = useState(false);
     if (!article) return <NotFound />;
+
+    const copyLink = async () => {
+        const url = `${COMPANY.canonicalOrigin}/insights/${article.slug}`;
+        try {
+            await navigator.clipboard.writeText(url);
+        } catch (e) {
+            const ta = document.createElement("textarea");
+            ta.value = url;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand("copy");
+            document.body.removeChild(ta);
+        }
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 2000);
+    };
 
     const related = INSIGHTS.find((a) => a.slug === article.related);
 
@@ -121,6 +139,7 @@ export default function ArticlePage() {
                 description={article.description}
                 path={`/insights/${article.slug}`}
                 jsonLd={jsonLd}
+                image={article.ogImage}
             />
             <article data-testid={`article-${article.slug}`} className="bg-paper">
                 <div className="container-shell pt-10 md:pt-14">
@@ -160,6 +179,16 @@ export default function ArticlePage() {
                 <div className="container-shell max-w-3xl pb-20">
                     <div className="flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-ink/10 pt-10">
                         <PrimaryButton />
+                        <button
+                            type="button"
+                            onClick={copyLink}
+                            data-testid="article-copy-link"
+                            aria-live="polite"
+                            className="group inline-flex min-h-[48px] items-center gap-2 border border-ink/20 px-5 py-3 text-sm text-ink/70 transition-colors hover:border-ink hover:text-ink"
+                        >
+                            {copied ? <Check className="h-4 w-4 text-signal" aria-hidden="true" /> : <Link2 className="h-4 w-4" aria-hidden="true" />}
+                            {copied ? "Link copied" : "Copy link"}
+                        </button>
                         <a
                             href={COMPANY.calendly}
                             target="_blank"

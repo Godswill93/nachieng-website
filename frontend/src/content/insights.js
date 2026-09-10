@@ -13,6 +13,7 @@ export const INSIGHTS = [
         date: "May 2026",
         dateIso: "2026-05-01",
         readingTime: "5 min read",
+        ogImage: "/brand/og-what-is-a-cmms.jpg",
         related: "reactive-vs-preventive-maintenance",
         blocks: [
             { t: "p", text: "If you are managing maintenance across a facility, a fleet or multiple sites, you have probably heard the term **CMMS**. But what does it actually mean, and why does it matter for your operation?" },
@@ -65,6 +66,7 @@ export const INSIGHTS = [
         date: "May 2026",
         dateIso: "2026-05-01",
         readingTime: "6 min read",
+        ogImage: "/brand/og-reactive-vs-preventive.jpg",
         related: "what-is-a-cmms",
         blocks: [
             { t: "p", text: "It often starts the same way." },
