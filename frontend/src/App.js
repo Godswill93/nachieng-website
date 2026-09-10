@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { LazyMotion, domAnimation } from "framer-motion";
@@ -16,13 +16,6 @@ import ContactPage from "@/pages/ContactPage";
 import PrivacyPage from "@/pages/PrivacyPage";
 import CookiePage from "@/pages/CookiePage";
 import NotFound from "@/pages/NotFound";
-
-// Internal-only route: registered ONLY in local development, never in production.
-// In production builds `IS_DEV` is the literal `false`, so the route below is not
-// rendered and its lazy import call-site is dead-code-eliminated from the app bundle.
-// /brand-preview therefore falls through to the 404 (NotFound) page in production.
-const IS_DEV = process.env.NODE_ENV !== "production";
-const BrandPreviewPage = lazy(() => import("@/pages/BrandPreviewPage"));
 
 const SmoothScroll = () => {
     useEffect(() => {
@@ -63,16 +56,6 @@ function App() {
                         <Route path="/tmms" element={<TmmsPage />} />
                         <Route path="/demonstrations" element={<DemonstrationLabPage />} />
                         <Route path="/tmms/demos/:sector" element={<TmmsDemoPage />} />
-                        {IS_DEV && (
-                            <Route
-                                path="/brand-preview"
-                                element={
-                                    <Suspense fallback={null}>
-                                        <BrandPreviewPage />
-                                    </Suspense>
-                                }
-                            />
-                        )}
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/insights" element={<InsightsPage />} />
                         <Route path="/insights/:slug" element={<ArticlePage />} />

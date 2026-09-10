@@ -71,6 +71,14 @@ Full rebuild of the NACHI ENG LTD marketing website (industrial engineering & te
 - WEBSITE DNS ALREADY POINTS TO VERCEL and must remain unchanged — no Namecheap edits to deploy the site. Resend sender-domain verification records (DKIM/SPF/DMARC) are additive and SEPARATE from website-hosting records; they never replace/alter them.
 - Kinetic hero must stay subtle/mobile-safe; drop motion before budget
 
+## 2026-09-10 (batch 10) — Preview corrections (preview/website-rebuild only; NOT deployed)
+- Removed /brand-preview entirely: deleted frontend/src/pages/BrandPreviewPage.jsx and its route + lazy import from frontend/src/App.js (no dev gate, no redirect, no noindex-only). Verified no nav/internal links pointed to it. /brand-preview now falls through to the catch-all → NotFound 404.
+- Removed the now-obsolete `Disallow: /brand-preview` line from frontend/public/robots.txt (robots is defence-in-depth only).
+- sitemap.xml: replaced the 9 stale generic 2026-06-12 lastmods with genuine rebuild date 2026-09-10; kept the 2 insights article lastmods at their genuine editorial date 2026-05-01. Valid XML, canonical www URLs, changefreq/priority preserved.
+- Obsolete root-level old-site files: NONE found at repo root (no root index.html/css/js). The only old-site artefacts are 4 archived HTMLs under memory/legacy/ — intentionally archived, not served, not root-level — left untouched per "if uncertain, leave & report".
+- Verification: CI=true yarn build → exit 0, zero warnings-as-errors, brand-preview absent from bundle; 22/22 enquiry.function tests pass; testing_agent iteration_10 → 11/11 public routes render + /brand-preview & invalid URL → 404 (100%); /robots.txt & /sitemap.xml return 200; no DB usage in enquiry fn; no .env/secrets tracked; ENQUIRY_LIVE defaults false (routes to delivered@resend.dev); no real email sent.
+- NOT pushed by agent (Save to GitHub → preview/website-rebuild only). main/production/DNS/Resend/Vercel prod/ENQUIRY_LIVE all unchanged.
+
 ## 2026-06 (batch 9) — /brand-preview blocked in production (router-level, not robots-only)
 - frontend/src/App.js: /brand-preview route now registered ONLY when IS_DEV (process.env.NODE_ENV !== "production"). BrandPreviewPage converted to React.lazy behind a dev gate + Suspense.
 - Production build result: main.js has 0 "brand-preview" references; route dead-code-eliminated; component lives only in an orphan chunk that main.js references 0 times (never loaded) → /brand-preview resolves to the NotFound 404 page.
