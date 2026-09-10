@@ -89,3 +89,7 @@ android-sdk/
 credentials.json
 *.key
 .credentials
+
+# Root-level artefacts that must not be tracked (machine/platform-specific or spurious)
+/.gitconfig
+/yarn.lock
