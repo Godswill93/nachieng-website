@@ -60,6 +60,6 @@ export const INDUSTRIES = [
 ];
 
 export const ARTICLES = [
-    { title: "What is a CMMS?", to: "/insights" },
-    { title: "The 2am Phone Call That's Costing Your Facility a Fortune", to: "/insights" },
+    { title: "What is a CMMS?", to: "/insights/what-is-a-cmms" },
+    { title: "The 2am Phone Call That's Costing Your Facility a Fortune", to: "/insights/reactive-vs-preventive-maintenance" },
 ];

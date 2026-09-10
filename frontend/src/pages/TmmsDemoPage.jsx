@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, RotateCcw } from "lucide-react";
 import { Seo } from "../components/seo/Seo";
 import { DemoGrid } from "../components/tmms/DemoGrid";
+import { DemoTour } from "../components/tmms/DemoTour";
 import { DEMO_NOTICE, TMMS_DEMOS } from "../content/tmms";
 import NotFound from "./NotFound";
 
@@ -20,6 +21,7 @@ export default function TmmsDemoPage() {
                 path={`/tmms/demos/${demo.slug}`}
                 noindex
             />
+            <DemoTour key={demo.slug} sector={demo.slug} />
             <section data-testid={`demo-page-${demo.slug}`} className="bg-paper">
                 <div className="container-shell pt-10 md:pt-14">
                     <Link

@@ -10,9 +10,11 @@ import AboutPage from "@/pages/AboutPage";
 import TmmsPage from "@/pages/TmmsPage";
 import TmmsDemoPage from "@/pages/TmmsDemoPage";
 import BrandPreviewPage from "@/pages/BrandPreviewPage";
+import InsightsPage from "@/pages/InsightsPage";
+import ArticlePage from "@/pages/ArticlePage";
+import ContactPage from "@/pages/ContactPage";
 import { StubPage } from "@/pages/StubPage";
 import NotFound from "@/pages/NotFound";
-import { COMPANY, ARTICLES } from "@/content/site";
 
 const SmoothScroll = () => {
     useEffect(() => {
@@ -40,53 +42,6 @@ const ScrollToTop = () => {
     return null;
 };
 
-const ContactStub = () => (
-    <StubPage
-        title="Contact"
-        eyebrow="Contact"
-        path="/contact"
-        testId="page-contact"
-        description="Every route below reaches the engineer directly. Describe the site, the equipment and the problem, and you will receive a considered response."
-    >
-        <ul className="mt-10 max-w-xl divide-y divide-ink/10 border-y border-ink/10">
-            <li className="flex flex-wrap items-baseline justify-between gap-2 py-4">
-                <span className="eyebrow text-ink/50">Email</span>
-                <a data-testid="contact-email-link" className="text-sm underline-offset-4 hover:underline" href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
-            </li>
-            <li className="flex flex-wrap items-baseline justify-between gap-2 py-4">
-                <span className="eyebrow text-ink/50">Phone</span>
-                <a data-testid="contact-phone-link" className="text-sm underline-offset-4 hover:underline" href={COMPANY.phoneHref}>{COMPANY.phoneDisplay}</a>
-            </li>
-            <li className="flex flex-wrap items-baseline justify-between gap-2 py-4">
-                <span className="eyebrow text-ink/50">Book a call</span>
-                <a data-testid="contact-calendly-link" className="text-sm underline-offset-4 hover:underline" href={COMPANY.calendly} target="_blank" rel="noopener noreferrer">30 minutes, via Calendly</a>
-            </li>
-        </ul>
-        <p className="mt-6 font-mono text-xs tracking-[0.12em] text-ink/50">
-            Response {COMPANY.responseCommitment} · {COMPANY.location}
-        </p>
-    </StubPage>
-);
-
-const InsightsStub = () => (
-    <StubPage
-        title="Insights"
-        eyebrow="Insights"
-        path="/insights"
-        testId="page-insights"
-        description="Articles on maintenance practice and maintenance technology, written from the maintenance floor."
-    >
-        <ul className="mt-10 max-w-xl divide-y divide-ink/10 border-y border-ink/10">
-            {ARTICLES.map((a) => (
-                <li key={a.title} className="flex items-baseline justify-between gap-4 py-4">
-                    <span className="text-sm">{a.title}</span>
-                    <span className="eyebrow text-ink/50">Article</span>
-                </li>
-            ))}
-        </ul>
-    </StubPage>
-);
-
 function App() {
     return (
         <LazyMotion features={domAnimation}>
@@ -101,8 +56,9 @@ function App() {
                         <Route path="/tmms/demos/:sector" element={<TmmsDemoPage />} />
                         <Route path="/brand-preview" element={<BrandPreviewPage />} />
                         <Route path="/about" element={<AboutPage />} />
-                        <Route path="/insights" element={<InsightsStub />} />
-                        <Route path="/contact" element={<ContactStub />} />
+                        <Route path="/insights" element={<InsightsPage />} />
+                        <Route path="/insights/:slug" element={<ArticlePage />} />
+                        <Route path="/contact" element={<ContactPage />} />
                         <Route
                             path="/privacy"
                             element={
