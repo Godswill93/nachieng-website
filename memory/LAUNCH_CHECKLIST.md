@@ -2,8 +2,12 @@
 
 Status: DRAFT — for owner review. **Do not deploy, publish, connect the production domain, or change DNS** until the owner authorises. This document is a plan only; no action has been taken.
 
-Preview environment (source of truth for content): the Emergent preview URL in `frontend/.env` (`REACT_APP_BACKEND_URL`).
-Production domain (NOT to be touched yet): `https://www.nachieng.co.uk`.
+Preview environment (source of truth for content): the Emergent preview URL.
+Production domain: `https://www.nachieng.co.uk`.
+
+### DNS — IMPORTANT
+- The **existing website DNS already points to Vercel and MUST remain unchanged.** No Namecheap A/CNAME edits are required to deploy the website. Do not touch the website-hosting records.
+- **Resend sender-domain verification records are a completely separate concern.** If (and only if) `EMAIL_FROM` uses `@nachieng.co.uk`, Resend requires additive DNS entries (DKIM `CNAME`/`TXT`, SPF `TXT`, optional DMARC `TXT`) so Resend is permitted to send *from* the domain. These records sit alongside — and never replace or alter — the Vercel website-hosting records. Keep the two clearly separate when configuring DNS.
 
 ---
 
@@ -42,7 +46,7 @@ Map any legacy URLs from the previous site to the new routes (confirm exact old 
 
 ## 5. Canonical URLs
 - [ ] Each page already emits `<link rel="canonical">` via the Seo component using `canonicalOrigin = https://www.nachieng.co.uk`.
-- [ ] After domain connect, confirm canonicals resolve (no trailing-slash mismatch, no duplicate http/https or www/non-www — pick one host and 301 the other).
+- [ ] Website DNS already points to Vercel (unchanged). Once deployed, confirm canonicals resolve (no trailing-slash mismatch, no duplicate http/https or www/non-www — pick one host and 301 the other via Vercel, not DNS).
 
 ## 6. Open Graph / social previews
 - [ ] Article OG images point to `https://www.nachieng.co.uk/brand/og-what-is-a-cmms.jpg` and `.../og-reactive-vs-preventive.jpg` — these only resolve once the domain is live.

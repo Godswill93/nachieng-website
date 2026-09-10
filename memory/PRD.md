@@ -68,5 +68,15 @@ Full rebuild of the NACHI ENG LTD marketing website (industrial engineering & te
 
 ## Known constraints / notes
 - Never modify DNS, Vercel, email records, existing GitHub repo, or the live site
-- Resend sending domain verification requires client-side DNS changes at Phase 8
+- WEBSITE DNS ALREADY POINTS TO VERCEL and must remain unchanged — no Namecheap edits to deploy the site. Resend sender-domain verification records (DKIM/SPF/DMARC) are additive and SEPARATE from website-hosting records; they never replace/alter them.
 - Kinetic hero must stay subtle/mobile-safe; drop motion before budget
+
+## 2026-06 (batch 7) — Vercel cleanup + verification (preview only, nothing pushed/deployed)
+- Removed unused REACT_APP_BACKEND_URL from frontend/.env (frontend calls same-origin /api/enquiry; zero code references remained). Only other REACT_APP_* var is REACT_APP_PREVIEW_MEDIA (unrelated).
+- Updated memory/LAUNCH_CHECKLIST.md: explicit DNS section — website DNS unchanged (points to Vercel); Resend records kept separate; canonical section reworded (301 host choice via Vercel, not DNS).
+- Removed temporary backend/ directory from repo (server.py, requirements.txt, pytest.ini, tests/test_enquiry.py). Verified NO frontend code / vercel.json / package.json / Vercel function / build depends on it (no 'backend' or :8001 refs). Emergent PREVIEW enquiry submission no longer works after removal — the real enquiry delivery test will happen via the Vercel Preview Deployment (Resend), not preview.
+- Committed frontend/yarn.lock for reproducible Vercel builds (staged).
+- Added /app/tests/enquiry.function.test.cjs (kept OUTSIDE frontend/api so Vercel never deploys it; mocks fetch). Result: 22/22 pass — method/content-type guards, honeypot+timing silent-drop, validation (required/length/email/control-chars), missing-config 500, test-vs-live recipient routing, reply_to, 429→503, provider-error→502, network→502.
+- yarn build succeeds (only pre-existing SiteHeader eslint warning). No .env/secret tracked (git ls-files clean; frontend/.env git-ignored).
+- Recommended Vercel PREVIEW env (non-secret): EMAIL_FROM=onboarding@resend.dev (until nachieng.co.uk verified), EMAIL_FROM_NAME=Nachi Eng Ltd, EMAIL_REPLY_TO=info@nachieng.co.uk (optional), ENQUIRY_TEST_DESTINATION=delivered@resend.dev, ENQUIRY_LIVE=false, ENQUIRY_DESTINATION=info@nachieng.co.uk (inert while false). RESEND_API_KEY entered only in Vercel Project Settings (Preview scope) — never in repo/chat.
+- STILL OUTSTANDING: real Vercel Preview deployment test (mocked tests do not prove real Resend delivery).
