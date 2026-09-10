@@ -71,6 +71,12 @@ Full rebuild of the NACHI ENG LTD marketing website (industrial engineering & te
 - WEBSITE DNS ALREADY POINTS TO VERCEL and must remain unchanged — no Namecheap edits to deploy the site. Resend sender-domain verification records (DKIM/SPF/DMARC) are additive and SEPARATE from website-hosting records; they never replace/alter them.
 - Kinetic hero must stay subtle/mobile-safe; drop motion before budget
 
+## 2026-09-10 (batch 11) — Genuine HTTP 404 + repo hygiene (commit 2c152fa; NOT pushed)
+- frontend/vercel.json rewritten to legacy `routes`: `handle: filesystem` serves static files + the /api/enquiry serverless function (200); explicit `dest:/index.html` routes for every known valid route (incl. /tmms/demos/{factory,warehouse,hotel,hospital} and the 2 insights slugs) → 200; final catch-all `{ status:404, dest:/index.html }` → unknown/removed paths (e.g. /brand-preview) get a REAL HTTP 404 while React still renders the branded NotFound page. Client-side nav unaffected.
+- Untracked root .gitconfig (git rm --cached; file kept locally for platform git identity; added /.gitconfig to .gitignore). Content was only git author name/email — NO tokens/keys/credential-helpers; history-wide scan found no secrets → no rotation needed.
+- Removed spurious empty root yarn.lock (no root package.json); added /yarn.lock to .gitignore (frontend/yarn.lock stays tracked). git status --short clean after commit.
+- Verified locally: CI=true build exit 0 (no warnings); 22/22 enquiry tests; vercel.json valid JSON; route-order SIMULATION classifies all valid routes+static+function=200 and unknown=404 correctly. Genuine HTTP 404 status CANNOT be exercised on the Emergent dev server (pure SPA, ignores vercel.json → returns 200 for all) — must be verified on the Vercel Preview after push.
+
 ## 2026-09-10 (batch 10) — Preview corrections (preview/website-rebuild only; NOT deployed)
 - Removed /brand-preview entirely: deleted frontend/src/pages/BrandPreviewPage.jsx and its route + lazy import from frontend/src/App.js (no dev gate, no redirect, no noindex-only). Verified no nav/internal links pointed to it. /brand-preview now falls through to the catch-all → NotFound 404.
 - Removed the now-obsolete `Disallow: /brand-preview` line from frontend/public/robots.txt (robots is defence-in-depth only).
