@@ -20,7 +20,7 @@ export const FOUNDER = {
 };
 
 export const FOUNDER_BIO =
-    "A first-class graduate in electrical and electronic engineering and a Member of the Institution of Engineering and Technology, Godswill C. Iweajunwa formed Nachi Eng Ltd in 2025 to bring rigorous, accountable engineering support to industrial environments—and to develop maintenance technology shaped by real maintenance work.";
+    "A first-class graduate in electrical and electronic engineering and a Member of the Institution of Engineering and Technology, Godswill C. Iweajunwa formed Nachi Eng Ltd in 2025 to bring rigorous, accountable engineering support to industrial environments — and to develop maintenance technology shaped by real maintenance work.";
 
 export const CREDENTIALS = [
     "BEng (Hons) Electrical & Electronic Engineering — First Class",

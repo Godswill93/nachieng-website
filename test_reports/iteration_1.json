@@ -1,0 +1,23 @@
+{
+  "summary": "Frontend-only testing of NACHI ENG LTD marketing site: TMMS page, 4 simulated demo iframes (factory/warehouse/hotel/hospital), 404, /brand-preview, About page, stub pages, footer copyright, mobile viewport. All requested checks passed. No blocking issues.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "TmmsDemoPage: iframe uses sandbox='allow-scripts' and referrerPolicy='no-referrer' — correct isolation. Good.",
+    "The failed network requests observed in console are only /cdn-cgi/rum (preview proxy injected) — spec explicitly instructed to ignore these."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "100%"},
+  "test_credentials": "N/A (public marketing site, no auth)",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "All acceptance criteria for this phase verified. Key confirmations: (1) /tmms renders tmms-intro (with 'In development' badge — rendered uppercase via CSS eyebrow class), tmms-problem, tmms-modules (9 items), tmms-walkthrough with tmms-walkthrough-preview-notice + 4 walkthrough-placeholder, tmms-demos with 4 demo-link cards (hospital shows 'Future target sector' badge — rendered uppercase), tmms-status, enquiry-cta; no forbidden strings ('Phase','build queue','approved sequence','rebuild'). (2) /tmms/demos/factory renders demo-back-link, demo-sim-banner containing 'Simulated demonstration — sample data', demo-reset-button, and demo-iframe with sandbox='allow-scripts' and src='/demos/factory.html'. (3) Inside factory iframe: header shows 'TMMS' + 'Simulated demo' badge; .sim-badge = 'SIMULATED DEMONSTRATION — SAMPLE DATA'; all 9 nav tabs present (Dashboard, All Assets, All Work Orders, PPM Schedule, KPI Reports, Messaging, Inventory, Safety, Engineers) with no emojis; 'All Work Orders' tab shows #tab-workorders; '+ Raise Work Order' opens modal, submit shows toast 'Work Order raised successfully!' and closes modal; Dark/Light/System toggles data-theme on <html>; body font-family = 'Archivo, ui-sans-serif, system-ui, sans-serif'; sidebar 'Export PDF Report' shows toast 'PDF export is not available in this simulated demonstration.' with no download/error. (4) All 4 demos' visible body text does NOT contain NachiCMMS/NHS/Godswill/nachieng/Book Free Demo/Learn More; no a[target=_blank] in any demo. Only /demos/*.html request per demo — fonts inlined as data URIs; the 'NHS' substrings inside HTML source are only within base64 font data URIs, not visible text. (5) /tmms/demos/unknown renders page-not-found. (6) demo-reset-button reloads iframe (still present after click). (7) Other demonstrations grid excludes current sector and shows the other 3. (8) footer-copyright = '© 2025–2026 Nachi Eng Ltd'. (9) About page contains 'You deal directly with the engineer responsible for the work.' and 'industrial environments — and'. (10) /contact, /insights, /privacy, /cookies, and 404 contain none of the forbidden strings. (11) /brand-preview renders page-brand-preview; meta robots='noindex, nofollow'; all 4 requested brand SVGs return 200. (12) Mobile 390px: /tmms and /tmms/demos/warehouse have no horizontal overflow; iframe height ~591px (≥560px); mobile menu button present.",
+  "rca of the issue": "N/A — no issues found."
+}

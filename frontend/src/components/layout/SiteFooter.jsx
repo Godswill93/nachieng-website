@@ -83,7 +83,7 @@ export const SiteFooter = () => {
             <div className="border-t border-white/10">
                 <div className="container-shell flex flex-wrap items-center justify-between gap-2 py-6">
                     <p data-testid="footer-copyright" className="font-mono text-xs tracking-[0.12em] text-white/40">
-                        © {year} Nachi Eng Ltd
+                        © 2025–{year} Nachi Eng Ltd
                     </p>
                     <p className="font-mono text-xs tracking-[0.12em] text-white/40">
                         Response {COMPANY.responseCommitment}

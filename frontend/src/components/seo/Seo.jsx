@@ -11,11 +11,12 @@ const upsertMeta = (attr, key, content) => {
     el.setAttribute("content", content);
 };
 
-export const Seo = ({ title, description, path = "/", jsonLd = null }) => {
+export const Seo = ({ title, description, path = "/", jsonLd = null, noindex = false }) => {
     const jsonLdString = jsonLd ? JSON.stringify(jsonLd) : null;
     useEffect(() => {
         document.title = title;
         upsertMeta("name", "description", description);
+        upsertMeta("name", "robots", noindex ? "noindex, nofollow" : "index, follow");
         upsertMeta("property", "og:title", title);
         upsertMeta("property", "og:description", description);
         upsertMeta("property", "og:url", `${COMPANY.canonicalOrigin}${path}`);
@@ -40,6 +41,6 @@ export const Seo = ({ title, description, path = "/", jsonLd = null }) => {
         return () => {
             script?.remove();
         };
-    }, [title, description, path, jsonLdString]);
+    }, [title, description, path, jsonLdString, noindex]);
     return null;
 };

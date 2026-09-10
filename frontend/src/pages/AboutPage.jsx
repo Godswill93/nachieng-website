@@ -24,7 +24,7 @@ const PRINCIPLES = [
     },
     {
         title: "Direct accountability",
-        text: "Nachi Eng Ltd is built around one qualified engineer. You deal directly with the person who does the work.",
+        text: "Nachi Eng Ltd is built around one qualified engineer. You deal directly with the engineer responsible for the work.",
     },
     {
         title: "Evidence on request",

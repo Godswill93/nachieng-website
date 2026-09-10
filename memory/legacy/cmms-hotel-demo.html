@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NachiCMMS — Hotel & Hospitality Demo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+[data-theme="dark"]{--bg:#0a080f;--bg2:#100c1a;--surface:#160f28;--surface2:#1c1435;--surface3:#221940;--text:#f5f0ff;--grey:#5a4a70;--grey2:#8a78a8;--border:rgba(168,85,247,0.12);--border2:rgba(168,85,247,0.28);--header-bg:rgba(10,8,15,0.97);--card-bg:#160f28;--sidebar-bg:#100c1a;--input-bg:#1c1435;--shadow:rgba(0,0,0,0.6)}
+[data-theme="light"]{--bg:#fdf8ff;--bg2:#f5eeff;--surface:#ffffff;--surface2:#fdf8ff;--surface3:#f0e8ff;--text:#1a0830;--grey:#c4b8d8;--grey2:#7c6a98;--border:rgba(168,85,247,0.15);--border2:rgba(168,85,247,0.3);--header-bg:rgba(255,255,255,0.97);--card-bg:#ffffff;--sidebar-bg:#f5eeff;--input-bg:#fdf8ff;--shadow:rgba(0,0,0,0.08)}
+:root{--gold:#f59e0b;--gold2:#fbbf24;--gold3:#fde68a;--purple:#a855f7;--purple2:#c084fc;--purple3:#e9d5ff;--blue:#3b82f6;--blue2:#60a5fa;--green:#10b981;--green2:#34d399;--amber:#f59e0b;--amber2:#fbbf24;--red:#ef4444;--red2:#f87171;--cyan:#06b6d4;--rose:#f43f5e}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background 0.3s,color 0.3s}
+h1,h2,h3,h4{font-family:'Syne',sans-serif}
+.header{position:sticky;top:0;z-index:200;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.header-left{display:flex;align-items:center;gap:14px}
+.header-logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text)}
+.logo-badge{background:var(--gold);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:0.06em}
+.industry-tag{background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.25);color:var(--purple2);font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px}
+.guest-score{background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.25);color:var(--gold2);font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px;display:flex;align-items:center;gap:6px}
+.header-right{display:flex;align-items:center;gap:10px}
+.live-badge{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--green2);background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);padding:5px 12px;border-radius:100px}
+.live-dot{width:6px;height:6px;background:var(--green2);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.5)}}
+.btn-demo{background:var(--purple);color:white;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s}
+.btn-demo:hover{background:var(--purple2);transform:translateY(-1px)}
+.theme-switcher{display:flex;align-items:center;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:3px;gap:2px}
+.theme-btn{border:none;background:none;color:var(--grey2);padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap}
+.theme-btn:hover{color:var(--text)}
+.theme-btn.active{background:var(--purple);color:white}
+.nav-tabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:4px;overflow-x:auto}
+.nav-tab{padding:11px 16px;font-size:13px;font-weight:500;color:var(--grey2);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--purple2);border-bottom-color:var(--purple2)}
+.main{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 97px)}
+.sidebar{background:var(--sidebar-bg);border-right:1px solid var(--border);padding:16px 0;overflow-y:auto}
+.sidebar-section{margin-bottom:20px}
+.sidebar-label{font-size:10px;font-weight:700;color:var(--grey);letter-spacing:0.1em;text-transform:uppercase;padding:0 16px 8px;font-family:'Syne',sans-serif}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;transition:all 0.15s;border-left:3px solid transparent;font-size:13px;color:var(--grey2);margin-right:8px;border-radius:0 8px 8px 0}
+.sidebar-item:hover{background:var(--surface);color:var(--text)}
+.sidebar-item.active{background:rgba(168,85,247,0.1);color:var(--purple2);border-left-color:var(--purple);font-weight:600}
+.sidebar-icon{font-size:15px;width:18px;text-align:center}
+.sidebar-badge{margin-left:auto;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:100px;flex-shrink:0}
+.content{padding:20px;overflow-y:auto;max-height:calc(100vh - 97px);background:var(--bg)}
+.page{display:none}
+.page.active{display:block;animation:fadeIn 0.4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.dept-hero{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:20px;padding:24px 28px;margin-bottom:20px;position:relative;overflow:hidden}
+.dept-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--dept-color,var(--purple))}
+.dept-hero-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:16px}
+.dept-title{font-size:21px;font-weight:800;font-family:'Syne',sans-serif;color:var(--text)}
+.dept-subtitle{font-size:13px;color:var(--grey2);margin-top:4px;max-width:520px;line-height:1.5}
+.dept-status{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;padding:6px 14px;border-radius:100px;flex-shrink:0}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.kpi-card{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:18px;position:relative;overflow:hidden;transition:all 0.3s}
+.kpi-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kpi-color,var(--purple))}
+.kpi-label{font-size:10px;color:var(--grey2);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:7px}
+.kpi-value{font-size:28px;font-weight:800;font-family:'Syne',sans-serif;line-height:1;margin-bottom:5px}
+.kpi-sub{font-size:11px;color:var(--grey2)}
+.kpi-icon{position:absolute;top:14px;right:14px;font-size:20px;opacity:0.3}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text)}
+.card-action{font-size:11px;color:var(--purple2);cursor:pointer;font-weight:500}
+.asset-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.asset-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all 0.2s}
+.asset-item:hover{border-color:var(--border2)}
+.asset-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px}
+.asset-status{font-size:10px;font-weight:600;text-transform:uppercase;display:flex;align-items:center;gap:5px}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.status-dot.online{background:var(--green2);box-shadow:0 0 6px var(--green2)}
+.status-dot.warning{background:var(--amber2)}
+.status-dot.offline{background:var(--red2);box-shadow:0 0 6px var(--red2)}
+.asset-uptime{font-size:11px;color:var(--grey2);margin-top:4px}
+.wo-list{display:flex;flex-direction:column;gap:7px}
+.wo-item{display:flex;align-items:center;gap:11px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;cursor:pointer;transition:all 0.2s}
+.wo-item:hover{border-color:var(--border2);transform:translateX(3px)}
+.wo-priority{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.wo-priority.critical{background:var(--red2);box-shadow:0 0 8px var(--red2)}
+.wo-priority.high{background:var(--amber2)}
+.wo-priority.medium{background:var(--blue2)}
+.wo-priority.low{background:var(--green2)}
+.wo-info{flex:1;min-width:0}
+.wo-title{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wo-meta{font-size:10px;color:var(--grey2)}
+.wo-status{font-size:10px;font-weight:700;letter-spacing:0.05em;padding:3px 8px;border-radius:100px;flex-shrink:0}
+.wo-status.open{background:rgba(239,68,68,0.15);color:var(--red2)}
+.wo-status.progress{background:rgba(245,158,11,0.15);color:var(--amber2)}
+.wo-status.done{background:rgba(16,185,129,0.15);color:var(--green2)}
+.wo-status.scheduled{background:rgba(96,165,250,0.15);color:var(--blue2)}
+.wo-status.guest{background:rgba(168,85,247,0.2);color:var(--purple2)}
+.progress-item{margin-bottom:10px}
+.progress-header{display:flex;justify-content:space-between;margin-bottom:4px;font-size:11px;color:var(--text)}
+.progress-bar{background:var(--surface2);border-radius:100px;height:6px;overflow:hidden}
+.progress-fill{height:100%;border-radius:100px;transition:width 1.2s ease}
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-size:10px;font-weight:700;color:var(--grey2);text-transform:uppercase;letter-spacing:0.06em;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);font-family:'Syne',sans-serif}
+.data-table td{padding:9px 10px;font-size:12px;border-bottom:1px solid var(--border);color:var(--text)}
+.data-table tr:hover td{background:var(--surface2)}
+/* FLOOR MAP */
+.floor-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.floor-room{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.floor-room:hover{transform:scale(1.05)}
+.floor-room.ok{border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.05)}
+.floor-room.fault{border-color:rgba(248,113,113,0.4);background:rgba(239,68,68,0.08)}
+.floor-room.cleaning{border-color:rgba(96,165,250,0.3);background:rgba(59,130,246,0.05)}
+.floor-room.oos{border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.05)}
+.floor-room.vacant{border-color:transparent}
+.room-num{font-size:11px;font-weight:700;font-family:'Syne',sans-serif}
+.room-status-icon{font-size:14px}
+/* POOL MONITOR */
+.pool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.pool-metric{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;transition:all 0.2s}
+.pool-metric:hover{border-color:var(--border2)}
+.pool-val{font-size:26px;font-weight:800;font-family:'Syne',sans-serif;line-height:1;margin-bottom:4px}
+.pool-label{font-size:11px;color:var(--grey2);margin-bottom:6px}
+.pool-range{font-size:10px;padding:3px 8px;border-radius:100px;display:inline-block}
+/* LIFT STATUS */
+.lift-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.lift-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all 0.2s}
+.lift-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.lift-card.lift-ok{border-color:rgba(52,211,153,0.3)}
+.lift-card.lift-fault{border-color:rgba(248,113,113,0.4);background:rgba(239,68,68,0.06)}
+.lift-icon{font-size:28px;margin-bottom:6px}
+.lift-id{font-size:13px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text)}
+.lift-status{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-top:3px}
+.lift-meta{font-size:10px;color:var(--grey2);margin-top:3px}
+/* GUEST REQUEST */
+.request-item{display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;margin-bottom:6px;cursor:pointer;transition:all 0.2s}
+.request-item:hover{border-color:var(--border2)}
+.request-priority{font-size:16px;flex-shrink:0}
+.request-info{flex:1;min-width:0}
+.request-title{font-size:12px;font-weight:600;color:var(--text)}
+.request-meta{font-size:10px;color:var(--grey2)}
+.request-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;flex-shrink:0}
+/* ENG */
+.eng-card-sm{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;gap:14px;align-items:center;cursor:pointer;transition:all 0.25s}
+.eng-card-sm:hover{border-color:var(--border2);transform:translateY(-2px)}
+.eng-avatar{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;font-family:'Syne',sans-serif;flex-shrink:0}
+.eng-info{flex:1}
+.eng-name{font-size:14px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text)}
+.eng-role{font-size:11px;color:var(--grey2)}
+.eng-certs{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.eng-cert{font-size:10px;background:rgba(168,85,247,0.1);color:var(--purple2);border:1px solid var(--border);padding:2px 8px;border-radius:100px}
+/* MESSAGING */
+.msg-layout{display:grid;grid-template-columns:200px 1fr;height:420px;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.msg-sp{border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--sidebar-bg)}
+.msg-sh{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text);display:flex;justify-content:space-between;align-items:center}
+.msg-nb{background:var(--purple);color:white;border:none;width:22px;height:22px;border-radius:6px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
+.msg-thread{padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--border);transition:all 0.15s}
+.msg-thread:hover,.msg-thread.active{background:rgba(168,85,247,0.08)}
+.msg-thread-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.msg-thread-preview{font-size:10px;color:var(--grey2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.msg-thread-time{font-size:9px;color:var(--grey);margin-top:2px}
+.msg-unread{width:7px;height:7px;background:var(--purple2);border-radius:50%;float:right;margin-top:4px}
+.msg-mp{display:flex;flex-direction:column}
+.msg-mh{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--card-bg)}
+.msg-mav{width:30px;height:30px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'Syne',sans-serif;flex-shrink:0}
+.msg-mhi h4{font-size:13px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text)}
+.msg-mhi p{font-size:10px;color:var(--grey2)}
+.msg-mha{margin-left:auto;display:flex;gap:6px}
+.msg-ab{background:var(--surface2);border:1px solid var(--border);color:var(--grey2);padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;transition:all 0.2s}
+.msg-ab:hover{color:var(--text)}
+.msg-bd{flex:1;padding:14px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.msg-bubble{max-width:75%;padding:9px 12px;border-radius:10px;font-size:12px;line-height:1.6;color:var(--text)}
+.msg-bubble.received{background:var(--surface2);border:1px solid var(--border);align-self:flex-start;border-radius:4px 10px 10px 10px}
+.msg-bubble.sent{background:var(--purple);color:white;align-self:flex-end;border-radius:10px 4px 10px 10px}
+.msg-bn{font-size:10px;color:var(--grey2);margin-bottom:3px;font-weight:600}
+.msg-bt{font-size:10px;color:rgba(255,255,255,0.5);margin-top:3px;text-align:right}
+.msg-bubble.received .msg-bt{color:var(--grey);text-align:left}
+.msg-iw{padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;background:var(--card-bg)}
+.msg-inp{flex:1;background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:8px 12px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;resize:none;outline:none;min-height:36px;max-height:80px}
+.msg-inp:focus{border-color:var(--border2)}
+.msg-sb{background:var(--purple);color:white;border:none;width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
+.msg-sb:hover{background:var(--purple2);transform:scale(1.05)}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;width:500px;max-width:95vw;max-height:90vh;overflow-y:auto;position:relative}
+.modal-title{font-size:17px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:18px;color:var(--text)}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--surface2);border:1px solid var(--border);color:var(--grey2);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:15px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:10px;font-weight:700;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px;display:block;font-family:'Syne',sans-serif}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--border2)}
+.form-select option{background:var(--surface2);color:var(--text)}
+.form-textarea{resize:vertical;min-height:70px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-primary{background:var(--purple);color:white;border:none;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s;width:100%}
+.btn-primary:hover{background:var(--purple2);transform:translateY(-1px)}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--gold);border-radius:12px;padding:12px 18px;z-index:999;display:none;align-items:center;gap:10px;font-size:13px;color:var(--text);box-shadow:0 8px 32px var(--shadow)}
+.toast.show{display:flex;animation:slide-up 0.3s ease}
+@keyframes slide-up{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.cta-banner{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:16px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;position:relative;overflow:hidden}
+.cta-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--purple),transparent)}
+.cta-text h3{font-size:14px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:3px;color:var(--text)}
+.cta-text p{font-size:12px;color:var(--grey2)}
+.cta-buttons{display:flex;gap:8px;flex-shrink:0}
+.btn-cta{padding:8px 18px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;border:none}
+.btn-cta.primary{background:var(--purple);color:white}
+.btn-cta.primary:hover{background:var(--purple2)}
+.btn-cta.ghost{background:transparent;color:var(--grey2);border:1px solid var(--border)}
+.btn-cta.ghost:hover{color:var(--text)}
+.sch-cell{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;transition:all 0.15s}
+.sch-cell.empty{background:transparent;pointer-events:none}
+.sch-cell.normal{background:var(--surface2);color:var(--grey2)}
+.sch-cell.has-pm{background:rgba(168,85,247,0.2);color:var(--purple2);border:1px solid rgba(168,85,247,0.3)}
+.sch-cell.urgent{background:rgba(239,68,68,0.15);color:var(--red2);border:1px solid rgba(239,68,68,0.3)}
+.sch-cell.today{background:var(--purple);color:white;font-weight:700}
+@media(max-width:1100px){.main{grid-template-columns:1fr}.sidebar{display:none}.kpi-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo">🏨 NachiCMMS <span class="logo-badge">DEMO</span></div>
+    <span class="industry-tag" id="industry-tag">🏨 All Hotel Overview</span>
+    <span class="guest-score" id="guest-score">⭐ Guest Impact Score: 9.2/10</span>
+  </div>
+  <div class="header-right">
+    <div class="theme-switcher">
+      <button class="theme-btn active" onclick="setTheme('dark',this)">🌙 Dark</button>
+      <button class="theme-btn" onclick="setTheme('light',this)">☀️ Light</button>
+      <button class="theme-btn" onclick="setTheme('system',this)">💻 System</button>
+    </div>
+    <div class="live-badge"><div class="live-dot"></div> Live</div>
+    <button class="btn-demo" onclick="openModal()">+ Raise Work Order</button>
+  </div>
+</div>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showTab('dashboard',this)">📊 Dashboard</button>
+  <button class="nav-tab" onclick="showTab('assets',this)">🏗️ All Assets</button>
+  <button class="nav-tab" onclick="showTab('workorders',this)">📋 Work Orders</button>
+  <button class="nav-tab" onclick="showTab('schedule',this)">📅 PPM Schedule</button>
+  <button class="nav-tab" onclick="showTab('rooms',this)">🛏️ Room Map</button>
+  <button class="nav-tab" onclick="showTab('pool',this)">🏊 Pool & Spa</button>
+  <button class="nav-tab" onclick="showTab('messaging',this)">💬 Messaging <span style="background:var(--red);color:white;font-size:9px;padding:2px 5px;border-radius:100px;margin-left:3px">3</span></button>
+  <button class="nav-tab" onclick="showTab('reports',this)">📈 KPI Reports</button>
+  <button class="nav-tab" onclick="showTab('engineers',this)">👷 Engineers</button>
+</div>
+
+<div class="main">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Hotel Zones</div>
+      <div class="sidebar-item active" id="sb-all" onclick="showDept('all',this)"><span class="sidebar-icon">🏨</span> All Hotel <span class="sidebar-badge" style="background:var(--purple)">5</span></div>
+      <div class="sidebar-item" id="sb-rooms" onclick="showDept('rooms',this)"><span class="sidebar-icon">🛏️</span> Rooms & Floors <span class="sidebar-badge" style="background:var(--amber)">3</span></div>
+      <div class="sidebar-item" id="sb-hvac" onclick="showDept('hvac',this)"><span class="sidebar-icon">🌡️</span> HVAC & Climate <span class="sidebar-badge" style="background:var(--red)">!</span></div>
+      <div class="sidebar-item" id="sb-pool" onclick="showDept('pool',this)"><span class="sidebar-icon">🏊</span> Pool & Leisure</div>
+      <div class="sidebar-item" id="sb-lifts" onclick="showDept('lifts',this)"><span class="sidebar-icon">🛗</span> Lifts & Escalators</div>
+      <div class="sidebar-item" id="sb-plant" onclick="showDept('plant',this)"><span class="sidebar-icon">⚡</span> Plant & Back of House</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Engineers On Shift</div>
+      <div class="sidebar-item" onclick="showEngineerModal('marcus')"><span class="sidebar-icon">👷</span> Marcus Adeyemi</div>
+      <div class="sidebar-item" onclick="showEngineerModal('sophie')"><span class="sidebar-icon">👷</span> Sophie Laurent</div>
+      <div class="sidebar-item" onclick="showEngineerModal('kai')"><span class="sidebar-icon">👷</span> Kai Yamamoto</div>
+      <div class="sidebar-item" onclick="showEngineerModal('ingrid')"><span class="sidebar-icon">👷</span> Ingrid Svensson</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Quick Actions</div>
+      <div class="sidebar-item" onclick="openModal()"><span class="sidebar-icon">➕</span> Raise Work Order</div>
+      <div class="sidebar-item" onclick="showTab('rooms',document.querySelectorAll('.nav-tab')[4])"><span class="sidebar-icon">🛏️</span> View Room Map</div>
+      <div class="sidebar-item" onclick="showTab('pool',document.querySelectorAll('.nav-tab')[5])"><span class="sidebar-icon">🏊</span> Pool Monitor</div>
+      <div class="sidebar-item" onclick="exportReport()"><span class="sidebar-icon">📥</span> Export PDF Report</div>
+      <div class="sidebar-item" onclick="openSettings()"><span class="sidebar-icon">⚙️</span> Settings</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="tab-dashboard">
+      <div class="cta-banner">
+        <div class="cta-text"><h3>🏨 NachiCMMS — Hotel & Hospitality Edition · Click any Zone on the left for its complete data</h3><p>Built for hotel GMs, facilities teams and estate managers. Every fault resolved before the guest notices. nachieng.co.uk</p></div>
+        <div class="cta-buttons"><a href="https://nachieng.co.uk" target="_blank" class="btn-cta primary">Book Free Demo →</a><a href="https://nachieng.co.uk" target="_blank" class="btn-cta ghost">Learn More</a></div>
+      </div>
+      <div id="dept-content"></div>
+    </div>
+
+    <!-- ASSETS TAB -->
+    <div class="page" id="tab-assets">
+      <div class="card"><div class="card-header"><div class="card-title">🏗️ Hotel Asset Register — 142 Assets</div><button class="btn-demo" style="font-size:12px;padding:6px 14px" onclick="showToast('Asset added!')">+ Add Asset</button></div>
+      <table class="data-table"><tr><th>Asset ID</th><th>Equipment</th><th>Zone</th><th>Status</th><th>Last Service</th><th>Next PM</th><th>LOLER/Compliance</th></tr>
+      <tr><td style="color:var(--purple2);font-family:'DM Mono',monospace">HT-001</td><td>Passenger Lift 1 (12 floors)</td><td>Lifts</td><td><span class="wo-status done">OPERATIONAL</span></td><td>05 May 2026</td><td>05 Aug 2026</td><td style="color:var(--green2)">LOLER Current</td></tr>
+      <tr><td style="color:var(--purple2);font-family:'DM Mono',monospace">HT-002</td><td>Passenger Lift 2 (12 floors)</td><td>Lifts</td><td><span class="wo-status open">FAULT</span></td><td>05 May 2026</td><td>05 Aug 2026</td><td style="color:var(--amber2)">LOLER Current</td></tr>
+      <tr><td style="color:var(--purple2);font-family:'DM Mono',monospace">HT-003</td><td>Main HVAC — Floors 1-6</td><td>HVAC</td><td><span class="wo-status progress">WARNING</span></td><td>10 Apr 2026</td><td>10 Jun 2026</td><td>—</td></tr>
+      <tr><td style="color:var(--purple2);font-family:'DM Mono',monospace">HT-004</td><td>Main HVAC — Floors 7-12</td><td>HVAC</td><td><span class="wo-status done">OPERATIONAL</span></td><td>10 Apr 2026</td><td>10 Jun 2026</td><td>—</td></tr>
+      <tr><td style="color:var(--purple2);font-family:'DM Mono',monospace">HT-005</td><td>Swimming Pool — Pump System</td><td>Pool</td><td><span class="wo-status done">OPERATIONAL</span></td><td>07 May 2026</td><td>07 Jun 2026</td><td style="color:var(--green2)">HSE Compliant</td></tr>
+      <tr><td style="color:var(--purple2);font-family:'DM Mono',monospace">HT-006</td><td>Sauna Unit — Leisure Suite</td><td>Pool/Leisure</td><td><span class="wo-status scheduled">SERVICE DUE</span></td><td>07 Feb 2026</td><td>14 May 2026</td><td>—</td></tr>
+      <tr><td style="color:var(--purple2);font-family:'DM Mono',monospace">HT-007</td><td>Emergency Generator — Main</td><td>Plant</td><td><span class="wo-status done">TESTED</span></td><td>01 May 2026</td><td>01 Jun 2026</td><td style="color:var(--green2)">BS 7671 Current</td></tr>
+      <tr><td style="color:var(--purple2);font-family:'DM Mono',monospace">HT-008</td><td>Boiler System — Domestic Hot Water</td><td>Plant</td><td><span class="wo-status done">OPERATIONAL</span></td><td>15 Apr 2026</td><td>15 Jul 2026</td><td style="color:var(--green2)">Gas Safe Current</td></tr>
+      <tr><td style="color:var(--purple2);font-family:'DM Mono',monospace">HT-009</td><td>Fire Suppression — All Floors</td><td>Safety</td><td><span class="wo-status done">COMPLIANT</span></td><td>30 Apr 2026</td><td>30 Jul 2026</td><td style="color:var(--green2)">BS 9990 Current</td></tr>
+      <tr><td style="color:var(--purple2);font-family:'DM Mono',monospace">HT-010</td><td>Room HVAC Units (x240)</td><td>Rooms</td><td><span class="wo-status progress">3 FAULTS</span></td><td>Various</td><td>Rolling</td><td>—</td></tr>
+      </table></div>
+    </div>
+
+    <!-- WORK ORDERS TAB -->
+    <div class="page" id="tab-workorders">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h2 style="font-size:18px;font-weight:800">All Work Orders</h2><button class="btn-demo" onclick="openModal()">+ Raise Work Order</button></div>
+      <div class="wo-list" id="wo-all-list">
+        <div class="wo-item"><div class="wo-priority critical"></div><div class="wo-info"><div class="wo-title">WO-H031 · Lift 2 — Out of Service (Door Sensor Fault) · Guest Complaints</div><div class="wo-meta">Kai Yamamoto · Lifts Zone · Raised today 08:22 · LOLER Safety Stop</div></div><span class="wo-status open">OPEN</span></div>
+        <div class="wo-item"><div class="wo-priority high"></div><div class="wo-info"><div class="wo-title">WO-H030 · HVAC Floors 1-6 — Warm Air Complaint (Rooms 101-106)</div><div class="wo-meta">Marcus Adeyemi · Floors 1-6 · Today 09:10 · 3 guest complaints</div></div><span class="wo-status progress">IN PROGRESS</span></div>
+        <div class="wo-item"><div class="wo-priority high"></div><div class="wo-info"><div class="wo-title">WO-H029 · Room 814 — Air Conditioning Unit Failed · Guest in Room</div><div class="wo-meta">Sophie Laurent · Floor 8 · Raised by Reception 07:45</div></div><span class="wo-status progress">IN PROGRESS</span></div>
+        <div class="wo-item"><div class="wo-priority medium"></div><div class="wo-info"><div class="wo-title">WO-H028 · Sauna Unit — Annual Service Overdue 2 Weeks</div><div class="wo-meta">Ingrid Svensson · Leisure Suite · Due today</div></div><span class="wo-status scheduled">SCHEDULED</span></div>
+        <div class="wo-item"><div class="wo-priority medium"></div><div class="wo-info"><div class="wo-title">WO-H027 · Room 203 — Shower Pressure Low · Guest Request</div><div class="wo-meta">Marcus Adeyemi · Floor 2 · Due today AM</div></div><span class="wo-status progress">IN PROGRESS</span></div>
+        <div class="wo-item"><div class="wo-priority low"></div><div class="wo-info"><div class="wo-title">WO-H026 · Room 512 — Lightbulb Replacement x3</div><div class="wo-meta">Sophie Laurent · Completed 13 May ✓</div></div><span class="wo-status done">COMPLETE</span></div>
+        <div class="wo-item"><div class="wo-priority low"></div><div class="wo-info"><div class="wo-title">WO-H025 · Pool Pump System — Monthly Inspection & Chemical Check</div><div class="wo-meta">Kai Yamamoto · Completed 07 May ✓</div></div><span class="wo-status done">COMPLETE</span></div>
+      </div>
+    </div>
+
+    <!-- SCHEDULE TAB -->
+    <div class="page" id="tab-schedule">
+      <div class="card"><div class="card-header"><div class="card-title">📅 PPM Planner — May 2026</div></div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px">
+        <div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Mon</div><div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Tue</div><div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Wed</div><div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Thu</div><div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Fri</div><div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Sat</div><div style="font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px">Sun</div>
+        <div class="sch-cell empty"></div><div class="sch-cell empty"></div><div class="sch-cell empty"></div><div class="sch-cell normal">1</div><div class="sch-cell has-pm">2</div><div class="sch-cell normal">3</div><div class="sch-cell normal">4</div>
+        <div class="sch-cell has-pm">5</div><div class="sch-cell normal">6</div><div class="sch-cell normal">7</div><div class="sch-cell has-pm">8</div><div class="sch-cell normal">9</div><div class="sch-cell normal">10</div><div class="sch-cell normal">11</div>
+        <div class="sch-cell has-pm">12</div><div class="sch-cell normal">13</div><div class="sch-cell today">14</div><div class="sch-cell has-pm">15</div><div class="sch-cell normal">16</div><div class="sch-cell normal">17</div><div class="sch-cell normal">18</div>
+        <div class="sch-cell urgent">19</div><div class="sch-cell normal">20</div><div class="sch-cell has-pm">21</div><div class="sch-cell normal">22</div><div class="sch-cell normal">23</div><div class="sch-cell normal">24</div><div class="sch-cell normal">25</div>
+        <div class="sch-cell has-pm">26</div><div class="sch-cell normal">27</div><div class="sch-cell normal">28</div><div class="sch-cell has-pm">29</div><div class="sch-cell normal">30</div><div class="sch-cell normal">31</div>
+      </div>
+      <div class="wo-list">
+        <div class="wo-item"><div class="wo-priority high"></div><div class="wo-info"><div class="wo-title">Sauna Unit — Annual Service (2 weeks overdue)</div><div class="wo-meta">Due today · Ingrid Svensson</div></div><span class="wo-status open">OVERDUE</span></div>
+        <div class="wo-item"><div class="wo-priority medium"></div><div class="wo-info"><div class="wo-title">HVAC Filter Replacement — Floors 1-6</div><div class="wo-meta">Due 15 May · Marcus Adeyemi</div></div><span class="wo-status scheduled">SCHEDULED</span></div>
+        <div class="wo-item"><div class="wo-priority medium"></div><div class="wo-info"><div class="wo-title">Lift 1 & 2 — LOLER Inspection</div><div class="wo-meta">Statutory · Due 19 May · External LOLER Inspector</div></div><span class="wo-status urgent">STATUTORY</span></div>
+        <div class="wo-item"><div class="wo-priority low"></div><div class="wo-info"><div class="wo-title">Swimming Pool — Monthly Chemical & Filter Service</div><div class="wo-meta">Due 21 May · Kai Yamamoto</div></div><span class="wo-status scheduled">SCHEDULED</span></div>
+        <div class="wo-item"><div class="wo-priority low"></div><div class="wo-info"><div class="wo-title">Boiler System — Quarterly Inspection (Gas Safe)</div><div class="wo-meta">Due 26 May · Gas Safe Engineer</div></div><span class="wo-status scheduled">SCHEDULED</span></div>
+      </div></div>
+    </div>
+
+    <!-- ROOM MAP TAB -->
+    <div class="page" id="tab-rooms">
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h2 style="font-size:18px;font-weight:800">🛏️ Room Maintenance Map</h2><button class="btn-demo" onclick="openModal()">+ Log Room Fault</button></div>
+        <div style="display:flex;gap:12px;font-size:11px;color:var(--grey2)">
+          <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:rgba(52,211,153,0.3);border-radius:2px;display:inline-block"></span>OK</span>
+          <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:rgba(248,113,113,0.3);border-radius:2px;display:inline-block"></span>Fault — Occupied</span>
+          <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:rgba(96,165,250,0.3);border-radius:2px;display:inline-block"></span>Cleaning</span>
+          <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:rgba(245,158,11,0.3);border-radius:2px;display:inline-block"></span>Out of Service</span>
+        </div>
+      </div>
+      <div id="room-map-container"></div>
+    </div>
+
+    <!-- POOL TAB -->
+    <div class="page" id="tab-pool">
+      <div style="margin-bottom:16px"><h2 style="font-size:18px;font-weight:800">🏊 Pool & Spa Monitor</h2><p style="font-size:12px;color:var(--grey2);margin-top:3px">Live water quality and equipment monitoring</p></div>
+      <div class="pool-grid">
+        <div class="pool-metric"><div class="pool-val" style="color:var(--green2)" id="pool-ph">7.4</div><div class="pool-label">pH Level</div><span class="pool-range" style="background:rgba(52,211,153,0.15);color:var(--green2)">✅ Target: 7.2–7.6</span></div>
+        <div class="pool-metric"><div class="pool-val" style="color:var(--green2)" id="pool-cl">1.8</div><div class="pool-label">Free Chlorine (ppm)</div><span class="pool-range" style="background:rgba(52,211,153,0.15);color:var(--green2)">✅ Target: 1.0–3.0 ppm</span></div>
+        <div class="pool-metric"><div class="pool-val" style="color:var(--blue2)" id="pool-tmp">28°C</div><div class="pool-label">Water Temperature</div><span class="pool-range" style="background:rgba(96,165,250,0.15);color:var(--blue2)">✅ Target: 26–30°C</span></div>
+        <div class="pool-metric"><div class="pool-val" style="color:var(--amber2)" id="pool-alk">90</div><div class="pool-label">Total Alkalinity (ppm)</div><span class="pool-range" style="background:rgba(245,158,11,0.15);color:var(--amber2)">⚠️ Low — Target: 100–150 ppm</span></div>
+        <div class="pool-metric"><div class="pool-val" style="color:var(--green2)">7.2</div><div class="pool-label">Spa pH Level</div><span class="pool-range" style="background:rgba(52,211,153,0.15);color:var(--green2)">✅ Target: 7.2–7.8</span></div>
+        <div class="pool-metric"><div class="pool-val" style="color:var(--green2)">38°C</div><div class="pool-label">Spa Temperature</div><span class="pool-range" style="background:rgba(52,211,153,0.15);color:var(--green2)">✅ Target: 36–40°C</span></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">🏊 Pool Equipment Status</div></div>
+        <div class="asset-grid">
+          <div class="asset-item"><div class="asset-name">Main Pool Pump</div><div class="asset-status"><div class="status-dot online"></div><span style="color:var(--green2)">Running</span></div><div class="asset-uptime">Flow rate: 120m³/hr · Normal</div></div>
+          <div class="asset-item"><div class="asset-name">Sand Filter x2</div><div class="asset-status"><div class="status-dot online"></div><span style="color:var(--green2)">Clean</span></div><div class="asset-uptime">Last backwash: 10 May</div></div>
+          <div class="asset-item"><div class="asset-name">Chemical Dosing Unit</div><div class="asset-status"><div class="status-dot warning"></div><span style="color:var(--amber2)">Low Alkalinity</span></div><div class="asset-uptime">Add sodium bicarbonate today</div></div>
+          <div class="asset-item"><div class="asset-name">Sauna Unit</div><div class="asset-status"><div class="status-dot warning"></div><span style="color:var(--amber2)">Service Overdue</span></div><div class="asset-uptime">Service due today · WO raised</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">📋 Chemical Log — Today</div><button class="btn-demo" style="font-size:12px;padding:6px 14px" onclick="showToast('Chemical log exported!')">📥 Export</button></div>
+        <table class="data-table">
+          <tr><th>Time</th><th>pH</th><th>Free Chlorine</th><th>Alkalinity</th><th>Temp</th><th>Status</th></tr>
+          <tr><td>06:00</td><td style="color:var(--green2)">7.4</td><td style="color:var(--green2)">1.9</td><td style="color:var(--amber2)">88</td><td style="color:var(--green2)">28°C</td><td><span class="wo-status progress">LOW ALK</span></td></tr>
+          <tr><td>09:00</td><td style="color:var(--green2)">7.4</td><td style="color:var(--green2)">1.8</td><td style="color:var(--amber2)">90</td><td style="color:var(--green2)">28°C</td><td><span class="wo-status progress">LOW ALK</span></td></tr>
+          <tr><td>12:00</td><td style="color:var(--green2)">7.4</td><td style="color:var(--green2)">1.8</td><td style="color:var(--amber2)">90</td><td style="color:var(--green2)">28°C</td><td><span class="wo-status progress">LOW ALK</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- MESSAGING TAB -->
+    <div class="page" id="tab-messaging">
+      <div style="margin-bottom:14px"><h2 style="font-size:18px;font-weight:800">💬 Team Messaging</h2><p style="font-size:12px;color:var(--grey2);margin-top:3px">Engineers, reception and housekeeping in one place</p></div>
+      <div class="msg-layout">
+        <div class="msg-sp">
+          <div class="msg-sh">Messages <button class="msg-nb" onclick="showToast('New chat!')">+</button></div>
+          <div class="msg-thread active" onclick="loadHThread('marcus',this)"><div style="display:flex;justify-content:space-between"><div class="msg-thread-name">Marcus Adeyemi</div><div class="msg-unread"></div></div><div class="msg-thread-preview">Room 814 AC — compressor fault</div><div class="msg-thread-time">12 min ago</div></div>
+          <div class="msg-thread" onclick="loadHThread('kai',this)"><div style="display:flex;justify-content:space-between"><div class="msg-thread-name">Kai Yamamoto</div><div class="msg-unread"></div></div><div class="msg-thread-preview">Lift 2 door sensor confirmed failed</div><div class="msg-thread-time">28 min ago</div></div>
+          <div class="msg-thread" onclick="loadHThread('reception',this)"><div style="display:flex;justify-content:space-between"><div class="msg-thread-name">Reception Desk</div><div class="msg-unread"></div></div><div class="msg-thread-preview">Rooms 101-104 too warm, guests upset</div><div class="msg-thread-time">45 min ago</div></div>
+          <div class="msg-thread" onclick="loadHThread('team',this)"><div style="display:flex;justify-content:space-between"><div class="msg-thread-name">🏨 All Engineers</div><div class="msg-unread"></div></div><div class="msg-thread-preview">Morning shift handover 14 May</div><div class="msg-thread-time">2hr ago</div></div>
+          <div class="msg-thread" onclick="loadHThread('sophie',this)"><div class="msg-thread-name">Sophie Laurent</div><div class="msg-thread-preview">Room 512 lights replaced ✓</div><div class="msg-thread-time">3hr ago</div></div>
+        </div>
+        <div class="msg-mp">
+          <div class="msg-mh"><div class="msg-mav" id="hmsg-av">MA</div><div class="msg-mhi"><h4 id="hmsg-nm">Marcus Adeyemi</h4><p id="hmsg-rl">HVAC Engineer · Rooms & Floors · 🟢 On Shift</p></div><div class="msg-mha"><button class="msg-ab" onclick="showToast('📞 Calling...')">📞 Call</button><button class="msg-ab" onclick="openModal()">+ WO</button></div></div>
+          <div class="msg-bd" id="hmsg-body"></div>
+          <div class="msg-iw"><textarea class="msg-inp" id="hmsg-in" placeholder="Type a message..." rows="1" onkeydown="handleHKey(event)"></textarea><button class="msg-sb" onclick="sendHMsg()">➤</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORTS TAB -->
+    <div class="page" id="tab-reports">
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kpi-color:var(--gold2)"><div class="kpi-icon">⭐</div><div class="kpi-label">Guest Impact Score</div><div class="kpi-value" style="color:var(--gold2)">9.2/10</div><div class="kpi-sub">▲ 0.3 improvement this month</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--purple2)"><div class="kpi-icon">🛏️</div><div class="kpi-label">Rooms Out of Service</div><div class="kpi-value" style="color:var(--purple2)">3</div><div class="kpi-sub">Of 240 total rooms · 98.8% available</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--blue2)"><div class="kpi-icon">⏱️</div><div class="kpi-label">Avg Response Time</div><div class="kpi-value" style="color:var(--blue2)">14 min</div><div class="kpi-sub">▲ Faster than target (20 min)</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--green2)"><div class="kpi-icon">💷</div><div class="kpi-label">Cost Per Room MTD</div><div class="kpi-value" style="color:var(--green2)">£42</div><div class="kpi-sub">▼ £8 below budget this month</div></div>
+      </div>
+      <div class="card"><div class="card-header"><div class="card-title">📈 PPM Compliance by Zone</div><button class="btn-demo" style="font-size:12px;padding:7px 16px" onclick="exportReport()">📥 Export PDF</button></div>
+      <div class="progress-item"><div class="progress-header"><span>Rooms & Floors</span><span style="color:var(--green2)">94%</span></div><div class="progress-bar"><div class="progress-fill" style="width:94%;background:var(--green2)"></div></div></div>
+      <div class="progress-item"><div class="progress-header"><span>HVAC & Climate</span><span style="color:var(--amber2)">81%</span></div><div class="progress-bar"><div class="progress-fill" style="width:81%;background:var(--amber2)"></div></div></div>
+      <div class="progress-item"><div class="progress-header"><span>Pool & Leisure</span><span style="color:var(--amber2)">87%</span></div><div class="progress-bar"><div class="progress-fill" style="width:87%;background:var(--amber2)"></div></div></div>
+      <div class="progress-item"><div class="progress-header"><span>Lifts & Escalators</span><span style="color:var(--green2)">98%</span></div><div class="progress-bar"><div class="progress-fill" style="width:98%;background:var(--green2)"></div></div></div>
+      <div class="progress-item"><div class="progress-header"><span>Plant & Back of House</span><span style="color:var(--green2)">96%</span></div><div class="progress-bar"><div class="progress-fill" style="width:96%;background:var(--green2)"></div></div></div>
+      </div>
+    </div>
+
+    <!-- ENGINEERS TAB -->
+    <div class="page" id="tab-engineers">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px"><h2 style="font-size:18px;font-weight:800">👷 Engineer Profiles</h2><button class="btn-demo" onclick="showToast('Invite sent!')">+ Add Engineer</button></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="eng-card-sm" onclick="showEngineerModal('marcus')"><div class="eng-avatar" style="background:linear-gradient(135deg,#7c3aed,#a855f7)">MA</div><div class="eng-info"><div class="eng-name">Marcus Adeyemi</div><div class="eng-role">HVAC Engineer · Rooms & Floors · 🟢 On Shift</div><div class="eng-certs"><span class="eng-cert">F-Gas Cat 1</span><span class="eng-cert">HVAC Level 3</span></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">93%</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div>
+        <div class="eng-card-sm" onclick="showEngineerModal('sophie')"><div class="eng-avatar" style="background:linear-gradient(135deg,#0891b2,#06b6d4)">SL</div><div class="eng-info"><div class="eng-name">Sophie Laurent</div><div class="eng-role">Multi-skilled Engineer · All Floors · 🟢 On Shift</div><div class="eng-certs"><span class="eng-cert">18th Edition</span><span class="eng-cert">Plumbing L3</span></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">91%</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div>
+        <div class="eng-card-sm" onclick="showEngineerModal('kai')"><div class="eng-avatar" style="background:linear-gradient(135deg,#be185d,#f43f5e)">KY</div><div class="eng-info"><div class="eng-name">Kai Yamamoto</div><div class="eng-role">Electrical Engineer · Lifts & Pool · 🟢 On Shift</div><div class="eng-certs"><span class="eng-cert">LOLER Lift</span><span class="eng-cert">Pool Systems</span></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">96%</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div>
+        <div class="eng-card-sm" onclick="showEngineerModal('ingrid')"><div class="eng-avatar" style="background:linear-gradient(135deg,#d97706,#f59e0b)">IS</div><div class="eng-info"><div class="eng-name">Ingrid Svensson</div><div class="eng-role">Compliance Engineer · Plant & Safety · 🟢 On Shift</div><div class="eng-certs"><span class="eng-cert">Gas Safe Reg</span><span class="eng-cert">Fire Safety</span></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">98%</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal"><div class="modal"><button class="modal-close" onclick="closeModal()">✕</button><div class="modal-title">➕ Raise Work Order</div><div class="form-row"><div class="form-group"><label class="form-label">Priority</label><select class="form-select"><option>🔴 Critical — Guest Impact</option><option>🟠 High</option><option selected>🟡 Medium</option><option>🟢 Low</option></select></div><div class="form-group"><label class="form-label">Zone / Floor</label><select class="form-select"><option>Rooms — Floor 1</option><option>Rooms — Floor 2</option><option>Rooms — Floor 3-6</option><option>Rooms — Floor 7-12</option><option>HVAC System</option><option>Pool & Leisure</option><option>Lifts</option><option>Plant Room</option></select></div></div><div class="form-group"><label class="form-label">Room Number (if applicable)</label><input class="form-input" placeholder="e.g. 814"/></div><div class="form-group"><label class="form-label">Fault Description</label><textarea class="form-textarea" placeholder="Describe the fault — note if guest is affected..."></textarea></div><div class="form-row"><div class="form-group"><label class="form-label">Assign To</label><select class="form-select"><option>Marcus Adeyemi</option><option>Sophie Laurent</option><option>Kai Yamamoto</option><option>Ingrid Svensson</option></select></div><div class="form-group"><label class="form-label">Guest Impacted?</label><select class="form-select"><option>Yes — Guest in room</option><option>Yes — Complaint raised</option><option selected>No — Between stays</option></select></div></div><button class="btn-primary" onclick="submitWO()">✅ Submit Work Order</button></div></div>
+<div class="modal-overlay" id="eng-modal"><div class="modal" style="width:540px;max-height:88vh;overflow-y:auto"><button class="modal-close" onclick="document.getElementById('eng-modal').classList.remove('open')">✕</button><div id="eng-content"></div></div></div>
+<div class="modal-overlay" id="settings-modal"><div class="modal" style="width:520px"><button class="modal-close" onclick="closeSettings()">✕</button><div class="modal-title">⚙️ System Settings</div><div class="form-row"><div class="form-group"><label class="form-label">Hotel Name</label><input class="form-input" value="The Grand — Nachi Hotels"/></div><div class="form-group"><label class="form-label">GM / Facilities Manager</label><input class="form-input" value="Godswill Iweajunwa"/></div></div><div class="form-row"><div class="form-group"><label class="form-label">Total Rooms</label><input class="form-input" value="240"/></div><div class="form-group"><label class="form-label">Target Response Time (min)</label><input class="form-input" value="20"/></div></div><div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;font-family:'Syne',sans-serif">Notifications</div><div style="display:flex;flex-direction:column;gap:10px"><label style="display:flex;align-items:center;justify-content:space-between;font-size:13px;cursor:pointer;color:var(--text)"><span>Guest-impacted faults (immediate alert)</span><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--purple)"/></label><label style="display:flex;align-items:center;justify-content:space-between;font-size:13px;cursor:pointer;color:var(--text)"><span>Lift fault alerts</span><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--purple)"/></label><label style="display:flex;align-items:center;justify-content:space-between;font-size:13px;cursor:pointer;color:var(--text)"><span>Pool water quality alarms</span><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--purple)"/></label><label style="display:flex;align-items:center;justify-content:space-between;font-size:13px;cursor:pointer;color:var(--text)"><span>Daily GM report email</span><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--purple)"/></label></div></div><button class="btn-primary" onclick="saveSettings()">💾 Save Settings</button></div></div>
+<div class="toast" id="toast">✅ <span id="toast-msg"></span></div>
+
+<script>
+// THEME
+function setTheme(t,btn){document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(t==='system'){const p=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',p);}else{document.documentElement.setAttribute('data-theme',t);}showToast('Theme: '+t);}
+
+// TAB NAV
+function showTab(id,tab){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');if(tab)tab.classList.add('active');if(id==='rooms')buildRoomMap();}
+
+// DEPT DATA
+const depts={
+  all:{label:'All Hotel Overview',tag:'🏨 All Hotel Overview',guestScore:'9.2/10',color:'var(--purple)',
+    status:'⚠️ Lift 2 Out of Service · HVAC Floor 1-6 Warning · 3 Rooms Affected',statusBg:'rgba(245,158,11,0.15)',statusColor:'var(--amber2)',
+    desc:'Full overview of all hotel zones. Click any zone on the left sidebar to see its complete dedicated data, assets, work orders, engineer and status. Guest impact score is 9.2/10.',
+    kpis:[{l:'Guest Impact Score',v:'9.2/10',c:'var(--gold2)',i:'⭐',s:'▲ 0.3 improvement this month'},{l:'Rooms Out of Service',v:'3',c:'var(--purple2)',i:'🛏️',s:'Of 240 rooms · 98.8% available'},{l:'Open Work Orders',v:'7',c:'var(--red2)',i:'📋',s:'3 guest-impacted — prioritised'},{l:'Avg Response Time',v:'14 min',c:'var(--green2)',i:'⏱️',s:'▲ Faster than 20 min target'}],
+    assets:[{n:'Passenger Lift 2',z:'Lifts',s:'offline',u:'FAULT — Door sensor · Out of service'},{n:'HVAC Floors 1-6',z:'HVAC',s:'warning',u:'Warning — warm air complaint'},{n:'Room 814 A/C',z:'Floor 8',s:'offline',u:'Unit failed — guest in room'},{n:'Sauna Unit',z:'Leisure',s:'warning',u:'Service overdue 2 weeks'},{n:'Pool Chemical Dosing',z:'Pool',s:'warning',u:'Low alkalinity 90ppm'},{n:'Passenger Lift 1',z:'Lifts',s:'online',u:'Operational ✅'}],
+    wos:[{p:'critical',t:'WO-H031 · Lift 2 — Door Sensor Fault · Out of Service · Guest Complaints',m:'Kai Yamamoto · Lifts Zone · Raised 08:22 · LOLER safety stop',s:'open'},{p:'high',t:'WO-H030 · HVAC Floors 1-6 — Warm Air Complaint · Rooms 101-106',m:'Marcus Adeyemi · In Progress · 3 guest complaints logged',s:'progress'},{p:'high',t:'WO-H029 · Room 814 — Air Conditioning Failure · Guest in Room',m:'Sophie Laurent · Floor 8 · Raised by Reception 07:45',s:'progress'},{p:'low',t:'WO-H026 · Room 512 — 3x Lightbulb Replacement',m:'Sophie Laurent · Completed 13 May ✓',s:'done'}],
+    ppm:'92%',zone_assets:'142',breakdowns:4,guest_score:'9.2',eng:null},
+
+  rooms:{label:'Rooms & Floors',tag:'🛏️ Rooms & Floors',guestScore:'9.0/10',color:'#c084fc',
+    status:'⚠️ 3 Rooms with Active Faults — Guest Impact',statusBg:'rgba(245,158,11,0.15)',statusColor:'var(--amber2)',
+    desc:'3 rooms currently have active maintenance faults — Room 814 (A/C failure, guest in room), Room 203 (low shower pressure), and Room 507 (reported light fault). All 3 have engineers assigned. 237 of 240 rooms fully operational.',
+    kpis:[{l:'Rooms Available',v:'237/240',c:'var(--green2)',i:'🛏️',s:'98.8% availability · 3 faults active'},{l:'Guest-Impacted Faults',v:'3',c:'var(--amber2)',i:'⭐',s:'Room 814, 203, 507 — assigned'},{l:'Avg Fix Time',v:'42 min',c:'var(--blue2)',i:'⏱️',s:'▲ 8 min faster than last month'},{l:'Cost Per Room MTD',v:'£42',c:'var(--green2)',i:'💷',s:'▼ Below £50 budget target'}],
+    assets:[{n:'Room 814 — A/C Unit',z:'Floor 8',s:'offline',u:'Compressor fault — Sophie attending'},{n:'Room 203 — Shower',z:'Floor 2',s:'warning',u:'Low pressure — Marcus attending'},{n:'Room 507 — Lighting',z:'Floor 5',s:'warning',u:'3x bulbs reported faulty'},{n:'Rooms 101-240 General',z:'All Floors',s:'online',u:'237 rooms fully operational'}],
+    wos:[{p:'high',t:'WO-H029 · Room 814 — Air Conditioning Unit Failed · Guest in Room',m:'Sophie Laurent · Floor 8 · Compressor fault confirmed · Parts ordered',s:'progress'},{p:'medium',t:'WO-H027 · Room 203 — Low Shower Pressure · Guest Request',m:'Marcus Adeyemi · Floor 2 · Pipe blockage suspected',s:'progress'},{p:'low',t:'WO-H032 · Room 507 — Lightbulb Replacement x3',m:'Sophie Laurent · Due today · Scheduled',s:'scheduled'}],
+    ppm:'94%',zone_assets:'240 rooms',breakdowns:3,guest_score:'9.0',
+    eng:{id:'sophie',n:'Sophie Laurent',r:'Multi-skilled Engineer',a:'SL',c:'linear-gradient(135deg,#0891b2,#06b6d4)',certs:['18th Edition','Plumbing L3','HVAC Assist'],status:'🟢 On Shift — Floor 8'}},
+
+  hvac:{label:'HVAC & Climate Control',tag:'🌡️ HVAC & Climate',guestScore:'8.8/10',color:'#f43f5e',
+    status:'🚨 HVAC Floors 1-6 — Warm Air Complaint · 3 Guest Complaints',statusBg:'rgba(239,68,68,0.15)',statusColor:'var(--red2)',
+    desc:'URGENT: The HVAC system serving Floors 1-6 is producing warm supply air — guest complaints have been received from Rooms 101, 102, 103 and 104. Marcus Adeyemi is investigating. Floors 7-12 are unaffected and operating normally.',
+    kpis:[{l:'HVAC F1-6 Status',v:'⚠️ WARN',c:'var(--red2)',i:'🌡️',s:'Warm air supply · 3 complaints'},{l:'HVAC F7-12 Status',v:'✅ Normal',c:'var(--green2)',i:'🌡️',s:'Operating within 19-21°C'},{l:'Avg Room Temp F1-6',v:'26°C',c:'var(--red2)',i:'🔥',s:'▼ Should be 19-21°C'},{l:'Filter Change Due',v:'Today',c:'var(--amber2)',i:'📅',s:'Filters last changed 10 Apr'}],
+    assets:[{n:'HVAC Unit — Floors 1-6',z:'Plant Room',s:'warning',u:'Warm air supply 26°C (target 20°C)'},{n:'HVAC Unit — Floors 7-12',z:'Plant Room',s:'online',u:'Supply air 20°C ✅ Normal'},{n:'Room HVAC Units F1-6 (120)',z:'Floors 1-6',s:'warning',u:'Warm air from main unit cascading'},{n:'BMS Control Panel',z:'Plant Room',s:'online',u:'Monitoring active'}],
+    wos:[{p:'high',t:'WO-H030 · HVAC System Floors 1-6 — Warm Supply Air Investigation',m:'Marcus Adeyemi · In progress · Filter blockage suspected · Checking AHU',s:'progress'},{p:'medium',t:'WO-H033 · HVAC Filter Replacement — Floors 1-6 AHU',m:'Marcus Adeyemi · Due 15 May 2026 · Filters on order',s:'scheduled'}],
+    ppm:'81%',zone_assets:'4 AHUs + 240 room units',breakdowns:1,guest_score:'8.8',
+    eng:{id:'marcus',n:'Marcus Adeyemi',r:'HVAC Engineer',a:'MA',c:'linear-gradient(135deg,#7c3aed,#a855f7)',certs:['F-Gas Category 1','HVAC Level 3','BMS Systems'],status:'🟢 On Shift — AHU Investigation'}},
+
+  pool:{label:'Pool & Leisure',tag:'🏊 Pool & Leisure',guestScore:'9.4/10',color:'#0891b2',
+    status:'⚠️ Low Alkalinity · Sauna Service Overdue',statusBg:'rgba(245,158,11,0.15)',statusColor:'var(--amber2)',
+    desc:'The swimming pool is operating normally with good water quality — minor low alkalinity needs attention today. The sauna annual service is 2 weeks overdue and must be completed today. Ingrid Svensson is attending the sauna this morning.',
+    kpis:[{l:'Pool Status',v:'Open ✅',c:'var(--green2)',i:'🏊',s:'pH 7.4 · Chlorine 1.8 ppm OK'},{l:'Alkalinity',v:'90 ppm',c:'var(--amber2)',i:'⚗️',s:'▼ Low — target 100-150 ppm'},{l:'Sauna Service',v:'OVERDUE',c:'var(--red2)',i:'🧖',s:'2 weeks overdue · Ingrid attending'},{l:'Guest Leisure Score',v:'9.4/10',c:'var(--gold2)',i:'⭐',s:'▲ Highest scoring area'}],
+    assets:[{n:'Swimming Pool — Main',z:'Leisure',s:'online',u:'Open · Water quality good'},{n:'Spa / Hot Tub',z:'Leisure',s:'online',u:'38°C · pH 7.2 ✅ Normal'},{n:'Pool Pump System',z:'Plant',s:'online',u:'Flow 120m³/hr · Normal'},{n:'Sauna Unit',z:'Leisure',s:'warning',u:'SERVICE OVERDUE — booking today'}],
+    wos:[{p:'high',t:'WO-H028 · Sauna Unit — Annual Service (2 Weeks Overdue)',m:'Ingrid Svensson · Leisure Suite · Attending this morning',s:'progress'},{p:'low',t:'WO-H034 · Pool — Alkalinity Adjustment (Add Sodium Bicarbonate)',m:'Kai Yamamoto · Due today · Pool tech attending',s:'scheduled'},{p:'low',t:'WO-H025 · Pool Pump — Monthly Inspection & Chemical Check',m:'Kai Yamamoto · Completed 07 May ✓',s:'done'}],
+    ppm:'87%',zone_assets:'8',breakdowns:1,guest_score:'9.4',
+    eng:{id:'ingrid',n:'Ingrid Svensson',r:'Compliance Engineer',a:'IS',c:'linear-gradient(135deg,#d97706,#f59e0b)',certs:['Gas Safe Registered','Pool Plant Operator','Fire Safety'],status:'🟢 On Shift — Leisure Suite'}},
+
+  lifts:{label:'Lifts & Escalators',tag:'🛗 Lifts & Escalators',guestScore:'8.6/10',color:'#be185d',
+    status:'🚨 Lift 2 OUT OF SERVICE — LOLER Safety Stop',statusBg:'rgba(239,68,68,0.15)',statusColor:'var(--red2)',
+    desc:'URGENT: Passenger Lift 2 is out of service due to a door sensor failure — the LOLER safety interlock has triggered an automatic stop. Lift is locked out of service. Kai Yamamoto is on site with the lift contractor. Lift 1 is operational and managing full hotel traffic. LOLER statutory inspection is due 19 May.',
+    kpis:[{l:'Lift 1',v:'✅ Running',c:'var(--green2)',i:'🛗',s:'Handling full hotel capacity'},{l:'Lift 2',v:'🚨 Fault',c:'var(--red2)',i:'🛗',s:'Door sensor failure · LOLER stop'},{l:'LOLER Due',v:'19 May',c:'var(--amber2)',i:'📋',s:'Statutory inspection · 5 days'},{l:'Guest Score — Lifts',v:'8.6/10',c:'var(--amber2)',i:'⭐',s:'▼ Impacted by Lift 2 outage'}],
+    assets:[{n:'Passenger Lift 1 (12 floors)',z:'Main Lobby',s:'online',u:'Operational · Handling all traffic'},{n:'Passenger Lift 2 (12 floors)',z:'Main Lobby',s:'offline',u:'FAULT — Door sensor failed · LOLER stopped'},{n:'Service Lift — Goods',z:'Back of House',s:'online',u:'Operational ✅'},{n:'Escalator — Lobby to Mezzanine',z:'Lobby',s:'online',u:'Operational ✅'}],
+    wos:[{p:'critical',t:'WO-H031 · Passenger Lift 2 — Door Sensor Failure · LOLER Safety Stop',m:'Kai Yamamoto + Lift Contractor · Raised 08:22 · Sensor replacement ordered',s:'open'},{p:'medium',t:'WO-H035 · Lifts 1 & 2 — LOLER Statutory Inspection',m:'External LOLER Inspector · Due 19 May 2026 · Booked',s:'scheduled'}],
+    ppm:'98%',zone_assets:'4',breakdowns:1,guest_score:'8.6',
+    eng:{id:'kai',n:'Kai Yamamoto',r:'Electrical Engineer',a:'KY',c:'linear-gradient(135deg,#be185d,#f43f5e)',certs:['LOLER Lift Inspection','18th Edition','Pool Systems'],status:'🟢 On Site — Lift 2 Repair'}},
+
+  plant:{label:'Plant & Back of House',tag:'⚡ Plant & Back of House',guestScore:'9.6/10',color:'#f59e0b',
+    status:'✅ All Plant Assets Operational',statusBg:'rgba(16,185,129,0.15)',statusColor:'var(--green2)',
+    desc:'Plant Room is fully operational with all critical systems running normally. Emergency generator was tested successfully on 1 May. Boiler system is operating efficiently. Legionella risk assessment is current. All fire systems are compliant. Gas Safe engineer visit due 26 May.',
+    kpis:[{l:'Plant Uptime',v:'100%',c:'var(--green2)',i:'⚡',s:'▲ All assets fully operational'},{l:'Generator Status',v:'Tested ✅',c:'var(--green2)',i:'🔋',s:'Monthly test passed 1 May 2026'},{l:'Boiler Efficiency',v:'94%',c:'var(--green2)',i:'🔥',s:'▲ Above 90% target'},{l:'Plant Cost MTD',v:'£4.2k',c:'var(--gold2)',i:'💷',s:'Month to date — on budget'}],
+    assets:[{n:'Emergency Generator',z:'Plant Room',s:'online',u:'Tested 1 May · Next test 1 Jun'},{n:'Boiler System — DHW',z:'Plant Room',s:'online',u:'Gas Safe current · 94% efficiency'},{n:'Fire Suppression System',z:'All Floors',s:'online',u:'BS 9990 compliant · Next: 30 Jul'},{n:'Building Management System',z:'Plant Room',s:'online',u:'All 142 assets monitored live'}],
+    wos:[{p:'low',t:'WO-H036 · Boiler System — Quarterly Inspection (Gas Safe Registered)',m:'Gas Safe External Engineer · Due 26 May 2026',s:'scheduled'},{p:'low',t:'WO-H037 · Emergency Generator — Monthly Load Test',m:'Ingrid Svensson · Due 1 Jun 2026',s:'scheduled'},{p:'low',t:'WO-H023 · Fire Suppression — Quarterly Inspection',m:'Ingrid Svensson · Completed 30 Apr 2026 ✓',s:'done'}],
+    ppm:'96%',zone_assets:'18',breakdowns:0,guest_score:'9.6',
+    eng:{id:'ingrid',n:'Ingrid Svensson',r:'Compliance Engineer',a:'IS',c:'linear-gradient(135deg,#d97706,#f59e0b)',certs:['Gas Safe Registered','Fire Safety Inspector','Legionella Risk'],status:'🟢 On Shift'}}
+};
+
+function showDept(id,clickedEl){
+  document.querySelectorAll('.sidebar-section:first-child .sidebar-item').forEach(el=>el.classList.remove('active'));
+  if(clickedEl)clickedEl.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-dashboard').classList.add('active');
+  document.querySelectorAll('.nav-tab')[0].classList.add('active');
+  const d=depts[id];
+  document.getElementById('industry-tag').textContent=d.tag;
+  document.getElementById('guest-score').textContent='⭐ Guest Impact Score: '+d.guestScore;
+  const statusMap={open:'OPEN',progress:'IN PROGRESS',done:'COMPLETE',scheduled:'SCHEDULED',urgent:'STATUTORY'};
+  const ppmColor=parseInt(d.ppm)>=93?'var(--green2)':parseInt(d.ppm)>=83?'var(--amber2)':'var(--red2)';
+  const kpiHTML=d.kpis.map(k=>`<div class="kpi-card" style="--kpi-color:${k.c}"><div class="kpi-icon">${k.i}</div><div class="kpi-label">${k.l}</div><div class="kpi-value" style="color:${k.c}">${k.v}</div><div class="kpi-sub">${k.s}</div></div>`).join('');
+  const assetHTML=d.assets.map(a=>`<div class="asset-item"><div class="asset-name">${a.n}</div><div class="asset-status"><div class="status-dot ${a.s}"></div><span style="color:${a.s==='online'?'var(--green2)':a.s==='warning'?'var(--amber2)':'var(--red2)'}">${a.s.charAt(0).toUpperCase()+a.s.slice(1)}</span></div><div class="asset-uptime">${a.z} · ${a.u}</div></div>`).join('');
+  const woHTML=d.wos.map(w=>`<div class="wo-item"><div class="wo-priority ${w.p}"></div><div class="wo-info"><div class="wo-title">${w.t}</div><div class="wo-meta">${w.m}</div></div><span class="wo-status ${w.s}">${statusMap[w.s]||w.s.toUpperCase()}</span></div>`).join('');
+  const engHTML=d.eng?`<div class="card"><div class="card-header"><div class="card-title">👷 Assigned Engineer — ${d.label}</div></div><div class="eng-card-sm" onclick="showEngineerModal('${d.eng.id}')"><div class="eng-avatar" style="background:${d.eng.c}">${d.eng.a}</div><div class="eng-info"><div class="eng-name">${d.eng.n}</div><div class="eng-role">${d.eng.r} · ${d.eng.status}</div><div class="eng-certs">${d.eng.certs.map(c=>`<span class="eng-cert">${c}</span>`).join('')}</div></div><div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0"><button class="btn-demo" style="font-size:11px;padding:5px 12px" onclick="event.stopPropagation();showToast('📞 Calling ${d.eng.n}...')">📞 Call</button><button class="btn-demo" style="font-size:11px;padding:5px 12px;background:var(--surface2);color:var(--grey2)" onclick="event.stopPropagation();showTab('messaging',document.querySelectorAll('.nav-tab')[6])">💬 Message</button></div></div></div>`:'';
+
+  // Lift status for lifts zone
+  const liftHTML=id==='lifts'?`<div class="card"><div class="card-header"><div class="card-title">🛗 Live Lift Status</div></div><div class="lift-grid"><div class="lift-card lift-ok" onclick="showToast('Lift 1: Running normally. Currently on Floor 7.')"><div class="lift-icon">🟢</div><div class="lift-id">Lift 1</div><div class="lift-status" style="color:var(--green2)">Operational</div><div class="lift-meta">Floor 7 · Full capacity</div></div><div class="lift-card lift-fault" onclick="showToast('Lift 2: FAULT — Door sensor failed. LOLER safety stop triggered. WO-H031 raised.')"><div class="lift-icon">🔴</div><div class="lift-id">Lift 2</div><div class="lift-status" style="color:var(--red2)">OUT OF SERVICE</div><div class="lift-meta">Door sensor failure</div></div><div class="lift-card lift-ok" onclick="showToast('Service Lift: Operational. Currently on Ground Floor.')"><div class="lift-icon">🟢</div><div class="lift-id">Service Lift</div><div class="lift-status" style="color:var(--green2)">Operational</div><div class="lift-meta">Ground floor · BOH</div></div><div class="lift-card lift-ok" onclick="showToast('Escalator: Running normally. Lobby to Mezzanine.')"><div class="lift-icon">🟢</div><div class="lift-id">Escalator</div><div class="lift-status" style="color:var(--green2)">Running</div><div class="lift-meta">Lobby → Mezzanine</div></div></div></div>`:'';
+
+  document.getElementById('dept-content').innerHTML=`
+    <div class="dept-hero" style="--dept-color:${d.color}">
+      <div class="dept-hero-top">
+        <div><div class="dept-title">${d.label}</div><div class="dept-subtitle">${d.desc}</div></div>
+        <div class="dept-status" style="background:${d.statusBg};color:${d.statusColor}">${d.status}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px">
+        <div style="text-align:center;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border)"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:${ppmColor}">${d.ppm}</div><div style="font-size:10px;color:var(--grey2)">PPM Compliance</div></div>
+        <div style="text-align:center;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border)"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--purple2)">${d.zone_assets}</div><div style="font-size:10px;color:var(--grey2)">Assets in Zone</div></div>
+        <div style="text-align:center;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border)"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:${d.breakdowns===0?'var(--green2)':d.breakdowns>2?'var(--red2)':'var(--amber2)'}">${d.breakdowns}</div><div style="font-size:10px;color:var(--grey2)">Active Faults</div></div>
+        <div style="text-align:center;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border)"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--gold2)">${d.guest_score}/10</div><div style="font-size:10px;color:var(--grey2)">Guest Impact Score</div></div>
+      </div>
+    </div>
+    <div class="kpi-grid">${kpiHTML}</div>
+    <div class="grid-2">
+      <div class="card"><div class="card-header"><div class="card-title">🏗️ ${id==='all'?'Key Asset Status':''+d.label+' — Equipment'}</div><div class="card-action" onclick="showTab('assets',document.querySelectorAll('.nav-tab')[1])">View All →</div></div><div class="asset-grid">${assetHTML}</div></div>
+      <div class="card"><div class="card-header"><div class="card-title">📋 ${id==='all'?'Active Work Orders':''+d.label+' — Work Orders'}</div><div class="card-action" onclick="showTab('workorders',document.querySelectorAll('.nav-tab')[2])">View All →</div></div><div class="wo-list">${woHTML}</div></div>
+    </div>
+    ${liftHTML}
+    ${engHTML}
+  `;
+}
+
+// INIT + HEATMAP
+showDept('all', document.getElementById('sb-all'));
+setTimeout(()=>{
+  const zones=['Rooms','HVAC','Pool/Spa','Lifts','Plant'];
+  const vals=[2,1,3,1,2,1,2,1,3,4,3,5,2,3,4,2,1,1,1,2,1,1,1,2,1,2,1,1,2,1,1,2,1,1,1,1,1,1,1,1];
+  let cells='';
+  vals.forEach((v,i)=>{
+    const zone=zones[i%5];
+    const week=Math.floor(i/5)+1;
+    const intensity=Math.min(v/6,1);
+    const bg=v>=4?`rgba(244,63,94,${0.12+intensity*0.8})`:v>=2?`rgba(168,85,247,${0.15+intensity*0.5})`:`rgba(168,85,247,${0.08+intensity*0.25})`;
+    cells+=`<div style="aspect-ratio:1;border-radius:5px;cursor:pointer;transition:all 0.2s;background:${bg}" title="${zone}: ${v} fault${v!==1?'s':''} — Week ${week}" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform=''" onclick="showToast('${zone}: ${v} fault${v!==1?'s':''} in week ${week}')"></div>`;
+  });
+  const labels=zones.map(z=>`<div style="font-size:9px;color:var(--grey2);text-align:center;margin-top:5px;font-family:'DM Mono',monospace">${z}</div>`).join('');
+  const legend=['Low','Medium','High'].map((l,i)=>`<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--grey2)"><span style="width:10px;height:10px;background:rgba(168,85,247,${0.2+i*0.35});border-radius:2px;display:inline-block"></span>${l}</span>`).join('');
+  const heatmapHTML=`<div class="card"><div class="card-header"><div class="card-title">🔥 Fault Frequency Heatmap — Last 8 Weeks by Zone</div><div style="display:flex;gap:10px;align-items:center">${legend}</div></div><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:6px">${cells}</div><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px">${labels}</div><div style="margin-top:10px;font-size:11px;color:var(--grey2)">Each row = 1 week · HVAC showing highest fault frequency · Hover for details</div></div>`;
+  const el=document.createElement('div');el.innerHTML=heatmapHTML;
+  document.getElementById('dept-content').appendChild(el.firstChild);
+},50);
+
+const _origHotelShowDept=showDept;
+showDept=function(id,el){
+  _origHotelShowDept(id,el);
+  if(id==='all'){
+    setTimeout(()=>{
+      const zones=['Rooms','HVAC','Pool/Spa','Lifts','Plant'];
+      const vals=[2,1,3,1,2,1,2,1,3,4,3,5,2,3,4,2,1,1,1,2,1,1,1,2,1,2,1,1,2,1,1,2,1,1,1,1,1,1,1,1];
+      let cells='';
+      vals.forEach((v,i)=>{
+        const zone=zones[i%5];const week=Math.floor(i/5)+1;
+        const intensity=Math.min(v/6,1);
+        const bg=v>=4?`rgba(244,63,94,${0.12+intensity*0.8})`:v>=2?`rgba(168,85,247,${0.15+intensity*0.5})`:`rgba(168,85,247,${0.08+intensity*0.25})`;
+        cells+=`<div style="aspect-ratio:1;border-radius:5px;cursor:pointer;transition:all 0.2s;background:${bg}" title="${zone}: ${v} fault${v!==1?'s':''}" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform=''" onclick="showToast('${zone}: ${v} fault${v!==1?'s':''} week ${week}')"></div>`;
+      });
+      const labels=zones.map(z=>`<div style="font-size:9px;color:var(--grey2);text-align:center;margin-top:5px;font-family:'DM Mono',monospace">${z}</div>`).join('');
+      const legend=['Low','Medium','High'].map((l,i)=>`<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--grey2)"><span style="width:10px;height:10px;background:rgba(168,85,247,${0.2+i*0.35});border-radius:2px;display:inline-block"></span>${l}</span>`).join('');
+      const heatmapHTML=`<div class="card"><div class="card-header"><div class="card-title">🔥 Fault Frequency Heatmap — Last 8 Weeks by Zone</div><div style="display:flex;gap:10px;align-items:center">${legend}</div></div><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:6px">${cells}</div><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:5px">${labels}</div><div style="margin-top:10px;font-size:11px;color:var(--grey2)">HVAC showing highest activity · Hover any cell for details</div></div>`;
+      const extra=document.createElement('div');extra.innerHTML=heatmapHTML;
+      document.getElementById('dept-content').appendChild(extra.firstChild);
+    },50);
+  }
+};
+
+// ROOM MAP
+function buildRoomMap(){
+  const container=document.getElementById('room-map-container');
+  if(!container||container.innerHTML!=='')return;
+  const floors=[{f:12,rooms:['1201','1202','1203','1204','1205','1206','1207','1208','1209','1210','1211','1212']},{f:11,rooms:['1101','1102','1103','1104','1105','1106','1107','1108','1109','1110','1111','1112']},{f:10,rooms:['1001','1002','1003','1004','1005','1006','1007','1008','1009','1010','1011','1012']},{f:9,rooms:['901','902','903','904','905','906','907','908','909','910']},{f:8,rooms:['801','802','803','804','805','806','807','808','809','810','811','812','813','814']},{f:7,rooms:['701','702','703','704','705','706','707','708','709','710','711','712']},{f:6,rooms:['601','602','603','604','605','606','607','608','609','610']},{f:5,rooms:['501','502','503','504','505','506','507','508','509','510','511','512']},{f:4,rooms:['401','402','403','404','405','406','407','408','409','410']},{f:3,rooms:['301','302','303','304','305','306','307','308','309','310','311','312']},{f:2,rooms:['201','202','203','204','205','206','207','208','209','210','211','212']},{f:1,rooms:['101','102','103','104','105','106','107','108','109','110']}];
+  const faults={'814':'fault','203':'fault','507':'fault','101':'cleaning','102':'cleaning','103':'cleaning','104':'cleaning'};
+  let html='';
+  floors.forEach(floor=>{
+    html+=`<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:700;color:var(--grey2);margin-bottom:6px;font-family:'Syne',sans-serif">Floor ${floor.f}</div><div class="floor-grid">`;
+    floor.rooms.forEach(r=>{
+      const st=faults[r]||'ok';
+      const icon=st==='fault'?'🔴':st==='cleaning'?'🔵':st==='oos'?'🟡':'🟢';
+      const color=st==='fault'?'var(--red2)':st==='cleaning'?'var(--blue2)':st==='oos'?'var(--amber2)':'var(--green2)';
+      html+=`<div class="floor-room ${st}" onclick="showToast('Room ${r}: ${st==='fault'?'Active fault — engineer assigned':st==='cleaning'?'Cleaning in progress':'All good'}')" title="Room ${r}"><div class="room-status-icon">${icon}</div><div class="room-num" style="color:${color}">${r}</div></div>`;
+    });
+    html+='</div></div>';
+  });
+  container.innerHTML=html;
+}
+
+// MESSAGING
+const hthreads={
+  marcus:{n:'Marcus Adeyemi',r:'HVAC Engineer · Floors & Rooms · 🟢 On Shift',av:'MA',msgs:[{t:'received',nm:'Marcus Adeyemi',m:'Floor 1-6 HVAC showing warm supply air. Rooms 101-106 all reporting hot rooms.',tm:'09:12'},{t:'sent',m:'Check the AHU filter pressure differential first — sounds like blockage.',tm:'09:15'},{t:'received',nm:'Marcus Adeyemi',m:'Filter completely blocked — pressure drop 40Pa over limit. Need replacement filters urgently.',tm:'09:22'},{t:'sent',m:'Order filters now — check if we have spares in stores first. This needs fixing before checkout time.',tm:'09:25'},{t:'received',nm:'Marcus Adeyemi',m:'No spares in store. Ordering now — 2hr delivery. I can manually boost the supply fan as a temporary fix.',tm:'09:28'}]},
+  kai:{n:'Kai Yamamoto',r:'Electrical Engineer · Lifts & Pool · 🟢 On Shift',av:'KY',msgs:[{t:'received',nm:'Kai Yamamoto',m:'Lift 2 door sensor has failed. LOLER interlock triggered — lift locked out automatically.',tm:'08:24'},{t:'sent',m:'Good that the safety system worked. Call the lift contractor immediately for emergency callout.',tm:'08:26'},{t:'received',nm:'Kai Yamamoto',m:'Contractor en route — 45 minutes. Guests being directed to Lift 1. Door sensor part is on the van.',tm:'08:35'},{t:'sent',m:'Good. Update reception so they can advise guests. Keep Lift 1 priority for mobility needs.',tm:'08:37'}]},
+  reception:{n:'Reception Desk',r:'Hotel Reception · Guest Services',av:'RD',msgs:[{t:'received',nm:'Reception',m:'Good morning — we have complaints from Rooms 101, 102, 103 and 104. Guests saying rooms are too warm.',tm:'09:05'},{t:'sent',m:'Thank you — we are aware and our HVAC engineer is investigating now. We will update you within 30 minutes.',tm:'09:08'},{t:'received',nm:'Reception',m:'Also Room 814 called to say their air conditioning has stopped working.',tm:'09:10'},{t:'sent',m:'Work order raised for Room 814. Sophie Laurent will attend within 20 minutes. Please inform the guest.',tm:'09:12'},{t:'received',nm:'Reception',m:'Thank you — guest in 814 has been informed and appreciates the quick response.',tm:'09:14'}]},
+  team:{n:'🏨 All Engineers',r:'Group · 4 engineers on shift',av:'👷',msgs:[{t:'received',nm:'Ingrid Svensson',m:'Shift handover: Lift 2 fault active, HVAC F1-6 warm air, Room 814 AC down. 3 open WOs.',tm:'07:00'},{t:'sent',m:'Morning team. Kai on Lift 2, Marcus on HVAC, Sophie on Room 814. Ingrid — proceed with sauna service. Guest first always.',tm:'07:05'},{t:'received',nm:'Sophie Laurent',m:'Understood. Heading to Room 814 now — will update system when done.',tm:'07:08'}]},
+  sophie:{n:'Sophie Laurent',r:'Multi-skilled Engineer · All Floors · 🟢 On Shift',av:'SL',msgs:[{t:'received',nm:'Sophie Laurent',m:'Room 512 lights replaced — 3 bulbs done. Room is now fully operational.',tm:'10:30'},{t:'sent',m:'Close WO-H026 and update the asset record.',tm:'10:33'},{t:'received',nm:'Sophie Laurent',m:'Done. Heading to Room 814 for the AC job now.',tm:'10:35'}]}
+};
+let curHThread='marcus';
+function loadHThread(id,el){curHThread=id;const t=hthreads[id];document.getElementById('hmsg-av').textContent=t.av;document.getElementById('hmsg-nm').textContent=t.n;document.getElementById('hmsg-rl').textContent=t.r;const body=document.getElementById('hmsg-body');body.innerHTML='';t.msgs.forEach(m=>{const div=document.createElement('div');div.className='msg-bubble '+m.t;div.innerHTML=(m.t==='received'?`<div class="msg-bn">${m.nm}</div>`:'')+m.m+`<div class="msg-bt">${m.tm}</div>`;body.appendChild(div);});body.scrollTop=body.scrollHeight;document.querySelectorAll('.msg-thread').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');}
+function sendHMsg(){const inp=document.getElementById('hmsg-in');const text=inp.value.trim();if(!text)return;const body=document.getElementById('hmsg-body');const div=document.createElement('div');div.className='msg-bubble sent';const now=new Date();div.innerHTML=text+`<div class="msg-bt">${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}</div>`;body.appendChild(div);body.scrollTop=body.scrollHeight;inp.value='';setTimeout(()=>{const r=document.createElement('div');r.className='msg-bubble received';r.innerHTML=`<div class="msg-bn">${hthreads[curHThread].n.split(' ')[0]}</div>Understood — actioning now and will update the system.<div class="msg-bt">${now.getHours().toString().padStart(2,'0')}:${(now.getMinutes()+1).toString().padStart(2,'0')}</div>`;body.appendChild(r);body.scrollTop=body.scrollHeight;},1500);}
+function handleHKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendHMsg();}}
+
+// ENGINEER PROFILES
+const hengineers={
+  marcus:{n:'Marcus Adeyemi',r:'HVAC Engineer',d:'Rooms & HVAC',c:'linear-gradient(135deg,#7c3aed,#a855f7)',av:'MA',wos:26,open:2,rating:'4.8',comp:'93%',bio:'Marcus specialises in hotel HVAC systems, room climate control and building management systems. He ensures every guest room maintains perfect temperature — critical to guest satisfaction and reviews.',certs:['F-Gas Category 1','HVAC Level 3','BMS Control Systems','18th Edition','First Aid'],recent:['WO-H030 · HVAC Floor 1-6 Investigation · In Progress','WO-H027 · Room 203 Shower Pressure · In Progress','WO-H021 · HVAC Annual Service · Complete']},
+  sophie:{n:'Sophie Laurent',r:'Multi-skilled Engineer',d:'All Floors & Rooms',c:'linear-gradient(135deg,#0891b2,#06b6d4)',av:'SL',wos:33,open:1,rating:'4.9',comp:'91%',bio:'Sophie is the hotel\'s most versatile engineer — covering rooms, plumbing, electrical and general maintenance across all 12 floors. She has an exceptional record for resolving guest-impacted faults rapidly.',certs:['18th Edition Wiring Regs','Plumbing Level 3','HVAC Assist','Working at Height','First Aid'],recent:['WO-H029 · Room 814 AC Failure · In Progress','WO-H026 · Room 512 Lights · Complete','WO-H022 · Room 311 Shower · Complete']},
+  kai:{n:'Kai Yamamoto',r:'Electrical Engineer',d:'Lifts & Pool',c:'linear-gradient(135deg,#be185d,#f43f5e)',av:'KY',wos:21,open:1,rating:'4.9',comp:'96%',bio:'Kai is the specialist engineer for lift systems and pool electrics. LOLER qualified with experience across passenger lifts, goods lifts and escalators. Also manages all pool electrical and mechanical systems.',certs:['LOLER Lift Inspection','18th Edition','Pool Plant Operator','Confined Space','PAT Testing'],recent:['WO-H031 · Lift 2 Door Sensor · In Progress','WO-H025 · Pool Pump Service · Complete','WO-H019 · Lift 1 Annual Service · Complete']},
+  ingrid:{n:'Ingrid Svensson',r:'Compliance Engineer',d:'Plant & Leisure',c:'linear-gradient(135deg,#d97706,#f59e0b)',av:'IS',wos:29,open:1,rating:'5.0',comp:'98%',bio:'Ingrid manages all statutory compliance for the hotel — gas safety, fire systems, Legionella and leisure equipment. Her 5.0 star rating and perfect compliance record make her invaluable to hotel operations and inspections.',certs:['Gas Safe Registered','Fire Safety Inspector','Legionella Risk Assessor','Pool Plant Operator','IOSH'],recent:['WO-H028 · Sauna Annual Service · In Progress','WO-H023 · Fire Suppression Inspection · Complete','WO-H017 · Boiler Annual Service · Complete']}
+};
+function showEngineerModal(id){const e=hengineers[id];document.getElementById('eng-content').innerHTML=`<div style="display:flex;gap:14px;align-items:center;margin-bottom:18px"><div style="width:60px;height:60px;border-radius:14px;background:${e.c};display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;font-family:'Syne',sans-serif;flex-shrink:0">${e.av}</div><div><div style="font-size:19px;font-weight:800;font-family:'Syne',sans-serif;color:var(--text)">${e.n}</div><div style="font-size:12px;color:var(--grey2);margin-top:2px">${e.r} · ${e.d}</div><div style="font-size:11px;color:var(--green2);margin-top:4px;font-weight:600">🟢 On Shift</div></div></div><p style="font-size:13px;color:var(--grey2);line-height:1.7;margin-bottom:16px;padding:12px;background:var(--surface2);border-radius:10px">${e.bio}</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px"><div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--text)">${e.wos}</div><div style="font-size:10px;color:var(--grey2)">WOs This Month</div></div><div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--gold2)">${e.rating}★</div><div style="font-size:10px;color:var(--grey2)">Rating</div></div><div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">${e.comp}</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div><div style="margin-bottom:14px"><div style="font-size:11px;font-weight:700;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;font-family:'Syne',sans-serif">Certifications</div><div style="display:flex;flex-wrap:wrap;gap:6px">${e.certs.map(c=>`<span style="font-size:11px;background:rgba(168,85,247,0.1);color:var(--purple2);border:1px solid var(--border);padding:3px 10px;border-radius:100px">${c}</span>`).join('')}</div></div><div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;font-family:'Syne',sans-serif">Recent Work Orders</div>${e.recent.map(r=>`<div style="font-size:12px;color:var(--grey2);padding:7px 10px;background:var(--surface2);border-radius:8px;margin-bottom:5px">${r}</div>`).join('')}</div><div style="display:flex;gap:8px;padding-top:14px;border-top:1px solid var(--border)"><button class="btn-primary" style="flex:1" onclick="showToast('📞 Calling ${e.n.split(' ')[0]}...');document.getElementById('eng-modal').classList.remove('open')">📞 Call</button><button class="btn-primary" style="flex:1;background:var(--surface2);color:var(--grey2)" onclick="showTab('messaging',document.querySelectorAll('.nav-tab')[6]);document.getElementById('eng-modal').classList.remove('open')">💬 Message</button></div>`;document.getElementById('eng-modal').classList.add('open');}
+
+// MODALS
+function openModal(){document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function submitWO(){closeModal();showToast('✅ Work Order raised!');}
+function openSettings(){document.getElementById('settings-modal').classList.add('open')}
+function closeSettings(){document.getElementById('settings-modal').classList.remove('open')}
+function saveSettings(){closeSettings();showToast('✅ Settings saved!');}
+function showToast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+
+// EXPORT PDF
+function exportReport(){showToast('📥 Generating PDF...');setTimeout(()=>{const{jsPDF}=window.jspdf;const doc=new jsPDF();const pageW=doc.internal.pageSize.getWidth();const today=new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});doc.setFillColor(10,8,15);doc.rect(0,0,pageW,42,'F');doc.setFillColor(168,85,247);doc.roundedRect(14,8,6,26,1,1,'F');doc.setTextColor(255,255,255);doc.setFontSize(16);doc.setFont('helvetica','bold');doc.text('NACHI ENG LTD',26,20);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(192,132,252);doc.text('NachiCMMS — Hotel & Hospitality Report',26,28);doc.setTextColor(122,150,184);doc.text('Generated: '+today,26,35);doc.setDrawColor(168,85,247);doc.setLineWidth(1.5);doc.line(0,42,pageW,42);let y=54;const rows=[['Guest Impact Score','9.2 / 10',[245,158,11]],['Rooms Out of Service','3 of 240',[248,113,113]],['Overall Uptime','97.4%',[52,211,153]],['Avg Response Time','14 minutes',[52,211,153]],['Monthly Cost Per Room','£42',[52,211,153]],['Open Work Orders','7',[96,165,250]],['PPM Compliance','92%',[192,132,252]],['LOLER Lifts Status','Lift 2 FAULT — under repair',[248,113,113]]];doc.setFillColor(22,15,40);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(192,132,252);doc.text('HOTEL KPI SUMMARY',18,y);y+=10;rows.forEach(([l,v,rgb])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,pageW-18,y,{align:'right'});doc.setDrawColor(40,30,60);doc.setLineWidth(0.3);doc.line(18,y+2,pageW-18,y+2);y+=9;});y+=6;doc.setFillColor(22,15,40);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(192,132,252);doc.text('PPM COMPLIANCE BY ZONE',18,y);y+=10;[['Rooms & Floors','94%',[52,211,153],94],['HVAC & Climate','81%',[245,158,11],81],['Pool & Leisure','87%',[245,158,11],87],['Lifts & Escalators','98%',[52,211,153],98],['Plant & Back of House','96%',[52,211,153],96]].forEach(([l,v,rgb,pct])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,55,y);doc.setFillColor(30,20,50);doc.roundedRect(90,y-4,80,5,1,1,'F');doc.setFillColor(rgb[0],rgb[1],rgb[2]);doc.roundedRect(90,y-4,pct*0.8,5,1,1,'F');y+=9;});const fY=doc.internal.pageSize.getHeight()-18;doc.setFillColor(10,8,15);doc.rect(0,fY-6,pageW,24,'F');doc.setDrawColor(168,85,247);doc.setLineWidth(1);doc.line(0,fY-6,pageW,fY-6);doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(122,150,184);doc.text('NachiCMMS  |  Nachi Eng Ltd  |  nachieng.co.uk  |  info@nachieng.co.uk  |  +44 (0) 7480286830',pageW/2,fY+2,{align:'center'});doc.setTextColor(168,85,247);doc.text('Registered in England & Wales | Company No. 16567818',pageW/2,fY+8,{align:'center'});doc.save('NachiCMMS-Hotel-Report-'+new Date().toISOString().slice(0,10)+'.pdf');showToast('PDF downloaded!');},500);}
+
+// Init messaging
+setTimeout(()=>loadHThread('marcus',document.querySelector('.msg-thread')),100);
+
+// Live pool fluctuation
+setInterval(()=>{
+  const ph=document.getElementById('pool-ph');if(ph)ph.textContent=(7.4+Math.random()*0.04-0.02).toFixed(1);
+  const cl=document.getElementById('pool-cl');if(cl)cl.textContent=(1.8+Math.random()*0.1-0.05).toFixed(1);
+  const alk=document.getElementById('pool-alk');if(alk)alk.textContent=Math.round(90+Math.random()*2-1);
+},5000);
+</script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NachiCMMS — Factory & Manufacturing Demo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+[data-theme="dark"]{--bg:#05080f;--bg2:#080d18;--surface:#0d1626;--surface2:#111e35;--surface3:#162340;--white:#f0f6ff;--grey:#4a6080;--grey2:#7a96b8;--text:#f0f6ff;--border:rgba(59,130,246,0.12);--border2:rgba(59,130,246,0.22);--header-bg:rgba(5,8,15,0.97);--card-bg:#0d1626;--sidebar-bg:#080d18;--input-bg:#111e35;--shadow:rgba(0,0,0,0.5)}
+[data-theme="light"]{--bg:#f0f4ff;--bg2:#e8eef9;--surface:#ffffff;--surface2:#f0f4ff;--surface3:#e4ecf8;--white:#1a2540;--grey:#94a3b8;--grey2:#64748b;--text:#1a2540;--border:rgba(26,86,219,0.15);--border2:rgba(26,86,219,0.3);--header-bg:rgba(255,255,255,0.97);--card-bg:#ffffff;--sidebar-bg:#e8eef9;--input-bg:#f0f4ff;--shadow:rgba(0,0,0,0.1)}
+:root{--blue:#1a56db;--blue2:#3b82f6;--blue3:#60a5fa;--green:#10b981;--green2:#34d399;--amber:#f59e0b;--amber2:#fbbf24;--red:#ef4444;--red2:#f87171;--purple:#8b5cf6;--cyan:#06b6d4;--glow:rgba(26,86,219,0.25)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background 0.3s,color 0.3s}
+h1,h2,h3,h4{font-family:'Syne',sans-serif}
+.header{position:sticky;top:0;z-index:200;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.header-left{display:flex;align-items:center;gap:14px}
+.header-logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);text-decoration:none}
+.logo-badge{background:var(--blue);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:0.06em}
+.industry-tag{background:rgba(26,86,219,0.12);border:1px solid rgba(26,86,219,0.25);color:var(--blue3);font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px;letter-spacing:0.05em}
+.header-right{display:flex;align-items:center;gap:10px}
+.live-badge{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--green2);background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);padding:5px 12px;border-radius:100px}
+.live-dot{width:6px;height:6px;background:var(--green2);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.5)}}
+.btn-demo{background:var(--blue);color:white;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s}
+.btn-demo:hover{background:var(--blue2);transform:translateY(-1px)}
+.theme-switcher{display:flex;align-items:center;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:3px;gap:2px}
+.theme-btn{border:none;background:none;color:var(--grey2);padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap}
+.theme-btn:hover{color:var(--text)}
+.theme-btn.active{background:var(--blue);color:white}
+.nav-tabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:4px;overflow-x:auto}
+.nav-tab{padding:11px 16px;font-size:13px;font-weight:500;color:var(--grey2);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--blue3);border-bottom-color:var(--blue3)}
+.main{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 97px)}
+.sidebar{background:var(--sidebar-bg);border-right:1px solid var(--border);padding:16px 0;overflow-y:auto}
+.sidebar-section{margin-bottom:20px}
+.sidebar-label{font-size:10px;font-weight:700;color:var(--grey);letter-spacing:0.1em;text-transform:uppercase;padding:0 16px 8px;font-family:'Syne',sans-serif}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;transition:all 0.15s;border-left:3px solid transparent;font-size:13px;color:var(--grey2);margin-right:8px;border-radius:0 8px 8px 0}
+.sidebar-item:hover{background:var(--surface);color:var(--text)}
+.sidebar-item.active{background:rgba(26,86,219,0.1);color:var(--blue3);border-left-color:var(--blue3);font-weight:600}
+.sidebar-icon{font-size:15px;width:18px;text-align:center}
+.sidebar-badge{margin-left:auto;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:100px;flex-shrink:0}
+.content{padding:20px;overflow-y:auto;max-height:calc(100vh - 97px);background:var(--bg)}
+.page{display:none}
+.page.active{display:block;animation:fadeIn 0.4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.dept-hero{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:20px;padding:24px 28px;margin-bottom:20px;position:relative;overflow:hidden}
+.dept-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--dept-color,var(--blue))}
+.dept-hero-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:16px}
+.dept-title{font-size:22px;font-weight:800;font-family:'Syne',sans-serif;color:var(--text)}
+.dept-subtitle{font-size:13px;color:var(--grey2);margin-top:4px;max-width:500px;line-height:1.5}
+.dept-status{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;padding:6px 14px;border-radius:100px;flex-shrink:0}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.kpi-card{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:18px;position:relative;overflow:hidden;transition:all 0.3s}
+.kpi-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kpi-color,var(--blue))}
+.kpi-label{font-size:10px;color:var(--grey2);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:7px}
+.kpi-value{font-size:28px;font-weight:800;font-family:'Syne',sans-serif;line-height:1;margin-bottom:5px}
+.kpi-sub{font-size:11px;color:var(--grey2)}
+.kpi-icon{position:absolute;top:14px;right:14px;font-size:20px;opacity:0.3}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:700;letter-spacing:0.03em;font-family:'Syne',sans-serif;color:var(--text)}
+.card-action{font-size:11px;color:var(--blue3);cursor:pointer;font-weight:500}
+.asset-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.asset-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all 0.2s}
+.asset-item:hover{border-color:var(--border2)}
+.asset-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px}
+.asset-status{font-size:10px;font-weight:600;text-transform:uppercase;display:flex;align-items:center;gap:5px}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.status-dot.online{background:var(--green2);box-shadow:0 0 6px var(--green2)}
+.status-dot.warning{background:var(--amber2)}
+.status-dot.offline{background:var(--red2);box-shadow:0 0 6px var(--red2)}
+.asset-uptime{font-size:11px;color:var(--grey2);margin-top:4px}
+.wo-list{display:flex;flex-direction:column;gap:7px}
+.wo-item{display:flex;align-items:center;gap:11px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;cursor:pointer;transition:all 0.2s}
+.wo-item:hover{border-color:var(--border2);transform:translateX(3px)}
+.wo-priority{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.wo-priority.critical{background:var(--red2);box-shadow:0 0 8px var(--red2)}
+.wo-priority.high{background:var(--amber2)}
+.wo-priority.medium{background:var(--blue3)}
+.wo-priority.low{background:var(--green2)}
+.wo-info{flex:1;min-width:0}
+.wo-title{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wo-meta{font-size:10px;color:var(--grey2)}
+.wo-status{font-size:10px;font-weight:700;letter-spacing:0.05em;padding:3px 8px;border-radius:100px;flex-shrink:0}
+.wo-status.open{background:rgba(239,68,68,0.15);color:var(--red2)}
+.wo-status.progress{background:rgba(245,158,11,0.15);color:var(--amber2)}
+.wo-status.done{background:rgba(16,185,129,0.15);color:var(--green2)}
+.wo-status.scheduled{background:rgba(59,130,246,0.15);color:var(--blue3)}
+.progress-item{margin-bottom:10px}
+.progress-header{display:flex;justify-content:space-between;margin-bottom:4px;font-size:11px;color:var(--text)}
+.progress-bar{background:var(--surface2);border-radius:100px;height:6px;overflow:hidden}
+.progress-fill{height:100%;border-radius:100px;transition:width 1.2s ease}
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-size:10px;font-weight:700;color:var(--grey2);text-transform:uppercase;letter-spacing:0.06em;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);font-family:'Syne',sans-serif}
+.data-table td{padding:9px 10px;font-size:12px;border-bottom:1px solid var(--border);color:var(--text)}
+.data-table tr:hover td{background:var(--surface2)}
+.eng-card-sm{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;gap:14px;align-items:center;cursor:pointer;transition:all 0.25s}
+.eng-card-sm:hover{border-color:var(--border2);transform:translateY(-2px)}
+.eng-avatar{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;font-family:'Syne',sans-serif;flex-shrink:0}
+.eng-info{flex:1}
+.eng-name{font-size:14px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text)}
+.eng-role{font-size:11px;color:var(--grey2)}
+.eng-certs{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.eng-cert{font-size:10px;background:rgba(26,86,219,0.1);color:var(--blue3);border:1px solid var(--border);padding:2px 8px;border-radius:100px}
+.sch-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px}
+.sch-header{font-size:10px;color:var(--grey2);text-align:center;font-weight:600;padding-bottom:4px}
+.sch-cell{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;transition:all 0.15s}
+.sch-cell.empty{background:transparent;pointer-events:none}
+.sch-cell.normal{background:var(--surface2);color:var(--grey2)}
+.sch-cell.has-pm{background:rgba(26,86,219,0.2);color:var(--blue3);border:1px solid rgba(26,86,219,0.3)}
+.sch-cell.urgent{background:rgba(239,68,68,0.15);color:var(--red2);border:1px solid rgba(239,68,68,0.3)}
+.sch-cell.today{background:var(--blue);color:white;font-weight:700}
+.msg-layout{display:grid;grid-template-columns:200px 1fr;height:420px;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.msg-sidebar{border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--sidebar-bg)}
+.msg-sidebar-header{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text);display:flex;justify-content:space-between;align-items:center}
+.msg-new-btn{background:var(--blue);color:white;border:none;width:22px;height:22px;border-radius:6px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
+.msg-thread{padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--border);transition:all 0.15s}
+.msg-thread:hover,.msg-thread.active{background:rgba(26,86,219,0.08)}
+.msg-thread-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.msg-thread-preview{font-size:10px;color:var(--grey2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.msg-thread-time{font-size:9px;color:var(--grey);margin-top:2px}
+.msg-unread{width:7px;height:7px;background:var(--blue2);border-radius:50%;float:right;margin-top:4px}
+.msg-main{display:flex;flex-direction:column}
+.msg-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--card-bg)}
+.msg-avatar{width:30px;height:30px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'Syne',sans-serif;flex-shrink:0}
+.msg-header-info h4{font-size:13px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text)}
+.msg-header-info p{font-size:10px;color:var(--grey2)}
+.msg-header-actions{margin-left:auto;display:flex;gap:6px}
+.msg-action-btn{background:var(--surface2);border:1px solid var(--border);color:var(--grey2);padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;transition:all 0.2s}
+.msg-action-btn:hover{color:var(--text)}
+.msg-body{flex:1;padding:14px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.msg-bubble{max-width:75%;padding:9px 12px;border-radius:10px;font-size:12px;line-height:1.6;color:var(--text)}
+.msg-bubble.received{background:var(--surface2);border:1px solid var(--border);align-self:flex-start;border-radius:4px 10px 10px 10px}
+.msg-bubble.sent{background:var(--blue);color:white;align-self:flex-end;border-radius:10px 4px 10px 10px}
+.msg-bubble-name{font-size:10px;color:var(--grey2);margin-bottom:3px;font-weight:600}
+.msg-bubble-time{font-size:10px;color:rgba(255,255,255,0.5);margin-top:3px;text-align:right}
+.msg-bubble.received .msg-bubble-time{color:var(--grey);text-align:left}
+.msg-input-wrap{padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;background:var(--card-bg)}
+.msg-input{flex:1;background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:8px 12px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;resize:none;outline:none;min-height:36px;max-height:80px}
+.msg-input:focus{border-color:var(--border2)}
+.msg-send-btn{background:var(--blue);color:white;border:none;width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
+.msg-send-btn:hover{background:var(--blue2);transform:scale(1.05)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;width:500px;max-width:95vw;max-height:90vh;overflow-y:auto;position:relative}
+.modal-title{font-size:17px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:18px;color:var(--text)}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--surface2);border:1px solid var(--border);color:var(--grey2);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:15px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:10px;font-weight:700;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px;display:block;font-family:'Syne',sans-serif}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--border2)}
+.form-select option{background:var(--surface2);color:var(--text)}
+.form-textarea{resize:vertical;min-height:70px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-primary{background:var(--blue);color:white;border:none;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s;width:100%}
+.btn-primary:hover{background:var(--blue2);transform:translateY(-1px)}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--green2);border-radius:12px;padding:12px 18px;z-index:999;display:none;align-items:center;gap:10px;font-size:13px;color:var(--text);box-shadow:0 8px 32px var(--shadow)}
+.toast.show{display:flex;animation:slide-up 0.3s ease}
+@keyframes slide-up{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.cta-banner{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:16px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;position:relative;overflow:hidden}
+.cta-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),var(--blue3),transparent)}
+.cta-text h3{font-size:14px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:3px;color:var(--text)}
+.cta-text p{font-size:12px;color:var(--grey2)}
+.cta-buttons{display:flex;gap:8px;flex-shrink:0}
+.btn-cta{padding:8px 18px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;border:none}
+.btn-cta.primary{background:var(--blue);color:white}
+.btn-cta.primary:hover{background:var(--blue2)}
+.btn-cta.ghost{background:transparent;color:var(--grey2);border:1px solid var(--border)}
+.btn-cta.ghost:hover{color:var(--text)}
+@media(max-width:1100px){.main{grid-template-columns:1fr}.sidebar{display:none}.kpi-grid{grid-template-columns:1fr 1fr}}
+
+.heatmap-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}
+.hm-cell{aspect-ratio:1;border-radius:5px;cursor:pointer;transition:all 0.2s;position:relative}
+.hm-cell:hover{transform:scale(1.2);z-index:10;box-shadow:0 4px 12px rgba(0,0,0,0.4)}
+.hm-label{font-size:9px;color:var(--grey2);text-align:center;margin-top:5px;font-family:'DM Mono',monospace}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo">⚙️ NachiCMMS <span class="logo-badge">DEMO</span></div>
+    <span class="industry-tag" id="industry-tag">🏭 All Lines — Factory</span>
+  </div>
+  <div class="header-right">
+    <div class="theme-switcher">
+      <button class="theme-btn active" onclick="setTheme('dark',this)">🌙 Dark</button>
+      <button class="theme-btn" onclick="setTheme('light',this)">☀️ Light</button>
+      <button class="theme-btn" onclick="setTheme('system',this)">💻 System</button>
+    </div>
+    <div class="live-badge"><div class="live-dot"></div> Live</div>
+    <button class="btn-demo" onclick="openModal()">+ Raise Work Order</button>
+  </div>
+</div>
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showTab('dashboard',this)">📊 Dashboard</button>
+  <button class="nav-tab" onclick="showTab('assets',this)">🏗️ All Assets</button>
+  <button class="nav-tab" onclick="showTab('workorders',this)">📋 All Work Orders</button>
+  <button class="nav-tab" onclick="showTab('schedule',this)">📅 PPM Schedule</button>
+  <button class="nav-tab" onclick="showTab('reports',this)">📈 KPI Reports</button>
+  <button class="nav-tab" onclick="showTab('messaging',this)">💬 Messaging <span style="background:var(--red);color:white;font-size:9px;padding:2px 5px;border-radius:100px;margin-left:4px">3</span></button>
+  <button class="nav-tab" onclick="showTab('inventory',this)">📦 Inventory</button>
+  <button class="nav-tab" onclick="showTab('safety',this)">🦺 Safety</button>
+  <button class="nav-tab" onclick="showTab('engineers',this)">👷 Engineers</button>
+</div>
+<div class="main">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Production Lines</div>
+      <div class="sidebar-item active" id="sb-all" onclick="showDept('all',this)"><span class="sidebar-icon">🏭</span> All Lines Overview <span class="sidebar-badge" style="background:var(--green)">4</span></div>
+      <div class="sidebar-item" id="sb-A" onclick="showDept('A',this)"><span class="sidebar-icon">🔵</span> Line A — Automotive <span class="sidebar-badge" style="background:var(--red)">!</span></div>
+      <div class="sidebar-item" id="sb-B" onclick="showDept('B',this)"><span class="sidebar-icon">🟡</span> Line B — Assembly <span class="sidebar-badge" style="background:var(--amber)">!</span></div>
+      <div class="sidebar-item" id="sb-C" onclick="showDept('C',this)"><span class="sidebar-icon">🟢</span> Line C — Packaging <span class="sidebar-badge" style="background:var(--green)">●</span></div>
+      <div class="sidebar-item" id="sb-D" onclick="showDept('D',this)"><span class="sidebar-icon">🔄</span> Line D — Welding <span class="sidebar-badge" style="background:var(--purple)">↻</span></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Engineers On Shift</div>
+      <div class="sidebar-item" onclick="showEngineerModal('james')"><span class="sidebar-icon">👷</span> James Mitchell</div>
+      <div class="sidebar-item" onclick="showEngineerModal('priya')"><span class="sidebar-icon">👷</span> Priya Sharma</div>
+      <div class="sidebar-item" onclick="showEngineerModal('tom')"><span class="sidebar-icon">👷</span> Tom Davies</div>
+      <div class="sidebar-item" onclick="showEngineerModal('amara')"><span class="sidebar-icon">👷</span> Amara Osei</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Quick Actions</div>
+      <div class="sidebar-item" onclick="openModal()"><span class="sidebar-icon">➕</span> Raise Work Order</div>
+      <div class="sidebar-item" onclick="showTab('messaging',document.querySelectorAll('.nav-tab')[5])"><span class="sidebar-icon">💬</span> Messages <span class="sidebar-badge" style="background:var(--red)">3</span></div>
+      <div class="sidebar-item" onclick="exportReport()"><span class="sidebar-icon">📥</span> Export PDF Report</div>
+      <div class="sidebar-item" onclick="openSettings()"><span class="sidebar-icon">⚙️</span> Settings</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="page active" id="tab-dashboard">
+      <div class="cta-banner">
+        <div class="cta-text"><h3>🚀 NachiCMMS — Factory Edition · Click any Production Line on the left for its full data</h3><p>Built by Nachi Eng Ltd for manufacturing operations across the UK.</p></div>
+        <div class="cta-buttons"><a href="https://nachieng.co.uk" target="_blank" class="btn-cta primary">Book Free Demo →</a><a href="https://nachieng.co.uk" target="_blank" class="btn-cta ghost">Learn More</a></div>
+      </div>
+      <div id="dept-content"></div>
+    </div>
+    <div class="page" id="tab-assets">
+      <div class="card"><div class="card-header"><div class="card-title">🏗️ Full Asset Register — 47 Assets</div><button class="btn-demo" style="font-size:12px;padding:6px 14px" onclick="showToast('Asset added!')">+ Add Asset</button></div>
+      <table class="data-table"><tr><th>Asset ID</th><th>Name</th><th>Line</th><th>Status</th><th>Last Service</th><th>Next PM</th><th>Condition</th></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">AST-001</td><td>CNC Machine 01</td><td>Line A</td><td><span class="wo-status done">ONLINE</span></td><td>12 May 2026</td><td>12 Jun 2026</td><td style="color:var(--green2)">Excellent</td></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">AST-002</td><td>Hydraulic Press B2</td><td>Line B</td><td><span class="wo-status progress">WARNING</span></td><td>02 Apr 2026</td><td>OVERDUE</td><td style="color:var(--amber2)">Fair</td></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">AST-003</td><td>Compressor Unit A</td><td>Line A</td><td><span class="wo-status open">OFFLINE</span></td><td>15 Mar 2026</td><td>OVERDUE</td><td style="color:var(--red2)">Poor</td></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">AST-004</td><td>Conveyor Belt A</td><td>Line A</td><td><span class="wo-status done">ONLINE</span></td><td>28 Apr 2026</td><td>28 May 2026</td><td style="color:var(--green2)">Good</td></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">AST-005</td><td>Assembly Robot AR1</td><td>Line B</td><td><span class="wo-status done">ONLINE</span></td><td>05 May 2026</td><td>05 Jun 2026</td><td style="color:var(--green2)">Good</td></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">AST-006</td><td>Paint Booth PB1</td><td>Line C</td><td><span class="wo-status done">ONLINE</span></td><td>20 Apr 2026</td><td>20 Jun 2026</td><td style="color:var(--green2)">Good</td></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">AST-007</td><td>Packaging Machine PM1</td><td>Line C</td><td><span class="wo-status done">ONLINE</span></td><td>10 May 2026</td><td>10 Jul 2026</td><td style="color:var(--green2)">Good</td></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">AST-008</td><td>Welding Robot WR1</td><td>Line D</td><td><span class="wo-status done">ONLINE</span></td><td>08 May 2026</td><td>08 Jun 2026</td><td style="color:var(--green2)">Good</td></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">AST-009</td><td>MIG Welder Station 2</td><td>Line D</td><td><span class="wo-status scheduled">SERVICING</span></td><td>01 May 2026</td><td>01 Jun 2026</td><td style="color:var(--blue3)">Servicing</td></tr>
+      </table></div>
+    </div>
+    <div class="page" id="tab-workorders">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h2 style="font-size:18px;font-weight:800">All Work Orders</h2><button class="btn-demo" onclick="openModal()">+ Raise Work Order</button></div>
+      <div class="wo-list" id="wo-all-list">
+        <div class="wo-item"><div class="wo-priority critical"></div><div class="wo-info"><div class="wo-title">WO-2847 · Compressor Unit A — Emergency Repair</div><div class="wo-meta">James Mitchell · Line A · Raised: Today 08:14</div></div><span class="wo-status open">OPEN</span></div>
+        <div class="wo-item"><div class="wo-priority high"></div><div class="wo-info"><div class="wo-title">WO-2846 · Hydraulic Press B2 — Oil Leak</div><div class="wo-meta">Priya Sharma · Line B · Today 07:30</div></div><span class="wo-status progress">IN PROGRESS</span></div>
+        <div class="wo-item"><div class="wo-priority medium"></div><div class="wo-info"><div class="wo-title">WO-2845 · CNC Machine 01 — Monthly Service</div><div class="wo-meta">Tom Davies · Line A · Due: 15 May</div></div><span class="wo-status scheduled">SCHEDULED</span></div>
+        <div class="wo-item"><div class="wo-priority medium"></div><div class="wo-info"><div class="wo-title">WO-2844 · Assembly Robot AR1 — Calibration</div><div class="wo-meta">Priya Sharma · Line B · Due: 16 May</div></div><span class="wo-status scheduled">SCHEDULED</span></div>
+        <div class="wo-item"><div class="wo-priority low"></div><div class="wo-info"><div class="wo-title">WO-2843 · Paint Booth PB1 — Fan Belt</div><div class="wo-meta">Amara Osei · Line C · Completed 13 May</div></div><span class="wo-status done">COMPLETE</span></div>
+        <div class="wo-item"><div class="wo-priority low"></div><div class="wo-info"><div class="wo-title">WO-2841 · Welding Robot WR1 — Annual Calibration</div><div class="wo-meta">Tom Davies · Line D · Completed 12 May</div></div><span class="wo-status done">COMPLETE</span></div>
+      </div>
+    </div>
+    <div class="page" id="tab-schedule">
+      <div class="card"><div class="card-header"><div class="card-title">📅 PPM Planner — May 2026</div></div>
+      <div class="sch-grid"><div class="sch-header">Mon</div><div class="sch-header">Tue</div><div class="sch-header">Wed</div><div class="sch-header">Thu</div><div class="sch-header">Fri</div><div class="sch-header">Sat</div><div class="sch-header">Sun</div><div class="sch-cell empty"></div><div class="sch-cell empty"></div><div class="sch-cell empty"></div><div class="sch-cell normal">1</div><div class="sch-cell has-pm">2</div><div class="sch-cell normal">3</div><div class="sch-cell normal">4</div><div class="sch-cell has-pm">5</div><div class="sch-cell normal">6</div><div class="sch-cell normal">7</div><div class="sch-cell urgent">8</div><div class="sch-cell normal">9</div><div class="sch-cell normal">10</div><div class="sch-cell normal">11</div><div class="sch-cell has-pm">12</div><div class="sch-cell normal">13</div><div class="sch-cell today">14</div><div class="sch-cell has-pm">15</div><div class="sch-cell normal">16</div><div class="sch-cell normal">17</div><div class="sch-cell normal">18</div><div class="sch-cell has-pm">19</div><div class="sch-cell normal">20</div><div class="sch-cell normal">21</div><div class="sch-cell urgent">22</div><div class="sch-cell normal">23</div><div class="sch-cell normal">24</div><div class="sch-cell normal">25</div><div class="sch-cell has-pm">26</div><div class="sch-cell normal">27</div><div class="sch-cell normal">28</div><div class="sch-cell has-pm">29</div><div class="sch-cell normal">30</div><div class="sch-cell normal">31</div></div>
+      <div class="wo-list"><div class="wo-item"><div class="wo-priority critical"></div><div class="wo-info"><div class="wo-title">Compressor Unit A — Service OVERDUE</div><div class="wo-meta">Line A · Was due 8 May</div></div><span class="wo-status open">OVERDUE</span></div><div class="wo-item"><div class="wo-priority medium"></div><div class="wo-info"><div class="wo-title">CNC Machine 01 — Monthly Service</div><div class="wo-meta">Line A · Due 15 May · Tom Davies</div></div><span class="wo-status scheduled">SCHEDULED</span></div><div class="wo-item"><div class="wo-priority medium"></div><div class="wo-info"><div class="wo-title">Assembly Robot AR1 — Quarterly Calibration</div><div class="wo-meta">Line B · Due 16 May · Priya Sharma</div></div><span class="wo-status scheduled">SCHEDULED</span></div></div></div>
+    </div>
+    <div class="page" id="tab-reports">
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kpi-color:var(--green2)"><div class="kpi-icon">⬆️</div><div class="kpi-label">OEE Score</div><div class="kpi-value" style="color:var(--green2)">84%</div><div class="kpi-sub">▲ 6% vs Q1</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--blue3)"><div class="kpi-icon">💷</div><div class="kpi-label">Maint. Cost</div><div class="kpi-value" style="color:var(--blue3)">£18.2k</div><div class="kpi-sub">▼ £3k saved this month</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--amber2)"><div class="kpi-icon">📋</div><div class="kpi-label">WOs Completed</div><div class="kpi-value" style="color:var(--amber2)">127</div><div class="kpi-sub">▲ 14% this month</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--purple)"><div class="kpi-icon">✅</div><div class="kpi-label">PPM Compliance</div><div class="kpi-value" style="color:var(--purple)">91%</div><div class="kpi-sub">▲ 8% vs last quarter</div></div>
+      </div>
+      <div class="card"><div class="card-header"><div class="card-title">📈 PPM Compliance by Line</div><button class="btn-demo" style="font-size:12px;padding:6px 14px" onclick="exportReport()">📥 Export PDF</button></div>
+      <div class="progress-item"><div class="progress-header"><span>Line A — Automotive</span><span style="color:var(--green2)">96%</span></div><div class="progress-bar"><div class="progress-fill" style="width:96%;background:var(--green2)"></div></div></div>
+      <div class="progress-item"><div class="progress-header"><span>Line B — Assembly</span><span style="color:var(--amber2)">78%</span></div><div class="progress-bar"><div class="progress-fill" style="width:78%;background:var(--amber2)"></div></div></div>
+      <div class="progress-item"><div class="progress-header"><span>Line C — Packaging</span><span style="color:var(--green2)">91%</span></div><div class="progress-bar"><div class="progress-fill" style="width:91%;background:var(--green2)"></div></div></div>
+      <div class="progress-item"><div class="progress-header"><span>Line D — Welding</span><span style="color:var(--red2)">64%</span></div><div class="progress-bar"><div class="progress-fill" style="width:64%;background:var(--red2)"></div></div></div></div>
+    </div>
+    <div class="page" id="tab-messaging">
+      <div style="margin-bottom:14px"><h2 style="font-size:18px;font-weight:800">💬 Team Messaging</h2></div>
+      <div class="msg-layout">
+        <div class="msg-sidebar">
+          <div class="msg-sidebar-header">Messages <button class="msg-new-btn" onclick="showToast('New chat started!')">+</button></div>
+          <div class="msg-thread active" onclick="loadThread('james',this)"><div style="display:flex;justify-content:space-between"><div class="msg-thread-name">James Mitchell</div><div class="msg-unread"></div></div><div class="msg-thread-preview">Compressor down, need parts</div><div class="msg-thread-time">2 min ago</div></div>
+          <div class="msg-thread" onclick="loadThread('priya',this)"><div style="display:flex;justify-content:space-between"><div class="msg-thread-name">Priya Sharma</div><div class="msg-unread"></div></div><div class="msg-thread-preview">Oil leak on hydraulic press confirmed</div><div class="msg-thread-time">18 min ago</div></div>
+          <div class="msg-thread" onclick="loadThread('tom',this)"><div class="msg-thread-name">Tom Davies</div><div class="msg-thread-preview">CNC monthly service completed ✓</div><div class="msg-thread-time">1 hr ago</div></div>
+          <div class="msg-thread" onclick="loadThread('team',this)"><div style="display:flex;justify-content:space-between"><div class="msg-thread-name">🏭 All Engineers</div><div class="msg-unread"></div></div><div class="msg-thread-preview">Shift handover notes 14 May</div><div class="msg-thread-time">2 hr ago</div></div>
+        </div>
+        <div class="msg-main">
+          <div class="msg-header"><div class="msg-avatar" id="msg-av">JM</div><div class="msg-header-info"><h4 id="msg-nm">James Mitchell</h4><p id="msg-rl">Electrical Engineer · Line A · 🟢 On Shift</p></div><div class="msg-header-actions"><button class="msg-action-btn" onclick="showToast('📞 Calling...')">📞 Call</button><button class="msg-action-btn" onclick="openModal()">+ WO</button></div></div>
+          <div class="msg-body" id="msg-body"></div>
+          <div class="msg-input-wrap"><textarea class="msg-input" id="msg-in" placeholder="Type a message..." rows="1" onkeydown="handleKey(event)"></textarea><button class="msg-send-btn" onclick="sendMsg()">➤</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="page" id="tab-inventory">
+      <div class="card"><div class="card-header"><div class="card-title">📦 Spare Parts Inventory</div><button class="btn-demo" style="font-size:12px;padding:6px 14px" onclick="showToast('Purchase order raised!')">+ Order Parts</button></div>
+      <table class="data-table"><tr><th>Part No.</th><th>Description</th><th>For Line</th><th>Stock</th><th>Min</th><th>Status</th></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">PRT-0441</td><td>Bearing 6205-2RS</td><td>Line A</td><td style="color:var(--red2)">0</td><td>4</td><td><span class="wo-status open">OUT OF STOCK</span></td></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">PRT-0892</td><td>Hydraulic Seal Kit</td><td>Line B</td><td style="color:var(--amber2)">2</td><td>3</td><td><span class="wo-status progress">LOW STOCK</span></td></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">PRT-1203</td><td>V-Belt A-48</td><td>Line C</td><td style="color:var(--green2)">8</td><td>2</td><td><span class="wo-status done">IN STOCK</span></td></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">PRT-0334</td><td>Overload Relay 16A</td><td>All Lines</td><td style="color:var(--green2)">5</td><td>2</td><td><span class="wo-status done">IN STOCK</span></td></tr>
+      <tr><td style="color:var(--blue3);font-family:'DM Mono',monospace">PRT-0771</td><td>Welding Wire Spool</td><td>Line D</td><td style="color:var(--amber2)">1</td><td>4</td><td><span class="wo-status progress">LOW STOCK</span></td></tr>
+      </table></div>
+    </div>
+    <div class="page" id="tab-safety">
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kpi-color:var(--green2)"><div class="kpi-icon">🦺</div><div class="kpi-label">Days Without Incident</div><div class="kpi-value" style="color:var(--green2)">147</div><div class="kpi-sub">All time record 🎉</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--blue3)"><div class="kpi-icon">📋</div><div class="kpi-label">RAMS Completed</div><div class="kpi-value" style="color:var(--blue3)">24</div><div class="kpi-sub">This month</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--amber2)"><div class="kpi-icon">⚠️</div><div class="kpi-label">Near Misses</div><div class="kpi-value" style="color:var(--amber2)">2</div><div class="kpi-sub">Under investigation</div></div>
+        <div class="kpi-card" style="--kpi-color:var(--green2)"><div class="kpi-icon">✅</div><div class="kpi-label">COSHH Compliant</div><div class="kpi-value" style="color:var(--green2)">100%</div><div class="kpi-sub">All chemicals logged</div></div>
+      </div>
+      <div class="card"><div class="card-header"><div class="card-title">🦺 Safety Incident Log</div><button class="btn-demo" style="font-size:12px;padding:6px 14px" onclick="showToast('Safety log created!')">+ Log Incident</button></div>
+      <table class="data-table"><tr><th>Date</th><th>Type</th><th>Line</th><th>Description</th><th>Status</th></tr>
+      <tr><td>08 Apr 2026</td><td style="color:var(--amber2)">Near Miss</td><td>Line B</td><td>Hydraulic oil spill near walkway</td><td><span class="wo-status progress">INVESTIGATING</span></td></tr>
+      <tr><td>22 Mar 2026</td><td style="color:var(--amber2)">Near Miss</td><td>Plant Room</td><td>Loose cable tray bracket</td><td><span class="wo-status done">CLOSED</span></td></tr>
+      </table></div>
+    </div>
+    <div class="page" id="tab-engineers">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px"><h2 style="font-size:18px;font-weight:800">👷 Engineer Profiles</h2><button class="btn-demo" onclick="showToast('Invite sent!')">+ Add Engineer</button></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="eng-card-sm" onclick="showEngineerModal('james')"><div class="eng-avatar" style="background:linear-gradient(135deg,#1a56db,#3b82f6)">JM</div><div class="eng-info"><div class="eng-name">James Mitchell</div><div class="eng-role">Electrical Engineer · Line A · 🟢 On Shift</div><div class="eng-certs"><span class="eng-cert">18th Edition</span><span class="eng-cert">HV Approved</span></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">94%</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div>
+        <div class="eng-card-sm" onclick="showEngineerModal('priya')"><div class="eng-avatar" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6)">PS</div><div class="eng-info"><div class="eng-name">Priya Sharma</div><div class="eng-role">Mechanical Engineer · Line B · 🟢 On Shift</div><div class="eng-certs"><span class="eng-cert">HVAC</span><span class="eng-cert">Hydraulics</span></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">97%</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div>
+        <div class="eng-card-sm" onclick="showEngineerModal('tom')"><div class="eng-avatar" style="background:linear-gradient(135deg,#0891b2,#06b6d4)">TD</div><div class="eng-info"><div class="eng-name">Tom Davies</div><div class="eng-role">Multi-skilled · Line A & D · 🟢 On Shift</div><div class="eng-certs"><span class="eng-cert">PLC/SCADA</span><span class="eng-cert">Robotics</span></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">91%</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div>
+        <div class="eng-card-sm" onclick="showEngineerModal('amara')"><div class="eng-avatar" style="background:linear-gradient(135deg,#d97706,#f59e0b)">AO</div><div class="eng-info"><div class="eng-name">Amara Osei</div><div class="eng-role">Maintenance Engineer · Line C · 🟢 On Shift</div><div class="eng-certs"><span class="eng-cert">COSHH</span><span class="eng-cert">Confined Space</span></div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">89%</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modal"><div class="modal"><button class="modal-close" onclick="closeModal()">✕</button><div class="modal-title">➕ Raise New Work Order</div><div class="form-row"><div class="form-group"><label class="form-label">Priority</label><select class="form-select"><option>🔴 Critical</option><option>🟠 High</option><option selected>🟡 Medium</option><option>🟢 Low</option></select></div><div class="form-group"><label class="form-label">Production Line</label><select class="form-select"><option>Line A — Automotive</option><option>Line B — Assembly</option><option>Line C — Packaging</option><option>Line D — Welding</option></select></div></div><div class="form-group"><label class="form-label">Asset</label><select class="form-select"><option>CNC Machine 01</option><option>Compressor Unit A</option><option>Hydraulic Press B2</option><option>Assembly Robot AR1</option><option>Paint Booth PB1</option><option>Welding Robot WR1</option></select></div><div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" placeholder="Describe the fault or task..."></textarea></div><div class="form-row"><div class="form-group"><label class="form-label">Assign To</label><select class="form-select"><option>James Mitchell</option><option>Priya Sharma</option><option>Tom Davies</option><option>Amara Osei</option></select></div><div class="form-group"><label class="form-label">Due Date</label><input class="form-input" type="date" value="2026-05-15"/></div></div><button class="btn-primary" onclick="submitWO()">✅ Submit Work Order</button></div></div>
+<div class="modal-overlay" id="eng-modal"><div class="modal" style="width:540px;max-height:88vh;overflow-y:auto"><button class="modal-close" onclick="document.getElementById('eng-modal').classList.remove('open')">✕</button><div id="eng-content"></div></div></div>
+<div class="modal-overlay" id="settings-modal"><div class="modal" style="width:520px"><button class="modal-close" onclick="closeSettings()">✕</button><div class="modal-title">⚙️ System Settings</div><div class="form-row"><div class="form-group"><label class="form-label">Facility Name</label><input class="form-input" value="Nachi Factory — Site A"/></div><div class="form-group"><label class="form-label">Site Manager</label><input class="form-input" value="Godswill Iweajunwa"/></div></div><div class="form-row"><div class="form-group"><label class="form-label">Contact Email</label><input class="form-input" value="info@nachieng.co.uk"/></div><div class="form-group"><label class="form-label">Target Uptime %</label><input class="form-input" value="98"/></div></div><div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;font-family:'Syne',sans-serif">Notifications</div><div style="display:flex;flex-direction:column;gap:10px"><label style="display:flex;align-items:center;justify-content:space-between;font-size:13px;cursor:pointer;color:var(--text)"><span>Critical work order alerts</span><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--blue)"/></label><label style="display:flex;align-items:center;justify-content:space-between;font-size:13px;cursor:pointer;color:var(--text)"><span>PPM due reminders</span><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--blue)"/></label><label style="display:flex;align-items:center;justify-content:space-between;font-size:13px;cursor:pointer;color:var(--text)"><span>Low stock alerts</span><input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--blue)"/></label></div></div><button class="btn-primary" onclick="saveSettings()">💾 Save Settings</button></div></div>
+<div class="toast" id="toast">✅ <span id="toast-msg"></span></div>
+<script>
+// THEME
+function setTheme(t,btn){document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(t==='system'){const p=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',p);}else{document.documentElement.setAttribute('data-theme',t);}showToast('Theme changed to '+t+'!');}
+
+// TAB NAV
+function showTab(id,tab){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');if(tab)tab.classList.add('active');}
+
+// DEPT DATA
+const depts={
+  all:{label:'All Lines Overview',tag:'🏭 All Lines — Factory',color:'var(--blue)',status:'4 Lines Active',statusBg:'rgba(16,185,129,0.15)',statusColor:'var(--green2)',desc:'Overview of all 4 production lines. Click any individual line on the sidebar for its complete dedicated data.',
+    kpis:[{l:'Overall Uptime',v:'97.3%',c:'var(--green2)',i:'⚡',s:'▲ 2.1% vs last month'},{l:'Open Work Orders',v:'14',c:'var(--blue3)',i:'📋',s:'▼ 3 from yesterday'},{l:'Avg MTTR',v:'2.4h',c:'var(--amber2)',i:'⏱️',s:'▲ 18% faster this week'},{l:'Savings vs Reactive',v:'£42k',c:'var(--purple)',i:'💷',s:'▲ £8k this quarter'}],
+    assets:[{n:'CNC Machine 01',l:'Line A',s:'online',u:'99.1%'},{n:'Hydraulic Press B2',l:'Line B',s:'warning',u:'94.2%'},{n:'Compressor Unit A',l:'Line A',s:'offline',u:'DOWN'},{n:'Assembly Robot AR1',l:'Line B',s:'online',u:'98.4%'},{n:'Paint Booth PB1',l:'Line C',s:'online',u:'96.5%'},{n:'Welding Robot WR1',l:'Line D',s:'online',u:'97.8%'}],
+    wos:[{p:'critical',t:'WO-2847 · Compressor Unit A — Emergency Repair',m:'James Mitchell · Line A · Raised today 08:14',s:'open'},{p:'high',t:'WO-2846 · Hydraulic Press B2 — Oil Leak',m:'Priya Sharma · Line B · Today 07:30',s:'progress'},{p:'medium',t:'WO-2845 · CNC Machine 01 — Monthly Service',m:'Tom Davies · Line A · Due 15 May',s:'scheduled'},{p:'low',t:'WO-2843 · Paint Booth PB1 — Fan Belt',m:'Amara Osei · Line C · Complete',s:'done'}],
+    ppm:'91%',assets_count:47,breakdowns:3,mtbf:'342h avg',eng:null},
+  A:{label:'Line A — Automotive',tag:'🔵 Line A — Automotive',color:'#3b82f6',status:'⚠️ Compressor OFFLINE — Action Required',statusBg:'rgba(239,68,68,0.15)',statusColor:'var(--red2)',desc:'Line A produces automotive components. Currently running at reduced capacity — Compressor Unit A is offline and requires emergency repair. CNC Machine and Conveyor operating normally.',
+    kpis:[{l:'Line A Uptime',v:'93.1%',c:'var(--amber2)',i:'⚡',s:'▼ Below target — compressor offline'},{l:'Open Work Orders',v:'2',c:'var(--red2)',i:'📋',s:'1 critical open, 1 scheduled'},{l:'MTTR Line A',v:'3.1h',c:'var(--amber2)',i:'⏱️',s:'Elevated due to compressor issue'},{l:'Line A Cost MTD',v:'£12.4k',c:'var(--blue3)',i:'💷',s:'Month to date spending'}],
+    assets:[{n:'CNC Machine 01',l:'Line A',s:'online',u:'99.1%'},{n:'Conveyor Belt A',l:'Line A',s:'online',u:'98.4%'},{n:'Compressor Unit A',l:'Line A',s:'offline',u:'DOWN 1h23m'},{n:'Electrical Panel A',l:'Line A',s:'online',u:'100%'}],
+    wos:[{p:'critical',t:'WO-2847 · Compressor Unit A — Emergency Repair · URGENT',m:'James Mitchell · Raised today 08:14 · Parts needed: Bearing 6205-2RS (OUT OF STOCK)',s:'open'},{p:'medium',t:'WO-2845 · CNC Machine 01 — Monthly Preventive Service',m:'Tom Davies · Due: 15 May 2026 · Scheduled',s:'scheduled'}],
+    ppm:'96%',assets_count:4,breakdowns:2,mtbf:'89h (low due to compressor)',
+    eng:{id:'james',n:'James Mitchell',r:'Electrical Engineer',a:'JM',c:'linear-gradient(135deg,#1a56db,#3b82f6)',certs:['18th Edition','HV Approved','PAT Testing'],status:'🟢 On Shift'}},
+  B:{label:'Line B — Assembly',tag:'🟡 Line B — Assembly',color:'#f59e0b',status:'⚠️ Hydraulic Press — Oil Leak',statusBg:'rgba(245,158,11,0.15)',statusColor:'var(--amber2)',desc:'Line B handles assembly operations. The Hydraulic Press B2 has a confirmed oil leak and is operating at reduced pressure. Assembly Robot AR1 and the Conveyor are running normally. PPM compliance requires immediate improvement.',
+    kpis:[{l:'Line B Uptime',v:'96.4%',c:'var(--amber2)',i:'⚡',s:'▼ Hydraulic press on reduced ops'},{l:'Open Work Orders',v:'2',c:'var(--amber2)',i:'📋',s:'1 high priority, 1 scheduled'},{l:'MTTR Line B',v:'2.1h',c:'var(--green2)',i:'⏱️',s:'Within target range'},{l:'Line B Cost MTD',v:'£8.9k',c:'var(--blue3)',i:'💷',s:'Month to date spending'}],
+    assets:[{n:'Hydraulic Press B2',l:'Line B',s:'warning',u:'94.2%'},{n:'Assembly Robot AR1',l:'Line B',s:'online',u:'98.4%'},{n:'Conveyor Belt B',l:'Line B',s:'online',u:'99.0%'},{n:'Pneumatic Press B3',l:'Line B',s:'online',u:'97.5%'}],
+    wos:[{p:'high',t:'WO-2846 · Hydraulic Press B2 — Oil Leak Investigation & Seal Replacement',m:'Priya Sharma · Raised today 07:30 · Hydraulic seal kit needed (LOW STOCK)',s:'progress'},{p:'medium',t:'WO-2844 · Assembly Robot AR1 — Quarterly Calibration Check',m:'Priya Sharma · Due: 16 May 2026',s:'scheduled'}],
+    ppm:'78%',assets_count:4,breakdowns:1,mtbf:'156h',
+    eng:{id:'priya',n:'Priya Sharma',r:'Mechanical Engineer',a:'PS',c:'linear-gradient(135deg,#7c3aed,#8b5cf6)',certs:['HVAC Cert','Hydraulics','Pneumatics'],status:'🟢 On Shift'}},
+  C:{label:'Line C — Packaging',tag:'🟢 Line C — Packaging',color:'#10b981',status:'✅ All 4 Assets Online — Best Line This Month',statusBg:'rgba(16,185,129,0.15)',statusColor:'var(--green2)',desc:'Line C is the top performing line on site this month. All 4 assets running at full capacity with zero open work orders. Amara Osei has completed all recent maintenance tasks ahead of schedule.',
+    kpis:[{l:'Line C Uptime',v:'98.9%',c:'var(--green2)',i:'⚡',s:'▲ Excellent — all assets online'},{l:'Open Work Orders',v:'0',c:'var(--green2)',i:'📋',s:'Zero open issues today'},{l:'MTTR Line C',v:'1.8h',c:'var(--green2)',i:'⏱️',s:'▲ Best on site this month'},{l:'Line C Cost MTD',v:'£5.2k',c:'var(--blue3)',i:'💷',s:'Lowest cost line this month'}],
+    assets:[{n:'Paint Booth PB1',l:'Line C',s:'online',u:'96.5%'},{n:'Packaging Machine PM1',l:'Line C',s:'online',u:'99.2%'},{n:'Conveyor Belt C',l:'Line C',s:'online',u:'98.8%'},{n:'Label Applicator LA1',l:'Line C',s:'online',u:'97.3%'}],
+    wos:[{p:'low',t:'WO-2843 · Paint Booth PB1 — Fan Belt Replacement',m:'Amara Osei · Completed 13 May 2026 ✓',s:'done'},{p:'low',t:'WO-2842 · Packaging Machine PM1 — Conveyor Tension Check',m:'Amara Osei · Completed 12 May 2026 ✓',s:'done'}],
+    ppm:'91%',assets_count:4,breakdowns:0,mtbf:'412h',
+    eng:{id:'amara',n:'Amara Osei',r:'Maintenance Engineer',a:'AO',c:'linear-gradient(135deg,#d97706,#f59e0b)',certs:['COSHH','Confined Space','Working at Height'],status:'🟢 On Shift'}},
+  D:{label:'Line D — Welding',tag:'🔄 Line D — Welding',color:'#8b5cf6',status:'🔧 MIG Welder Station 2 — Scheduled Service',statusBg:'rgba(139,92,246,0.15)',statusColor:'var(--purple)',desc:'Line D handles all welding operations. MIG Welder Station 2 is currently undergoing its scheduled service and will return at 16:00 today. Welding Robot WR1 completed its annual calibration yesterday and is performing well. PPM compliance is the lowest on site and requires urgent attention.',
+    kpis:[{l:'Line D Uptime',v:'89.2%',c:'var(--red2)',i:'⚡',s:'▼ MIG Welder down for service'},{l:'Open Work Orders',v:'1',c:'var(--blue3)',i:'📋',s:'Scheduled service in progress'},{l:'MTTR Line D',v:'2.8h',c:'var(--amber2)',i:'⏱️',s:'Slightly above target'},{l:'PPM Compliance',v:'64%',c:'var(--red2)',i:'📋',s:'▼ Lowest on site — action needed'}],
+    assets:[{n:'Welding Robot WR1',l:'Line D',s:'online',u:'97.8%'},{n:'MIG Welder Station 2',l:'Line D',s:'warning',u:'Servicing'},{n:'Fume Extraction FE1',l:'Line D',s:'online',u:'99.0%'},{n:'Welding Positioner WP1',l:'Line D',s:'online',u:'96.4%'}],
+    wos:[{p:'medium',t:'WO-2841 · Welding Robot WR1 — Annual Calibration Check',m:'Tom Davies · Completed yesterday 12 May ✓',s:'done'},{p:'medium',t:'WO-2840 · MIG Welder Station 2 — Scheduled Annual Service',m:'Tom Davies · In progress · Est. complete: 16:00 today',s:'progress'}],
+    ppm:'64%',assets_count:4,breakdowns:1,mtbf:'198h',
+    eng:{id:'tom',n:'Tom Davies',r:'Multi-skilled Engineer',a:'TD',c:'linear-gradient(135deg,#0891b2,#06b6d4)',certs:['PLC/SCADA','Robotics','18th Edition'],status:'🟢 On Shift'}}
+};
+
+
+function renderHeatmap() {
+  const assets = ['CNC-01','Conv-A','Hyd-Press','Weld-Rbt','Comp-A','Paint-Bth','MIG-Wld','Elect-Pnl'];
+  const vals = [1,2,1,3,2,1,4,2, 1,1,3,2,5,3,1,2, 2,1,2,1,4,2,1,3, 1,2,2,1,8,5,1,1, 2,3,1,2,1,1,2,4, 1,2,1,1,3,2,1,2, 1,2,3,1,2,1,4,3, 1,2,1,1,2,3,4,1];
+  const cells = vals.map((v,i) => {
+    const intensity = Math.min(v/8,1);
+    const bg = `rgba(239,68,68,${0.08 + intensity*0.85})`;
+    return `<div class="hm-cell" style="background:${bg}" title="${assets[i%8]}: ${v} fault${v!==1?'s':''} — Week ${Math.floor(i/8)+1}" onclick="showToast('${assets[i%8]}: ${v} fault${v!==1?'s':''} this period')"></div>`;
+  }).join('');
+  const labels = assets.map(a => `<div class="hm-label">${a}</div>`).join('');
+  const legend = ['Low','Med','High'].map((l,i) => `<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--grey2)"><span style="width:10px;height:10px;background:rgba(239,68,68,${0.15+i*0.35});border-radius:2px;display:inline-block"></span>${l}</span>`).join('');
+  return `<div class="card" style="margin-top:0">
+    <div class="card-header">
+      <div class="card-title">🔥 Fault Frequency Heatmap — Last 8 Weeks by Asset</div>
+      <div style="display:flex;gap:10px;align-items:center">${legend}</div>
+    </div>
+    <div class="heatmap-grid" style="margin-bottom:6px">${cells}</div>
+    <div class="heatmap-grid">${labels}</div>
+    <div style="margin-top:10px;font-size:11px;color:var(--grey2)">Each row = 1 week · Hover a cell for fault details · Red intensity = fault frequency</div>
+  </div>`;
+}
+
+function showDept(id,clickedEl){
+  document.querySelectorAll('.sidebar-section:first-child .sidebar-item').forEach(el=>el.classList.remove('active'));
+  if(clickedEl)clickedEl.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-dashboard').classList.add('active');
+  document.querySelectorAll('.nav-tab')[0].classList.add('active');
+  const d=depts[id];
+  document.getElementById('industry-tag').textContent=d.tag;
+  const statusMap={open:'OPEN',progress:'IN PROGRESS',done:'COMPLETE',scheduled:'SCHEDULED'};
+  const ppmColor=parseInt(d.ppm)>=90?'var(--green2)':parseInt(d.ppm)>=75?'var(--amber2)':'var(--red2)';
+  const kpiHTML=d.kpis.map(k=>`<div class="kpi-card" style="--kpi-color:${k.c}"><div class="kpi-icon">${k.i}</div><div class="kpi-label">${k.l}</div><div class="kpi-value" style="color:${k.c}">${k.v}</div><div class="kpi-sub">${k.s}</div></div>`).join('');
+  const assetHTML=d.assets.map(a=>`<div class="asset-item"><div class="asset-name">${a.n}</div><div class="asset-status"><div class="status-dot ${a.s}"></div><span style="color:${a.s==='online'?'var(--green2)':a.s==='warning'?'var(--amber2)':'var(--red2)'}">${a.s.charAt(0).toUpperCase()+a.s.slice(1)}</span></div><div class="asset-uptime">${a.l} · ${a.u}</div></div>`).join('');
+  const woHTML=d.wos.map(w=>`<div class="wo-item"><div class="wo-priority ${w.p}"></div><div class="wo-info"><div class="wo-title">${w.t}</div><div class="wo-meta">${w.m}</div></div><span class="wo-status ${w.s}">${statusMap[w.s]}</span></div>`).join('');
+  const engHTML=d.eng?`<div class="card"><div class="card-header"><div class="card-title">👷 Assigned Engineer — ${d.label}</div></div><div class="eng-card-sm" onclick="showEngineerModal('${d.eng.id}')"><div class="eng-avatar" style="background:${d.eng.c}">${d.eng.a}</div><div class="eng-info"><div class="eng-name">${d.eng.n}</div><div class="eng-role">${d.eng.r} · ${d.eng.status}</div><div class="eng-certs">${d.eng.certs.map(c=>`<span class="eng-cert">${c}</span>`).join('')}</div></div><div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0"><button class="btn-demo" style="font-size:11px;padding:5px 12px" onclick="event.stopPropagation();showToast('📞 Calling ${d.eng.n}...')">📞 Call</button><button class="btn-demo" style="font-size:11px;padding:5px 12px;background:var(--surface2);color:var(--grey2)" onclick="event.stopPropagation();showTab('messaging',document.querySelectorAll('.nav-tab')[5])">💬 Message</button></div></div></div>`:'';
+  document.getElementById('dept-content').innerHTML=`
+    <div class="dept-hero" style="--dept-color:${d.color}">
+      <div class="dept-hero-top">
+        <div><div class="dept-title">${d.label}</div><div class="dept-subtitle">${d.desc}</div></div>
+        <div class="dept-status" style="background:${d.statusBg};color:${d.statusColor}">${d.status}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px">
+        <div style="text-align:center;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border)"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:${ppmColor}">${d.ppm}</div><div style="font-size:10px;color:var(--grey2)">PPM Compliance</div></div>
+        <div style="text-align:center;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border)"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--blue3)">${d.assets_count}</div><div style="font-size:10px;color:var(--grey2)">Assets on Line</div></div>
+        <div style="text-align:center;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border)"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:${d.breakdowns>1?'var(--amber2)':d.breakdowns===0?'var(--green2)':'var(--red2)'}">${d.breakdowns}</div><div style="font-size:10px;color:var(--grey2)">Breakdowns This Month</div></div>
+        <div style="text-align:center;background:var(--surface2);border-radius:10px;padding:10px;border:1px solid var(--border)"><div style="font-size:14px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">${d.mtbf}</div><div style="font-size:10px;color:var(--grey2)">MTBF</div></div>
+      </div>
+    </div>
+    <div class="kpi-grid">${kpiHTML}</div>
+    <div class="grid-2">
+      <div class="card"><div class="card-header"><div class="card-title">🏗️ ${id==='all'?'Asset Status Overview':d.label+' — Assets'}</div><div class="card-action" onclick="showTab('assets',document.querySelectorAll('.nav-tab')[1])">View Full Register →</div></div><div class="asset-grid">${assetHTML}</div></div>
+      <div class="card"><div class="card-header"><div class="card-title">📋 ${id==='all'?'Recent Work Orders':d.label+' — Work Orders'}</div><div class="card-action" onclick="showTab('workorders',document.querySelectorAll('.nav-tab')[2])">View All →</div></div><div class="wo-list">${woHTML}</div></div>
+    </div>
+    ${engHTML}
+  `;
+}
+
+// INIT
+showDept('all',document.getElementById('sb-all'));
+
+// Patch showDept to append heatmap for 'all' view
+const _origShowDept = showDept;
+showDept = function(id, el) {
+  _origShowDept(id, el);
+  if(id === 'all') {
+    const extra = document.createElement('div');
+    extra.innerHTML = renderHeatmap();
+    document.getElementById('dept-content').appendChild(extra.firstChild);
+  }
+};
+
+// MESSAGING
+const threads={
+  james:{n:'James Mitchell',r:'Electrical Engineer · Line A · 🟢 On Shift',av:'JM',msgs:[{t:'received',nm:'James Mitchell',m:'Compressor Unit A won\'t start. Tripped the overload again.',tm:'07:52'},{t:'sent',m:'Check the overload relay — reset and monitor. If it trips again check motor windings.',tm:'07:55'},{t:'received',nm:'James Mitchell',m:'Reset done but tripped again in 30 seconds. Bearings have gone I think.',tm:'08:02'},{t:'sent',m:'Raise critical WO. Take compressor offline safely and switch to backup unit C.',tm:'08:05'},{t:'received',nm:'James Mitchell',m:'WO-2847 raised. Backup C running. Do we have 6205-2RS bearings in stock?',tm:'08:14'}]},
+  priya:{n:'Priya Sharma',r:'Mechanical Engineer · Line B · 🟢 On Shift',av:'PS',msgs:[{t:'received',nm:'Priya Sharma',m:'Oil leak confirmed on hydraulic press B2. Coming from the main cylinder seal.',tm:'07:31'},{t:'sent',m:'How bad is the leak? Can it run at reduced pressure?',tm:'07:35'},{t:'received',nm:'Priya Sharma',m:'Slow drip but getting worse. Recommend stop within the hour.',tm:'07:40'},{t:'sent',m:'Raise high priority WO. Check seal kits in stock.',tm:'07:42'}]},
+  tom:{n:'Tom Davies',r:'Multi-skilled Engineer · Line A & D · 🟢 On Shift',av:'TD',msgs:[{t:'received',nm:'Tom Davies',m:'CNC monthly service complete. All checks passed.',tm:'09:15'},{t:'sent',m:'Great work Tom. Close WO-2845 on the system.',tm:'09:18'},{t:'received',nm:'Tom Davies',m:'Done. Moving to Line D for welding robot inspection.',tm:'09:20'}]},
+  team:{n:'🏭 All Engineers',r:'Group · 4 members',av:'👷',msgs:[{t:'received',nm:'James Mitchell',m:'Shift handover: Compressor A offline on backup C. Hydraulic press B2 reduced ops.',tm:'06:00'},{t:'sent',m:'Morning everyone. Safety first today — RAMS in place before any hydraulic work.',tm:'07:00'}]}
+};
+let curThread='james';
+function loadThread(id,el){curThread=id;const t=threads[id];document.getElementById('msg-av').textContent=t.av;document.getElementById('msg-nm').textContent=t.n;document.getElementById('msg-rl').textContent=t.r;const body=document.getElementById('msg-body');body.innerHTML='';t.msgs.forEach(m=>{const div=document.createElement('div');div.className='msg-bubble '+m.t;div.innerHTML=(m.t==='received'?`<div class="msg-bubble-name">${m.nm}</div>`:'')+m.m+`<div class="msg-bubble-time">${m.tm}</div>`;body.appendChild(div);});body.scrollTop=body.scrollHeight;document.querySelectorAll('.msg-thread').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active');}
+function sendMsg(){const inp=document.getElementById('msg-in');const text=inp.value.trim();if(!text)return;const body=document.getElementById('msg-body');const div=document.createElement('div');div.className='msg-bubble sent';const now=new Date();div.innerHTML=text+`<div class="msg-bubble-time">${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}</div>`;body.appendChild(div);body.scrollTop=body.scrollHeight;inp.value='';setTimeout(()=>{const r=document.createElement('div');r.className='msg-bubble received';r.innerHTML=`<div class="msg-bubble-name">${threads[curThread].n.split(' ')[0]}</div>Got it — on it now. Will update the system.<div class="msg-bubble-time">${now.getHours().toString().padStart(2,'0')}:${(now.getMinutes()+1).toString().padStart(2,'0')}</div>`;body.appendChild(r);body.scrollTop=body.scrollHeight;},1500);}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+
+// ENGINEER PROFILES
+const engineers={
+  james:{n:'James Mitchell',r:'Electrical Engineer',l:'Line A',c:'linear-gradient(135deg,#1a56db,#3b82f6)',av:'JM',wos:23,open:2,rating:'4.8',comp:'94%',bio:'James is a fully qualified electrical engineer with 6 years of industrial maintenance experience. Specialises in high-voltage systems, panel wiring, and fault diagnosis on CNC machinery.',certs:['18th Edition Wiring Regs','HV Approved','PAT Testing','First Aid'],recent:['WO-2847 · Compressor Emergency Repair · In Progress','WO-2845 · CNC Monthly Service · Scheduled','WO-2838 · Motor Replacement · Complete']},
+  priya:{n:'Priya Sharma',r:'Mechanical Engineer',l:'Line B',c:'linear-gradient(135deg,#7c3aed,#8b5cf6)',av:'PS',wos:31,open:1,rating:'4.9',comp:'97%',bio:'Priya specialises in HVAC systems, hydraulics and pneumatics. 8 years of manufacturing maintenance experience across automotive and food manufacturing.',certs:['HVAC Level 3','Hydraulic Systems','Pneumatics','Manual Handling'],recent:['WO-2846 · Hydraulic Press Oil Leak · In Progress','WO-2844 · Assembly Robot Calibration · Scheduled','WO-2835 · Pump Overhaul · Complete']},
+  tom:{n:'Tom Davies',r:'Multi-skilled Engineer',l:'Line A & D',c:'linear-gradient(135deg,#0891b2,#06b6d4)',av:'TD',wos:27,open:3,rating:'4.7',comp:'91%',bio:'10 years of factory automation experience. Tom specialises in PLC/SCADA systems, robotic maintenance and CNC machinery servicing across automotive and electronics manufacturing.',certs:['PLC Programming','SCADA Systems','Robotic Maintenance','18th Edition'],recent:['WO-2841 · Welding Robot Calibration · Complete','WO-2845 · CNC Monthly Service · Scheduled','WO-2839 · PLC Fault Diagnosis · Complete']},
+  amara:{n:'Amara Osei',r:'Maintenance Engineer',l:'Line C',c:'linear-gradient(135deg,#d97706,#f59e0b)',av:'AO',wos:19,open:0,rating:'4.6',comp:'89%',bio:'Dedicated maintenance engineer covering Line C. Spotless safety record and strong compliance awareness. Manages all packaging, paint and labelling machinery.',certs:['COSHH Trained','Confined Space','Working at Height','Fork Lift'],recent:['WO-2843 · Paint Booth Belt · Complete','WO-2842 · Packaging Machine Check · Complete','WO-2831 · Line C Full Service · Complete']}
+};
+function showEngineerModal(id){const e=engineers[id];document.getElementById('eng-content').innerHTML=`<div style="display:flex;gap:14px;align-items:center;margin-bottom:18px"><div style="width:60px;height:60px;border-radius:14px;background:${e.c};display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;font-family:'Syne',sans-serif;flex-shrink:0">${e.av}</div><div><div style="font-size:19px;font-weight:800;font-family:'Syne',sans-serif;color:var(--text)">${e.n}</div><div style="font-size:12px;color:var(--grey2);margin-top:2px">${e.r} · ${e.l}</div><div style="font-size:11px;color:var(--green2);margin-top:4px;font-weight:600">🟢 On Shift</div></div></div><p style="font-size:13px;color:var(--grey2);line-height:1.7;margin-bottom:16px;padding:12px;background:var(--surface2);border-radius:10px">${e.bio}</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px"><div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--text)">${e.wos}</div><div style="font-size:10px;color:var(--grey2)">WOs This Month</div></div><div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--blue3)">${e.rating}★</div><div style="font-size:10px;color:var(--grey2)">Rating</div></div><div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;font-family:'Syne',sans-serif;color:var(--green2)">${e.comp}</div><div style="font-size:10px;color:var(--grey2)">Completion</div></div></div><div style="margin-bottom:14px"><div style="font-size:11px;font-weight:700;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;font-family:'Syne',sans-serif">Certifications</div><div style="display:flex;flex-wrap:wrap;gap:6px">${e.certs.map(c=>`<span class="eng-cert">${c}</span>`).join('')}</div></div><div style="margin-bottom:16px"><div style="font-size:11px;font-weight:700;color:var(--grey2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;font-family:'Syne',sans-serif">Recent Work Orders</div>${e.recent.map(r=>`<div style="font-size:12px;color:var(--grey2);padding:7px 10px;background:var(--surface2);border-radius:8px;margin-bottom:5px">${r}</div>`).join('')}</div><div style="display:flex;gap:8px;padding-top:14px;border-top:1px solid var(--border)"><button class="btn-primary" style="flex:1" onclick="showToast('📞 Calling ${e.n.split(' ')[0]}...');document.getElementById('eng-modal').classList.remove('open')">📞 Call</button><button class="btn-primary" style="flex:1;background:var(--surface2);color:var(--grey2)" onclick="showTab('messaging',document.querySelectorAll('.nav-tab')[5]);document.getElementById('eng-modal').classList.remove('open')">💬 Message</button></div>`;document.getElementById('eng-modal').classList.add('open');}
+
+// MODALS
+function openModal(){document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function submitWO(){closeModal();showToast('✅ Work Order raised successfully!');}
+function openSettings(){document.getElementById('settings-modal').classList.add('open')}
+function closeSettings(){document.getElementById('settings-modal').classList.remove('open')}
+function saveSettings(){closeSettings();showToast('✅ Settings saved!');}
+
+// TOAST
+function showToast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+
+// EXPORT PDF
+function exportReport(){showToast('📥 Generating PDF...');setTimeout(()=>{const{jsPDF}=window.jspdf;const doc=new jsPDF();const pageW=doc.internal.pageSize.getWidth();const today=new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});doc.setFillColor(6,10,18);doc.rect(0,0,pageW,42,'F');doc.setFillColor(26,86,219);doc.roundedRect(14,8,6,26,1,1,'F');doc.setTextColor(255,255,255);doc.setFontSize(16);doc.setFont('helvetica','bold');doc.text('NACHI ENG LTD',26,20);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(96,165,250);doc.text('NachiCMMS — Factory & Manufacturing Report',26,28);doc.setTextColor(122,150,184);doc.text('Generated: '+today,26,35);doc.setDrawColor(26,86,219);doc.setLineWidth(1.5);doc.line(0,42,pageW,42);let y=54;const rows=[['Overall Asset Uptime','97.3%',[16,185,129]],['Open Work Orders','14',[59,130,246]],['Avg MTTR','2.4 hours',[245,158,11]],['Savings vs Reactive','£42,000',[139,92,246]],['OEE Score','84%',[16,185,129]],['Monthly Cost','£18,200',[59,130,246]],['WOs Completed','127',[16,185,129]],['PPM Compliance','91%',[139,92,246]]];doc.setFillColor(13,22,38);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(96,165,250);doc.text('KPI SUMMARY',18,y);y+=10;rows.forEach(([l,v,rgb])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,pageW-18,y,{align:'right'});doc.setDrawColor(30,50,80);doc.setLineWidth(0.3);doc.line(18,y+2,pageW-18,y+2);y+=9;});y+=6;doc.setFillColor(13,22,38);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(96,165,250);doc.text('PPM COMPLIANCE BY LINE',18,y);y+=10;[['Line A — Automotive','96%',[16,185,129],96],['Line B — Assembly','78%',[245,158,11],78],['Line C — Packaging','91%',[16,185,129],91],['Line D — Welding','64%',[239,68,68],64]].forEach(([l,v,rgb,pct])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,55,y);doc.setFillColor(20,35,60);doc.roundedRect(70,y-4,100,5,1,1,'F');doc.setFillColor(rgb[0],rgb[1],rgb[2]);doc.roundedRect(70,y-4,pct,5,1,1,'F');y+=9;});const fY=doc.internal.pageSize.getHeight()-18;doc.setFillColor(6,10,18);doc.rect(0,fY-6,pageW,24,'F');doc.setDrawColor(26,86,219);doc.setLineWidth(1);doc.line(0,fY-6,pageW,fY-6);doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(122,150,184);doc.text('NachiCMMS  |  Nachi Eng Ltd  |  nachieng.co.uk  |  info@nachieng.co.uk  |  +44 (0) 7480286830',pageW/2,fY+2,{align:'center'});doc.setTextColor(59,130,246);doc.text('Registered in England & Wales | Company No. 16567818',pageW/2,fY+8,{align:'center'});doc.save('NachiCMMS-Factory-Report-'+new Date().toISOString().slice(0,10)+'.pdf');showToast('PDF downloaded!');},500);}
+
+// Init messaging on load
+setTimeout(()=>loadThread('james',document.querySelector('.msg-thread')),100);
+</script>
+</body>
+</html>

@@ -15,7 +15,7 @@ export default function NotFound() {
                 <p className="eyebrow text-signal">404</p>
                 <h1 className="h-display mt-6 max-w-2xl">This page does not exist.</h1>
                 <p className="mt-6 max-w-md text-sm leading-6 text-ink/70 md:text-base md:leading-7">
-                    It may have moved during the rebuild. For anything engineering-related,{" "}
+                    It may have moved or been retired. For anything engineering-related,{" "}
                     <a href={`mailto:${COMPANY.email}`} className="underline underline-offset-4">
                         {COMPANY.email}
                     </a>{" "}

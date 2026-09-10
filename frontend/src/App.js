@@ -7,6 +7,9 @@ import { Layout } from "@/components/layout/Layout";
 import HomePage from "@/pages/HomePage";
 import ServicesPage from "@/pages/ServicesPage";
 import AboutPage from "@/pages/AboutPage";
+import TmmsPage from "@/pages/TmmsPage";
+import TmmsDemoPage from "@/pages/TmmsDemoPage";
+import BrandPreviewPage from "@/pages/BrandPreviewPage";
 import { StubPage } from "@/pages/StubPage";
 import NotFound from "@/pages/NotFound";
 import { COMPANY, ARTICLES } from "@/content/site";
@@ -40,10 +43,10 @@ const ScrollToTop = () => {
 const ContactStub = () => (
     <StubPage
         title="Contact"
-        eyebrow="Phase 8 — enquiry form in the build queue"
+        eyebrow="Contact"
         path="/contact"
         testId="page-contact"
-        description="The asynchronous enquiry form is built and tested end to end in Phase 8. Until then, every direct route below is live."
+        description="Every route below reaches the engineer directly. Describe the site, the equipment and the problem, and you will receive a considered response."
     >
         <ul className="mt-10 max-w-xl divide-y divide-ink/10 border-y border-ink/10">
             <li className="flex flex-wrap items-baseline justify-between gap-2 py-4">
@@ -68,10 +71,10 @@ const ContactStub = () => (
 const InsightsStub = () => (
     <StubPage
         title="Insights"
-        eyebrow="Phase 9 — articles being carried across"
+        eyebrow="Insights"
         path="/insights"
         testId="page-insights"
-        description="Two long-form articles return here in Phase 9, with byline, date, reading time and every statistic individually sourced."
+        description="Articles on maintenance practice and maintenance technology, written from the maintenance floor."
     >
         <ul className="mt-10 max-w-xl divide-y divide-ink/10 border-y border-ink/10">
             {ARTICLES.map((a) => (
@@ -94,18 +97,9 @@ function App() {
                     <Route element={<Layout />}>
                         <Route index element={<HomePage />} />
                         <Route path="/services" element={<ServicesPage />} />
-                        <Route
-                            path="/tmms"
-                            element={
-                                <StubPage
-                                    title="TMMS"
-                                    eyebrow="Phase 6 — in the build queue"
-                                    path="/tmms"
-                                    testId="page-tmms"
-                                    description="TMMS is a Maintenance Management System currently in development — a real product, demonstrated privately by enquiry. Its page and four simulated sector demos arrive in Phase 6."
-                                />
-                            }
-                        />
+                        <Route path="/tmms" element={<TmmsPage />} />
+                        <Route path="/tmms/demos/:sector" element={<TmmsDemoPage />} />
+                        <Route path="/brand-preview" element={<BrandPreviewPage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="/insights" element={<InsightsStub />} />
                         <Route path="/contact" element={<ContactStub />} />
@@ -114,10 +108,10 @@ function App() {
                             element={
                                 <StubPage
                                     title="Privacy Policy"
-                                    eyebrow="Phase 10 — draft for owner review"
+                                    eyebrow="Legal"
                                     path="/privacy"
                                     testId="page-privacy"
-                                    description="A structured draft privacy policy, based only on the actual processors and data flows selected during this build, is published for owner review in Phase 10."
+                                    description="The privacy policy for this website is being prepared and will be published here. For any question about personal data, contact info@nachieng.co.uk."
                                 />
                             }
                         />
@@ -126,10 +120,10 @@ function App() {
                             element={
                                 <StubPage
                                     title="Cookie Policy"
-                                    eyebrow="Phase 10 — draft for owner review"
+                                    eyebrow="Legal"
                                     path="/cookies"
                                     testId="page-cookies"
-                                    description="A structured draft cookie policy with a named-cookie table is published for owner review in Phase 10."
+                                    description="The cookie policy for this website is being prepared and will be published here. This website currently sets no analytics or advertising cookies."
                                 />
                             }
                         />
