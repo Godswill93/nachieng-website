@@ -71,6 +71,12 @@ Full rebuild of the NACHI ENG LTD marketing website (industrial engineering & te
 - WEBSITE DNS ALREADY POINTS TO VERCEL and must remain unchanged — no Namecheap edits to deploy the site. Resend sender-domain verification records (DKIM/SPF/DMARC) are additive and SEPARATE from website-hosting records; they never replace/alter them.
 - Kinetic hero must stay subtle/mobile-safe; drop motion before budget
 
+## 2026-06 (batch 9) — /brand-preview blocked in production (router-level, not robots-only)
+- frontend/src/App.js: /brand-preview route now registered ONLY when IS_DEV (process.env.NODE_ENV !== "production"). BrandPreviewPage converted to React.lazy behind a dev gate + Suspense.
+- Production build result: main.js has 0 "brand-preview" references; route dead-code-eliminated; component lives only in an orphan chunk that main.js references 0 times (never loaded) → /brand-preview resolves to the NotFound 404 page.
+- Verified: CI=true yarn build passes; 404 page renders for unknown routes (runtime screenshot); dev preview still serves /brand-preview for internal review.
+- robots.txt Disallow + sitemap exclusion retained as defence-in-depth only. Website not deployed/pushed.
+
 ## 2026-06 (batch 8) — LinkedIn company-page branding pack (deliverable only, website unchanged)
 - Generated from the APPROVED existing vector logo system (public/brand N-mark geometry + Archivo/IBM Plex Mono, all text converted to outlines). No logo redesign, no photos/AI imagery. Script: scripts/build_linkedin_brand.py. Outputs in /app/assets/linkedin/ (outside frontend — website/build untouched, not pushed).
   - nachi-eng-linkedin-banner-1128x191.png (paper bg, ink wordmark + signal divider, mono descriptor, positioning line, small www ref; left ~300px kept clear for profile-logo overlap; faint right grid + subtle N echo + drawing-frame crop marks)
