@@ -63,8 +63,6 @@ const MobileMenu = ({ onClose, closeRef }) => (
         <div className="container-shell mb-10 mt-auto border-t border-white/10 pt-6">
             <p className="font-mono text-xs leading-6 tracking-[0.12em] text-white/60">
                 {COMPANY.email}
-                <br />
-                {COMPANY.phoneDisplay}
             </p>
         </div>
     </div>

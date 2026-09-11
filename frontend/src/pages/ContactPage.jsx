@@ -100,10 +100,6 @@ export default function ContactPage() {
                             <a data-testid="contact-email-link" className="text-sm underline-offset-4 hover:underline" href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
                         </li>
                         <li className="flex flex-wrap items-baseline justify-between gap-2 py-4">
-                            <span className="eyebrow text-ink/70">Phone</span>
-                            <a data-testid="contact-phone-link" className="text-sm underline-offset-4 hover:underline" href={COMPANY.phoneHref}>{COMPANY.phoneDisplay}</a>
-                        </li>
-                        <li className="flex flex-wrap items-baseline justify-between gap-2 py-4">
                             <span className="eyebrow text-ink/70">Book a call</span>
                             <a data-testid="contact-calendly-link" className="group inline-flex items-center gap-1.5 text-sm underline-offset-4 hover:underline" href={COMPANY.calendly} target="_blank" rel="noopener noreferrer">
                                 30 minutes, via Calendly

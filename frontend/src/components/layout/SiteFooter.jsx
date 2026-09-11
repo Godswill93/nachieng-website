@@ -27,11 +27,6 @@ export const SiteFooter = () => {
                             </a>
                         </li>
                         <li>
-                            <a data-testid="footer-phone-link" href={COMPANY.phoneHref} className="text-white/80 underline-offset-4 transition-colors hover:text-white hover:underline">
-                                {COMPANY.phoneDisplay}
-                            </a>
-                        </li>
-                        <li>
                             <a data-testid="footer-linkedin-link" href={COMPANY.linkedin} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-1.5 text-white/80 underline-offset-4 transition-colors hover:text-white hover:underline">
                                 LinkedIn
                                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />

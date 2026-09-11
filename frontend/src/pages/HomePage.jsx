@@ -52,7 +52,6 @@ const HOME_JSONLD = {
             name: COMPANY.name,
             url: `${COMPANY.canonicalOrigin}/`,
             email: COMPANY.email,
-            telephone: "+44 7480 286 830",
             foundingDate: "2025-07",
             identifier: {
                 "@type": "PropertyValue",
