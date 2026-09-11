@@ -6,8 +6,6 @@ export const COMPANY = {
     location: "Southend-on-Sea, Essex, United Kingdom",
     serviceArea: "London, Essex and the wider South East, with UK projects considered by agreement",
     email: "info@nachieng.co.uk",
-    phoneDisplay: "+44 (0) 7480 286 830",
-    phoneHref: "tel:+447480286830",
     linkedin: "https://www.linkedin.com/company/nachi-eng-ltd",
     calendly: "https://calendly.com/godswill-nachieng/30min",
     responseCommitment: "within two working days",
