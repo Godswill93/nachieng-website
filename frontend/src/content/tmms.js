@@ -1,14 +1,14 @@
 export const TMMS = {
-    name: "TMMS",
-    longName: "TMMS — Maintenance Management System",
+    name: "Nachi CMMS",
+    longName: "Nachi CMMS — Computerised Maintenance Management System",
     status: "In development",
     availability: "Private demonstration by enquiry",
     lead:
-        "TMMS is a Maintenance Management System currently in development by Nachi Eng Ltd. It is shaped by hands-on maintenance work in manufacturing and commercial environments, and is demonstrated privately by enquiry.",
+        "Nachi CMMS is a computerised maintenance management system currently in development by Nachi Eng Ltd. It is shaped by hands-on maintenance work in manufacturing and commercial environments, and is demonstrated privately by enquiry.",
     problem:
         "Reactive maintenance can create higher overall costs through unplanned downtime, emergency labour, production disruption, expedited parts and secondary equipment damage. A CMMS becomes particularly valuable when spreadsheets, paper records or individual memory no longer provide a reliable view of assets, work orders, maintenance history and upcoming tasks.",
     intent:
-        "TMMS is being developed to give maintenance teams one connected view of assets, work orders, preventive maintenance and inventory — so planned work is protected, history is not lost, and decisions rest on recorded information rather than recollection.",
+        "Nachi CMMS is being developed to give maintenance teams one connected view of assets, work orders, preventive maintenance and inventory — so planned work is protected, history is not lost, and decisions rest on recorded information rather than recollection.",
     sectors: [
         "Manufacturing",
         "Logistics and warehousing",
@@ -61,7 +61,7 @@ export const DEMO_NOTICE =
     "Simulated demonstration — sample data. Every asset, person, figure, message and event is fictional. No live system, customer or named organisation is represented.";
 
 export const WALKTHROUGH = {
-    title: "See how maintenance work moves through TMMS.",
+    title: "See how maintenance work moves through Nachi CMMS.",
     intro:
         "Explore selected workflows across assets, work orders, preventive maintenance and inventory. Each walkthrough demonstrates how information moves through one connected maintenance system.",
     items: [
@@ -76,11 +76,11 @@ export const SHOW_PREVIEW_MEDIA = process.env.REACT_APP_PREVIEW_MEDIA === "true"
 
 export const DEMO_LAB = {
     eyebrow: "Demonstration Lab",
-    title: "The TMMS Demonstration Lab.",
+    title: "The Nachi CMMS Demonstration Lab.",
     lead:
-        "TMMS — Maintenance Management System, by Nachi Eng Ltd — is a configurable maintenance management system in the CMMS category. It is in active development, and every demonstration on this page runs on sample data.",
+        "Nachi CMMS is a configurable computerised maintenance management system being developed by Nachi Eng Ltd. Every demonstration on this page runs on fictional sample data.",
     configurable:
-        "TMMS is designed to be configured to each organisation — its assets, workflows, roles, permissions and reporting needs — rather than sold as a fixed, finished product for every sector. The sector demonstrations below show how one system can be shaped around different environments. They are illustrations on fictional data, not released sector products.",
+        "Nachi CMMS is designed to be configured to each organisation — its assets, workflows, roles, permissions and reporting needs — rather than sold as a fixed, finished product for every sector. The sector demonstrations below show how one system can be shaped around different environments. They are illustrations on fictional data, not released sector products.",
     recordingNote:
         "Short walkthrough recordings are being prepared from the real demonstration interface. Until each recording is approved, its player appears here as a clearly marked, unpublished placeholder and is hidden on the production site. No footage, screen or figure is invented.",
 };

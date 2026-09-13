@@ -70,7 +70,7 @@
     }
     body {
         @apply bg-background text-foreground;
-        font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
+        font-family: "Segoe UI Variable", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
@@ -88,8 +88,7 @@
 
 @layer components {
     .font-expanded {
-        font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
-        font-stretch: 118%;
+        font-family: "Segoe UI Variable", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
     }
     .container-shell {
         @apply mx-auto w-full max-w-[1200px] px-6 md:px-10;
@@ -99,21 +98,160 @@
         @apply text-xs font-normal uppercase tracking-[0.18em];
     }
     .h-display {
-        font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
-        font-stretch: 118%;
-        font-size: clamp(2.25rem, 5.2vw, 3.75rem);
-        line-height: 1.04;
-        letter-spacing: -0.015em;
-        font-weight: 640;
+        font-family: "Segoe UI Variable Display", "Segoe UI Variable", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+        font-size: clamp(2.65rem, 5.4vw, 4.8rem);
+        line-height: 0.98;
+        letter-spacing: -0.045em;
+        font-weight: 650;
     }
     .h-section {
-        font-family: "Archivo", ui-sans-serif, system-ui, sans-serif;
-        font-stretch: 112%;
-        font-size: clamp(1.6rem, 3vw, 2.4rem);
-        line-height: 1.12;
-        letter-spacing: -0.01em;
-        font-weight: 620;
+        font-family: "Segoe UI Variable Display", "Segoe UI Variable", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+        font-size: clamp(1.9rem, 3.4vw, 3.25rem);
+        line-height: 1.06;
+        letter-spacing: -0.038em;
+        font-weight: 640;
     }
+    .hero-surface {
+        background:
+            radial-gradient(circle at 82% 28%, rgba(52, 82, 216, 0.22), transparent 28rem),
+            linear-gradient(135deg, #0d0f14 0%, #10131a 62%, #0d1017 100%);
+    }
+    .hero-blueprint {
+        position: absolute;
+        inset: 0;
+        opacity: 0.32;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 72px 72px;
+        mask-image: linear-gradient(90deg, transparent 0%, #000 38%, #000 100%);
+    }
+    .hero-process,
+    .cmms-panel {
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        background: rgba(17, 20, 27, 0.88);
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28);
+        backdrop-filter: blur(18px);
+    }
+    .hero-process {
+        transform: perspective(1200px) rotateY(-2deg) rotateX(1deg);
+    }
+    .process-rail {
+        position: absolute;
+        left: 2.6rem;
+        top: 3.3rem;
+        bottom: 3.3rem;
+        width: 1px;
+        background: linear-gradient(to bottom, rgba(110, 134, 240, 0.7), rgba(110, 134, 240, 0.08));
+    }
+    .process-step {
+        display: flex;
+        min-height: 66px;
+        align-items: center;
+        gap: 0.9rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.025);
+        padding: 0.75rem 0.9rem;
+        transition: border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
+    }
+    .process-step:hover {
+        border-color: rgba(110, 134, 240, 0.4);
+        background: rgba(110, 134, 240, 0.06);
+        transform: translateX(3px);
+    }
+    .process-icon {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        height: 2.2rem;
+        width: 2.2rem;
+        flex: none;
+        place-items: center;
+        border: 1px solid rgba(110, 134, 240, 0.35);
+        background: #151927;
+        color: hsl(var(--signal-hi));
+    }
+    .status-pulse {
+        height: 0.55rem;
+        width: 0.55rem;
+        border-radius: 999px;
+        background: #7f96ff;
+        box-shadow: 0 0 0 5px rgba(110, 134, 240, 0.11), 0 0 22px rgba(110, 134, 240, 0.75);
+    }
+    .hero-enter {
+        animation: hero-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .hero-enter-delay-1 { animation-delay: 50ms; }
+    .hero-enter-delay-2 { animation-delay: 100ms; }
+    .hero-enter-delay-3 { animation-delay: 150ms; }
+    .service-card,
+    .engagement-card,
+    .insight-card {
+        display: block;
+        border: 1px solid hsl(var(--ink) / 0.1);
+        background: rgba(255, 255, 255, 0.38);
+        padding: 1.75rem;
+        transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+    }
+    .service-card:hover,
+    .engagement-card:hover,
+    .insight-card:hover {
+        transform: translateY(-4px);
+        border-color: hsl(var(--signal) / 0.32);
+        background: rgba(255, 255, 255, 0.66);
+        box-shadow: 0 20px 50px rgba(19, 22, 30, 0.08);
+    }
+    .service-card-icon {
+        display: grid;
+        height: 2.75rem;
+        width: 2.75rem;
+        place-items: center;
+        background: hsl(var(--signal) / 0.08);
+        color: hsl(var(--signal));
+    }
+    .engagement-card {
+        display: flex;
+        flex-direction: column;
+    }
+    .engagement-card ul {
+        flex: 1;
+    }
+    .engagement-card-featured {
+        border-top: 3px solid hsl(var(--signal));
+        padding-top: calc(1.75rem - 2px);
+        background: rgba(255, 255, 255, 0.62);
+    }
+    .cmms-glow {
+        position: absolute;
+        right: -8rem;
+        top: 0;
+        height: 34rem;
+        width: 34rem;
+        border-radius: 999px;
+        background: rgba(51, 81, 215, 0.2);
+        filter: blur(120px);
+    }
+    .insight-card {
+        min-height: 220px;
+    }
+}
+
+@keyframes hero-enter {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1023px) {
+    .hero-process { transform: none; }
+}
+
+@media (max-width: 639px) {
+    .h-display { font-size: clamp(2.5rem, 13vw, 3.4rem); }
+    .hero-blueprint { background-size: 48px 48px; }
+    .service-card,
+    .engagement-card,
+    .insight-card { padding: 1.4rem; }
 }
 
 @layer base {
@@ -158,5 +296,8 @@
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+    .hero-enter {
+        animation: none !important;
     }
 }
