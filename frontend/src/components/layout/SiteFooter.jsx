@@ -33,8 +33,6 @@ const FooterLink = ({ to, children, testId }) => (
 );
 
 export const SiteFooter = () => {
-    const year = new Date().getFullYear();
-
     return (
         <footer data-testid="site-footer" className="relative overflow-hidden bg-[#0b0e14] text-paper">
             <div className="pointer-events-none absolute right-[-10rem] top-[-12rem] h-[32rem] w-[32rem] rounded-full bg-signal/10 blur-[130px]" aria-hidden="true" />
@@ -110,7 +108,7 @@ export const SiteFooter = () => {
                 </div>
 
                 <div className="flex flex-col gap-4 pt-7 text-xs text-white/[0.38] sm:flex-row sm:items-center sm:justify-between">
-                    <p data-testid="footer-copyright">© {year} Nachi Eng Ltd. All rights reserved.</p>
+                    <p data-testid="footer-copyright">© 2025 Nachi Eng Ltd. All rights reserved.</p>
                     <div className="flex flex-wrap gap-x-5 gap-y-2">
                         <Link to="/privacy" className="min-h-[32px] transition-colors hover:text-white">Privacy</Link>
                         <Link to="/cookies" className="min-h-[32px] transition-colors hover:text-white">Cookies</Link>
