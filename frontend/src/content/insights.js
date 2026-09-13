@@ -1,6 +1,6 @@
 // Insights articles — recovered from the original site and corrected per client instruction:
 // no unsupported statistics or monetary figures, no "studies show" without a named source,
-// no emojis, no NHS Trust / customer-experience claims. TMMS references use approved wording.
+// no emojis, no NHS Trust / customer-experience claims. Nachi CMMS references use approved wording.
 
 export const INSIGHTS = [
     {
@@ -53,7 +53,7 @@ export const INSIGHTS = [
             { t: "h2", text: "Do you need one?" },
             { t: "p", text: "If you are managing a growing number of assets, several engineers or ongoing compliance obligations on spreadsheets or paper, a CMMS is worth serious consideration." },
             { t: "p", text: "The question is usually not whether a CMMS would help, but which approach is right for your operation and how to introduce it so the team actually uses it." },
-            { t: "p", text: "That is the kind of maintenance thinking we care about at **Nachi Eng Ltd** — and the thinking behind [TMMS](/tmms), the maintenance management system we are developing." },
+            { t: "p", text: "That is the kind of maintenance thinking we care about at **Nachi Eng Ltd** — and the thinking behind [Nachi CMMS](/tmms), the computerised maintenance management system we are developing." },
         ],
     },
     {
@@ -118,7 +118,7 @@ export const INSIGHTS = [
             },
             { t: "h2", text: "From chaos to control" },
             { t: "p", text: "Teams that make this shift tend to change how the whole organisation thinks about maintenance. It stops being seen purely as a cost and starts being understood as a function that protects operations, supports compliance and extends the life of expensive assets." },
-            { t: "p", text: "At **Nachi Eng Ltd**, this thinking comes from hands-on industrial maintenance experience across manufacturing and commercial environments. It is also the thinking behind [TMMS](/tmms), a maintenance management system we are developing to support structured maintenance workflows across manufacturing, logistics, commercial facilities, hospitality and, in future, healthcare estates. TMMS is not presented as a released product, and no customer deployment is claimed." },
+            { t: "p", text: "At **Nachi Eng Ltd**, this thinking comes from hands-on industrial maintenance experience across manufacturing and commercial environments. It is also the thinking behind [Nachi CMMS](/tmms), a computerised maintenance management system we are developing to support structured maintenance workflows across manufacturing, logistics, commercial facilities, hospitality and, in future, healthcare estates. Nachi CMMS is not presented as a released product, and no customer deployment is claimed." },
             { t: "divider" },
             { t: "p", text: "The question is not really whether your facility can afford planned maintenance." },
             { t: "p", text: "**It is whether you can afford to keep doing it the old way.**" },

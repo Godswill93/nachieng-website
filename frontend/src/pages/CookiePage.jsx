@@ -40,7 +40,7 @@ export default function CookiePage() {
 
                     <Section heading="Essential browser storage we do use">
                         <p>
-                            When you view a TMMS demonstration, we store a small flag in your browser (using local storage, not a
+                            When you view a Nachi CMMS demonstration, we store a small flag in your browser (using local storage, not a
                             cookie) to remember that you have seen the short introductory tour, so it does not appear again. This is
                             used only for that essential user-interface function: it contains no personal data, is never sent to us and
                             is not used for tracking. You can clear it at any time through your browser settings.

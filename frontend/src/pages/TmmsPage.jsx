@@ -25,7 +25,7 @@ const TMMS_JSONLD = {
             "@type": "BreadcrumbList",
             itemListElement: [
                 { "@type": "ListItem", position: 1, name: "Home", item: `${COMPANY.canonicalOrigin}/` },
-                { "@type": "ListItem", position: 2, name: "TMMS", item: `${COMPANY.canonicalOrigin}/tmms` },
+                { "@type": "ListItem", position: 2, name: "Nachi CMMS", item: `${COMPANY.canonicalOrigin}/tmms` },
             ],
         },
     ],
@@ -35,7 +35,7 @@ const Intro = () => (
     <section data-testid="tmms-intro" className="bg-paper">
         <div className="container-shell pb-16 pt-24 md:pb-20 md:pt-32">
             <p className="eyebrow flex flex-wrap items-center gap-4 text-signal">
-                <span>TMMS</span>
+                <span>Nachi CMMS</span>
                 <span className="border border-ink/25 px-2 py-0.5 text-[10px] tracking-[0.18em] text-ink/70">In development</span>
             </p>
             <h1 className="h-display mt-8 max-w-4xl">A maintenance management system, designed from the maintenance floor.</h1>
@@ -142,9 +142,9 @@ const Status = () => (
             </Reveal>
             <Reveal delay={0.1}>
                 <p className="mt-8 max-w-2xl text-sm leading-6 text-ink/70 md:text-base md:leading-7">
-                    These are the types of structured maintenance workflows TMMS is being developed to support across
+                    These are the types of structured maintenance workflows Nachi CMMS is being developed to support across
                     manufacturing, logistics, commercial facilities, hospitality and, in future, healthcare estates.
-                    TMMS is not presented as a released product, and no customer deployment is claimed.
+                    Nachi CMMS is not presented as a released product, and no customer deployment is claimed.
                 </p>
             </Reveal>
         </div>
@@ -155,8 +155,8 @@ export default function TmmsPage() {
     return (
         <>
             <Seo
-                title="TMMS — Maintenance Management System | Nachi Eng Ltd"
-                description="TMMS is a Maintenance Management System in development by Nachi Eng Ltd, with four simulated sector demonstrations on sample data. Private demonstration by enquiry."
+                title="Nachi CMMS — Computerised Maintenance Management System | Nachi Eng Ltd"
+                description="Nachi CMMS is a computerised maintenance management system in development by Nachi Eng Ltd, with four simulated sector demonstrations on sample data. Private demonstration by enquiry."
                 path="/tmms"
                 jsonLd={TMMS_JSONLD}
             />

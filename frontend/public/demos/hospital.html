@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>TMMS simulated demonstration — Hospital & healthcare (future target sector)</title>
+<title>Nachi CMMS simulated demonstration — Hospital & healthcare (future target sector)</title>
 <meta name="robots" content="noindex, nofollow">
 <style>
 [data-theme="dark"]{--bg:#05080f;--bg2:#080d18;--surface:#0d1626;--surface2:#111e35;--surface3:#162340;--text:#f0f6ff;--grey:#4a6080;--grey2:#7a96b8;--border:rgba(20,184,166,0.12);--border2:rgba(20,184,166,0.25);--header-bg:rgba(5,8,15,0.97);--card-bg:#0d1626;--sidebar-bg:#080d18;--input-bg:#111e35;--shadow:rgba(0,0,0,0.5)}
@@ -11,7 +11,7 @@
 :root{--teal:#14b8a6;--teal2:#2dd4bf;--blue:#1a56db;--blue2:#3b82f6;--blue3:#60a5fa;--green:#10b981;--green2:#34d399;--amber:#f59e0b;--amber2:#fbbf24;--red:#ef4444;--red2:#f87171;--purple:#8b5cf6;--pink:#ec4899;--cyan:#06b6d4}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Archivo',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background 0.3s,color 0.3s}
-h1,h2,h3,h4{font-family:'Archivo',sans-serif}
+h1,h2,h3,h4{font-family:'Segoe UI Variable','Segoe UI',ui-sans-serif,system-ui,sans-serif}
 
 /* CRITICAL ALERT */
 .crit-alert{background:linear-gradient(90deg,rgba(239,68,68,0.2),rgba(239,68,68,0.08));border-bottom:1px solid rgba(239,68,68,0.35);padding:7px 24px;display:flex;align-items:center;gap:12px;font-size:12px;color:var(--red2);animation:alertpulse 2s ease-in-out infinite}
@@ -264,7 +264,7 @@ h1,h2,h3,h4{font-family:'Archivo',sans-serif}
 [data-theme="dark"]{--border:rgba(244,243,240,0.10);--border2:rgba(244,243,240,0.22)}
 .btn-demo,.logo-badge,.industry-tag,.theme-btn{white-space:nowrap}
 body{font-family:"Archivo",ui-sans-serif,system-ui,sans-serif}
-h1,h2,h3,h4{font-family:"Archivo",ui-sans-serif,system-ui,sans-serif;font-stretch:110%;letter-spacing:-0.01em}
+h1,h2,h3,h4{font-family:"Segoe UI Variable","Segoe UI",ui-sans-serif,system-ui,sans-serif;letter-spacing:-0.01em}
 .header-logo{font-family:"Archivo",sans-serif;font-stretch:118%;font-weight:700;letter-spacing:-0.02em;gap:12px}
 .logo-badge,.industry-tag,.wo-status,.sidebar-label,.sim-badge{font-family:"IBM Plex Mono",ui-monospace,monospace;font-weight:500;letter-spacing:0.12em;text-transform:uppercase}
 .logo-badge{background:transparent;color:var(--grey2);border:1px solid var(--border2);border-radius:1px;font-size:9px;padding:3px 7px}
@@ -296,7 +296,7 @@ h1,h2,h3,h4{font-family:"Archivo",ui-sans-serif,system-ui,sans-serif;font-stretc
 <!-- HEADER -->
 <div class="header">
   <div class="header-left">
-    <div class="header-logo">TMMS <span class="logo-badge">Simulated demo</span></div>
+    <div class="header-logo">Nachi CMMS <span class="logo-badge">Simulated demo</span></div>
     <span class="industry-tag" id="industry-tag"> All Hospital Overview</span>
     <span class="cqc-badge" id="cqc-badge"> CQC Ready: 94%</span>
   </div>
@@ -359,7 +359,7 @@ h1,h2,h3,h4{font-family:"Archivo",ui-sans-serif,system-ui,sans-serif;font-stretc
     <!-- DASHBOARD TAB -->
     <div class="page active" id="tab-dashboard">
       <div class="cta-banner">
-        <div class="cta-text"><h3>TMMS — Hospital & healthcare (future target sector). Select a department to view its sample data.</h3><p>Simulated demonstration by Nachi Eng Ltd. Every asset, person, figure, message and event shown is fictional sample data. No live system, customer or organisation is represented.</p></div>
+        <div class="cta-text"><h3>Nachi CMMS — Hospital & healthcare (future target sector). Select a department to view its sample data.</h3><p>Simulated demonstration by Nachi Eng Ltd. Every asset, person, figure, message and event shown is fictional sample data. No live system, customer or organisation is represented.</p></div>
       </div>
       <div id="dept-content"></div>
     </div>
@@ -666,7 +666,7 @@ function saveSettings(){closeSettings();showToast('Settings saved!');}
 function showToast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 
 // EXPORT PDF
-function exportReport(){showToast('Generating CQC PDF...');setTimeout(()=>{const{jsPDF}=window.jspdf;const doc=new jsPDF();const pageW=doc.internal.pageSize.getWidth();const today=new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});doc.setFillColor(6,10,18);doc.rect(0,0,pageW,42,'F');doc.setFillColor(20,184,166);doc.roundedRect(14,8,6,26,1,1,'F');doc.setTextColor(255,255,255);doc.setFontSize(16);doc.setFont('helvetica','bold');doc.text('NACHI ENG LTD',26,20);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(20,184,166);doc.text('TMMS — Hospital & Healthcare Report',26,28);doc.setTextColor(122,150,184);doc.text('Generated: '+today,26,35);doc.setDrawColor(20,184,166);doc.setLineWidth(1.5);doc.line(0,42,pageW,42);let y=54;const sections=[['CQC & COMPLIANCE',[['CQC Readiness Score','94%',[139,92,246]],['HTM Statutory Compliance','97%',[20,184,166]],['Critical Equipment Uptime','99.8%',[16,185,129]],['Overdue PPMs','3',[239,68,68]],['Avg Emergency Response','18 minutes',[245,158,11]]]],['STATUTORY HTM STATUS',[['HTM 06-01 Electrical','ACTION NEEDED',[239,68,68]],['HTM 04-01 Water Hygiene','COMPLIANT',[16,185,129]],['HTM 03-01 Ventilation','DUE SOON',[245,158,11]],['HTM 05-03 Fire Safety','COMPLIANT',[16,185,129]],['HTM 02-01 Medical Gas','COMPLIANT',[16,185,129]]]],['WORK ORDERS',[['WOs Completed This Month','89',[16,185,129]],['Life Critical Open','1',[239,68,68]],['Urgent Open','2',[245,158,11]],['Scheduled','4',[59,130,246]]]]];sections.forEach(([title,rows])=>{doc.setFillColor(13,22,38);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(20,184,166);doc.text(title,18,y);y+=10;rows.forEach(([l,v,rgb])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,pageW-18,y,{align:'right'});doc.setDrawColor(30,50,80);doc.setLineWidth(0.3);doc.line(18,y+2,pageW-18,y+2);y+=9;});y+=6;});const fY=doc.internal.pageSize.getHeight()-18;doc.setFillColor(6,10,18);doc.rect(0,fY-6,pageW,24,'F');doc.setDrawColor(20,184,166);doc.setLineWidth(1);doc.line(0,fY-6,pageW,fY-6);doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(122,150,184);doc.text('TMMS  |  Nachi Eng Ltd  |  example.com  |  maintenance@example.com  |  +44 (0) 0000 000000',pageW/2,fY+2,{align:'center'});doc.setTextColor(20,184,166);doc.text('Registered in England & Wales | Company No. 16567818',pageW/2,fY+8,{align:'center'});doc.save('TMMS-Hospital-Report-'+new Date().toISOString().slice(0,10)+'.pdf');showToast('PDF downloaded!');},500);}
+function exportReport(){showToast('Generating CQC PDF...');setTimeout(()=>{const{jsPDF}=window.jspdf;const doc=new jsPDF();const pageW=doc.internal.pageSize.getWidth();const today=new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});doc.setFillColor(6,10,18);doc.rect(0,0,pageW,42,'F');doc.setFillColor(20,184,166);doc.roundedRect(14,8,6,26,1,1,'F');doc.setTextColor(255,255,255);doc.setFontSize(16);doc.setFont('helvetica','bold');doc.text('NACHI ENG LTD',26,20);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(20,184,166);doc.text('Nachi CMMS — Hospital & Healthcare Report',26,28);doc.setTextColor(122,150,184);doc.text('Generated: '+today,26,35);doc.setDrawColor(20,184,166);doc.setLineWidth(1.5);doc.line(0,42,pageW,42);let y=54;const sections=[['CQC & COMPLIANCE',[['CQC Readiness Score','94%',[139,92,246]],['HTM Statutory Compliance','97%',[20,184,166]],['Critical Equipment Uptime','99.8%',[16,185,129]],['Overdue PPMs','3',[239,68,68]],['Avg Emergency Response','18 minutes',[245,158,11]]]],['STATUTORY HTM STATUS',[['HTM 06-01 Electrical','ACTION NEEDED',[239,68,68]],['HTM 04-01 Water Hygiene','COMPLIANT',[16,185,129]],['HTM 03-01 Ventilation','DUE SOON',[245,158,11]],['HTM 05-03 Fire Safety','COMPLIANT',[16,185,129]],['HTM 02-01 Medical Gas','COMPLIANT',[16,185,129]]]],['WORK ORDERS',[['WOs Completed This Month','89',[16,185,129]],['Life Critical Open','1',[239,68,68]],['Urgent Open','2',[245,158,11]],['Scheduled','4',[59,130,246]]]]];sections.forEach(([title,rows])=>{doc.setFillColor(13,22,38);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(20,184,166);doc.text(title,18,y);y+=10;rows.forEach(([l,v,rgb])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,pageW-18,y,{align:'right'});doc.setDrawColor(30,50,80);doc.setLineWidth(0.3);doc.line(18,y+2,pageW-18,y+2);y+=9;});y+=6;});const fY=doc.internal.pageSize.getHeight()-18;doc.setFillColor(6,10,18);doc.rect(0,fY-6,pageW,24,'F');doc.setDrawColor(20,184,166);doc.setLineWidth(1);doc.line(0,fY-6,pageW,fY-6);doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(122,150,184);doc.text('Nachi CMMS  |  Nachi Eng Ltd  |  example.com  |  maintenance@example.com  |  +44 (0) 0000 000000',pageW/2,fY+2,{align:'center'});doc.setTextColor(20,184,166);doc.text('Registered in England & Wales | Company No. 16567818',pageW/2,fY+8,{align:'center'});doc.save('Nachi CMMS-Hospital-Report-'+new Date().toISOString().slice(0,10)+'.pdf');showToast('PDF downloaded!');},500);}
 
 // Init messaging
 setTimeout(()=>loadThread('sarah',document.querySelector('.msg-thread')),100);

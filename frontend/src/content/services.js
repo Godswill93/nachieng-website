@@ -90,7 +90,7 @@ export const FAQS = [
         a: "The equipment or systems involved, the fault symptoms or the improvement goal, the type of site, and any timescales you are working to.",
     },
     {
-        q: "What is TMMS?",
-        a: "TMMS is a Maintenance Management System currently in development at Nachi Eng Ltd — a real product informed by hands-on industrial maintenance experience, demonstrated privately by enquiry. See the TMMS page for detail.",
+        q: "What is Nachi CMMS?",
+        a: "Nachi CMMS is a computerised maintenance management system currently in development at Nachi Eng Ltd. It is informed by hands-on industrial maintenance experience and demonstrated privately using sample data. See the Nachi CMMS page for details.",
     },
 ];

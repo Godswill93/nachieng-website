@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>TMMS simulated demonstration — Hotel & hospitality</title>
+<title>Nachi CMMS simulated demonstration — Hotel & hospitality</title>
 <meta name="robots" content="noindex, nofollow">
 <style>
 [data-theme="dark"]{--bg:#0a080f;--bg2:#100c1a;--surface:#160f28;--surface2:#1c1435;--surface3:#221940;--text:#f5f0ff;--grey:#5a4a70;--grey2:#8a78a8;--border:rgba(168,85,247,0.12);--border2:rgba(168,85,247,0.28);--header-bg:rgba(10,8,15,0.97);--card-bg:#160f28;--sidebar-bg:#100c1a;--input-bg:#1c1435;--shadow:rgba(0,0,0,0.6)}
@@ -11,7 +11,7 @@
 :root{--gold:#f59e0b;--gold2:#fbbf24;--gold3:#fde68a;--purple:#a855f7;--purple2:#c084fc;--purple3:#e9d5ff;--blue:#3b82f6;--blue2:#60a5fa;--green:#10b981;--green2:#34d399;--amber:#f59e0b;--amber2:#fbbf24;--red:#ef4444;--red2:#f87171;--cyan:#06b6d4;--rose:#f43f5e}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Archivo',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background 0.3s,color 0.3s}
-h1,h2,h3,h4{font-family:'Archivo',sans-serif}
+h1,h2,h3,h4{font-family:'Segoe UI Variable','Segoe UI',ui-sans-serif,system-ui,sans-serif}
 .header{position:sticky;top:0;z-index:200;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
 .header-left{display:flex;align-items:center;gap:14px}
 .header-logo{display:flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-size:16px;font-weight:800;color:var(--text)}
@@ -223,7 +223,7 @@ h1,h2,h3,h4{font-family:'Archivo',sans-serif}
 [data-theme="dark"]{--border:rgba(244,243,240,0.10);--border2:rgba(244,243,240,0.22)}
 .btn-demo,.logo-badge,.industry-tag,.theme-btn{white-space:nowrap}
 body{font-family:"Archivo",ui-sans-serif,system-ui,sans-serif}
-h1,h2,h3,h4{font-family:"Archivo",ui-sans-serif,system-ui,sans-serif;font-stretch:110%;letter-spacing:-0.01em}
+h1,h2,h3,h4{font-family:"Segoe UI Variable","Segoe UI",ui-sans-serif,system-ui,sans-serif;letter-spacing:-0.01em}
 .header-logo{font-family:"Archivo",sans-serif;font-stretch:118%;font-weight:700;letter-spacing:-0.02em;gap:12px}
 .logo-badge,.industry-tag,.wo-status,.sidebar-label,.sim-badge{font-family:"IBM Plex Mono",ui-monospace,monospace;font-weight:500;letter-spacing:0.12em;text-transform:uppercase}
 .logo-badge{background:transparent;color:var(--grey2);border:1px solid var(--border2);border-radius:1px;font-size:9px;padding:3px 7px}
@@ -247,7 +247,7 @@ h1,h2,h3,h4{font-family:"Archivo",ui-sans-serif,system-ui,sans-serif;font-stretc
 
 <div class="header">
   <div class="header-left">
-    <div class="header-logo">TMMS <span class="logo-badge">Simulated demo</span></div>
+    <div class="header-logo">Nachi CMMS <span class="logo-badge">Simulated demo</span></div>
     <span class="industry-tag" id="industry-tag"> All Hotel Overview</span>
     <span class="guest-score" id="guest-score"> Guest Impact Score: 9.2/10</span>
   </div>
@@ -307,7 +307,7 @@ h1,h2,h3,h4{font-family:"Archivo",ui-sans-serif,system-ui,sans-serif;font-stretc
     <!-- DASHBOARD -->
     <div class="page active" id="tab-dashboard">
       <div class="cta-banner">
-        <div class="cta-text"><h3>TMMS — Hotel & hospitality. Select a zone to view its sample data.</h3><p>Simulated demonstration by Nachi Eng Ltd. Every asset, person, figure, message and event shown is fictional sample data. No live system, customer or organisation is represented.</p></div>
+        <div class="cta-text"><h3>Nachi CMMS — Hotel & hospitality. Select a zone to view its sample data.</h3><p>Simulated demonstration by Nachi Eng Ltd. Every asset, person, figure, message and event shown is fictional sample data. No live system, customer or organisation is represented.</p></div>
       </div>
       <div id="dept-content"></div>
     </div>
@@ -666,7 +666,7 @@ function saveSettings(){closeSettings();showToast('Settings saved!');}
 function showToast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 
 // EXPORT PDF
-function exportReport(){showToast('Generating PDF...');setTimeout(()=>{const{jsPDF}=window.jspdf;const doc=new jsPDF();const pageW=doc.internal.pageSize.getWidth();const today=new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});doc.setFillColor(10,8,15);doc.rect(0,0,pageW,42,'F');doc.setFillColor(168,85,247);doc.roundedRect(14,8,6,26,1,1,'F');doc.setTextColor(255,255,255);doc.setFontSize(16);doc.setFont('helvetica','bold');doc.text('NACHI ENG LTD',26,20);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(192,132,252);doc.text('TMMS — Hotel & Hospitality Report',26,28);doc.setTextColor(122,150,184);doc.text('Generated: '+today,26,35);doc.setDrawColor(168,85,247);doc.setLineWidth(1.5);doc.line(0,42,pageW,42);let y=54;const rows=[['Guest Impact Score','9.2 / 10',[245,158,11]],['Rooms Out of Service','3 of 240',[248,113,113]],['Overall Uptime','97.4%',[52,211,153]],['Avg Response Time','14 minutes',[52,211,153]],['Monthly Cost Per Room','£42',[52,211,153]],['Open Work Orders','7',[96,165,250]],['PPM Compliance','92%',[192,132,252]],['LOLER Lifts Status','Lift 2 FAULT — under repair',[248,113,113]]];doc.setFillColor(22,15,40);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(192,132,252);doc.text('HOTEL KPI SUMMARY',18,y);y+=10;rows.forEach(([l,v,rgb])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,pageW-18,y,{align:'right'});doc.setDrawColor(40,30,60);doc.setLineWidth(0.3);doc.line(18,y+2,pageW-18,y+2);y+=9;});y+=6;doc.setFillColor(22,15,40);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(192,132,252);doc.text('PPM COMPLIANCE BY ZONE',18,y);y+=10;[['Rooms & Floors','94%',[52,211,153],94],['HVAC & Climate','81%',[245,158,11],81],['Pool & Leisure','87%',[245,158,11],87],['Lifts & Escalators','98%',[52,211,153],98],['Plant & Back of House','96%',[52,211,153],96]].forEach(([l,v,rgb,pct])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,55,y);doc.setFillColor(30,20,50);doc.roundedRect(90,y-4,80,5,1,1,'F');doc.setFillColor(rgb[0],rgb[1],rgb[2]);doc.roundedRect(90,y-4,pct*0.8,5,1,1,'F');y+=9;});const fY=doc.internal.pageSize.getHeight()-18;doc.setFillColor(10,8,15);doc.rect(0,fY-6,pageW,24,'F');doc.setDrawColor(168,85,247);doc.setLineWidth(1);doc.line(0,fY-6,pageW,fY-6);doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(122,150,184);doc.text('TMMS  |  Nachi Eng Ltd  |  example.com  |  maintenance@example.com  |  +44 (0) 0000 000000',pageW/2,fY+2,{align:'center'});doc.setTextColor(168,85,247);doc.text('Registered in England & Wales | Company No. 16567818',pageW/2,fY+8,{align:'center'});doc.save('TMMS-Hotel-Report-'+new Date().toISOString().slice(0,10)+'.pdf');showToast('PDF downloaded!');},500);}
+function exportReport(){showToast('Generating PDF...');setTimeout(()=>{const{jsPDF}=window.jspdf;const doc=new jsPDF();const pageW=doc.internal.pageSize.getWidth();const today=new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});doc.setFillColor(10,8,15);doc.rect(0,0,pageW,42,'F');doc.setFillColor(168,85,247);doc.roundedRect(14,8,6,26,1,1,'F');doc.setTextColor(255,255,255);doc.setFontSize(16);doc.setFont('helvetica','bold');doc.text('NACHI ENG LTD',26,20);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(192,132,252);doc.text('Nachi CMMS — Hotel & Hospitality Report',26,28);doc.setTextColor(122,150,184);doc.text('Generated: '+today,26,35);doc.setDrawColor(168,85,247);doc.setLineWidth(1.5);doc.line(0,42,pageW,42);let y=54;const rows=[['Guest Impact Score','9.2 / 10',[245,158,11]],['Rooms Out of Service','3 of 240',[248,113,113]],['Overall Uptime','97.4%',[52,211,153]],['Avg Response Time','14 minutes',[52,211,153]],['Monthly Cost Per Room','£42',[52,211,153]],['Open Work Orders','7',[96,165,250]],['PPM Compliance','92%',[192,132,252]],['LOLER Lifts Status','Lift 2 FAULT — under repair',[248,113,113]]];doc.setFillColor(22,15,40);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(192,132,252);doc.text('HOTEL KPI SUMMARY',18,y);y+=10;rows.forEach(([l,v,rgb])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,pageW-18,y,{align:'right'});doc.setDrawColor(40,30,60);doc.setLineWidth(0.3);doc.line(18,y+2,pageW-18,y+2);y+=9;});y+=6;doc.setFillColor(22,15,40);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(192,132,252);doc.text('PPM COMPLIANCE BY ZONE',18,y);y+=10;[['Rooms & Floors','94%',[52,211,153],94],['HVAC & Climate','81%',[245,158,11],81],['Pool & Leisure','87%',[245,158,11],87],['Lifts & Escalators','98%',[52,211,153],98],['Plant & Back of House','96%',[52,211,153],96]].forEach(([l,v,rgb,pct])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,55,y);doc.setFillColor(30,20,50);doc.roundedRect(90,y-4,80,5,1,1,'F');doc.setFillColor(rgb[0],rgb[1],rgb[2]);doc.roundedRect(90,y-4,pct*0.8,5,1,1,'F');y+=9;});const fY=doc.internal.pageSize.getHeight()-18;doc.setFillColor(10,8,15);doc.rect(0,fY-6,pageW,24,'F');doc.setDrawColor(168,85,247);doc.setLineWidth(1);doc.line(0,fY-6,pageW,fY-6);doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(122,150,184);doc.text('Nachi CMMS  |  Nachi Eng Ltd  |  example.com  |  maintenance@example.com  |  +44 (0) 0000 000000',pageW/2,fY+2,{align:'center'});doc.setTextColor(168,85,247);doc.text('Registered in England & Wales | Company No. 16567818',pageW/2,fY+8,{align:'center'});doc.save('Nachi CMMS-Hotel-Report-'+new Date().toISOString().slice(0,10)+'.pdf');showToast('PDF downloaded!');},500);}
 
 // Init messaging
 setTimeout(()=>loadHThread('marcus',document.querySelector('.msg-thread')),100);

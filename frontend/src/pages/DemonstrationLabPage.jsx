@@ -13,7 +13,7 @@ const LAB_JSONLD = {
     "@type": "BreadcrumbList",
     itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: `${COMPANY.canonicalOrigin}/` },
-        { "@type": "ListItem", position: 2, name: "TMMS", item: `${COMPANY.canonicalOrigin}/tmms` },
+        { "@type": "ListItem", position: 2, name: "Nachi CMMS", item: `${COMPANY.canonicalOrigin}/tmms` },
         { "@type": "ListItem", position: 3, name: "Demonstration Lab", item: `${COMPANY.canonicalOrigin}/demonstrations` },
     ],
 };
@@ -93,8 +93,8 @@ export default function DemonstrationLabPage() {
     return (
         <>
             <Seo
-                title="TMMS Demonstration Lab — Maintenance Management System | Nachi Eng Ltd"
-                description="The TMMS Demonstration Lab: configurable maintenance management system in the CMMS category, by Nachi Eng Ltd. Four simulated sector demonstrations on sample data, in development."
+                title="Nachi CMMS Demonstration Lab | Nachi Eng Ltd"
+                description="The Nachi CMMS Demonstration Lab shows a configurable computerised maintenance management system using four simulated sector demonstrations on sample data."
                 path="/demonstrations"
                 jsonLd={LAB_JSONLD}
             />

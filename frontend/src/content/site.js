@@ -31,7 +31,7 @@ export const EXPERIENCE_STATEMENT =
 
 export const NAV_LINKS = [
     { label: "Services", to: "/services", testId: "nav-services" },
-    { label: "TMMS", to: "/tmms", testId: "nav-tmms" },
+    { label: "Nachi CMMS", to: "/tmms", testId: "nav-tmms" },
     { label: "Demonstrations", to: "/demonstrations", testId: "nav-demonstrations" },
     { label: "About", to: "/about", testId: "nav-about" },
     { label: "Insights", to: "/insights", testId: "nav-insights" },
@@ -44,7 +44,7 @@ export const PRIMARY_CTA = {
 };
 
 export const SECONDARY_CTA = {
-    label: "Explore TMMS",
+    label: "Explore Nachi CMMS",
     to: "/tmms",
     testId: "cta-explore-tmms",
 };

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>TMMS simulated demonstration — Factory & manufacturing</title>
+<title>Nachi CMMS simulated demonstration — Factory & manufacturing</title>
 <meta name="robots" content="noindex, nofollow">
 <style>
 [data-theme="dark"]{--bg:#05080f;--bg2:#080d18;--surface:#0d1626;--surface2:#111e35;--surface3:#162340;--white:#f0f6ff;--grey:#4a6080;--grey2:#7a96b8;--text:#f0f6ff;--border:rgba(59,130,246,0.12);--border2:rgba(59,130,246,0.22);--header-bg:rgba(5,8,15,0.97);--card-bg:#0d1626;--sidebar-bg:#080d18;--input-bg:#111e35;--shadow:rgba(0,0,0,0.5)}
@@ -11,7 +11,7 @@
 :root{--blue:#1a56db;--blue2:#3b82f6;--blue3:#60a5fa;--green:#10b981;--green2:#34d399;--amber:#f59e0b;--amber2:#fbbf24;--red:#ef4444;--red2:#f87171;--purple:#8b5cf6;--cyan:#06b6d4;--glow:rgba(26,86,219,0.25)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Archivo',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background 0.3s,color 0.3s}
-h1,h2,h3,h4{font-family:'Archivo',sans-serif}
+h1,h2,h3,h4{font-family:'Segoe UI Variable','Segoe UI',ui-sans-serif,system-ui,sans-serif}
 .header{position:sticky;top:0;z-index:200;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
 .header-left{display:flex;align-items:center;gap:14px}
 .header-logo{display:flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-size:16px;font-weight:800;color:var(--text);text-decoration:none}
@@ -189,7 +189,7 @@ h1,h2,h3,h4{font-family:'Archivo',sans-serif}
 [data-theme="dark"]{--border:rgba(244,243,240,0.10);--border2:rgba(244,243,240,0.22)}
 .btn-demo,.logo-badge,.industry-tag,.theme-btn{white-space:nowrap}
 body{font-family:"Archivo",ui-sans-serif,system-ui,sans-serif}
-h1,h2,h3,h4{font-family:"Archivo",ui-sans-serif,system-ui,sans-serif;font-stretch:110%;letter-spacing:-0.01em}
+h1,h2,h3,h4{font-family:"Segoe UI Variable","Segoe UI",ui-sans-serif,system-ui,sans-serif;letter-spacing:-0.01em}
 .header-logo{font-family:"Archivo",sans-serif;font-stretch:118%;font-weight:700;letter-spacing:-0.02em;gap:12px}
 .logo-badge,.industry-tag,.wo-status,.sidebar-label,.sim-badge{font-family:"IBM Plex Mono",ui-monospace,monospace;font-weight:500;letter-spacing:0.12em;text-transform:uppercase}
 .logo-badge{background:transparent;color:var(--grey2);border:1px solid var(--border2);border-radius:1px;font-size:9px;padding:3px 7px}
@@ -212,7 +212,7 @@ h1,h2,h3,h4{font-family:"Archivo",ui-sans-serif,system-ui,sans-serif;font-stretc
 <body>
 <div class="header">
   <div class="header-left">
-    <div class="header-logo">TMMS <span class="logo-badge">Simulated demo</span></div>
+    <div class="header-logo">Nachi CMMS <span class="logo-badge">Simulated demo</span></div>
     <span class="industry-tag" id="industry-tag"> All Lines — Factory</span>
   </div>
   <div class="header-right">
@@ -264,7 +264,7 @@ h1,h2,h3,h4{font-family:"Archivo",ui-sans-serif,system-ui,sans-serif;font-stretc
   <div class="content">
     <div class="page active" id="tab-dashboard">
       <div class="cta-banner">
-        <div class="cta-text"><h3>TMMS — Factory & manufacturing. Select a production line to view its sample data.</h3><p>Simulated demonstration by Nachi Eng Ltd. Every asset, person, figure, message and event shown is fictional sample data. No live system, customer or organisation is represented.</p></div>
+        <div class="cta-text"><h3>Nachi CMMS — Factory & manufacturing. Select a production line to view its sample data.</h3><p>Simulated demonstration by Nachi Eng Ltd. Every asset, person, figure, message and event shown is fictional sample data. No live system, customer or organisation is represented.</p></div>
       </div>
       <div id="dept-content"></div>
     </div>
@@ -512,7 +512,7 @@ function saveSettings(){closeSettings();showToast('Settings saved!');}
 function showToast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 
 // EXPORT PDF
-function exportReport(){showToast('Generating PDF...');setTimeout(()=>{const{jsPDF}=window.jspdf;const doc=new jsPDF();const pageW=doc.internal.pageSize.getWidth();const today=new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});doc.setFillColor(6,10,18);doc.rect(0,0,pageW,42,'F');doc.setFillColor(26,86,219);doc.roundedRect(14,8,6,26,1,1,'F');doc.setTextColor(255,255,255);doc.setFontSize(16);doc.setFont('helvetica','bold');doc.text('NACHI ENG LTD',26,20);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(96,165,250);doc.text('TMMS — Factory & Manufacturing Report',26,28);doc.setTextColor(122,150,184);doc.text('Generated: '+today,26,35);doc.setDrawColor(26,86,219);doc.setLineWidth(1.5);doc.line(0,42,pageW,42);let y=54;const rows=[['Overall Asset Uptime','97.3%',[16,185,129]],['Open Work Orders','14',[59,130,246]],['Avg MTTR','2.4 hours',[245,158,11]],['Savings vs Reactive','£42,000',[139,92,246]],['OEE Score','84%',[16,185,129]],['Monthly Cost','£18,200',[59,130,246]],['WOs Completed','127',[16,185,129]],['PPM Compliance','91%',[139,92,246]]];doc.setFillColor(13,22,38);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(96,165,250);doc.text('KPI SUMMARY',18,y);y+=10;rows.forEach(([l,v,rgb])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,pageW-18,y,{align:'right'});doc.setDrawColor(30,50,80);doc.setLineWidth(0.3);doc.line(18,y+2,pageW-18,y+2);y+=9;});y+=6;doc.setFillColor(13,22,38);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(96,165,250);doc.text('PPM COMPLIANCE BY LINE',18,y);y+=10;[['Line A — Automotive','96%',[16,185,129],96],['Line B — Assembly','78%',[245,158,11],78],['Line C — Packaging','91%',[16,185,129],91],['Line D — Welding','64%',[239,68,68],64]].forEach(([l,v,rgb,pct])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,55,y);doc.setFillColor(20,35,60);doc.roundedRect(70,y-4,100,5,1,1,'F');doc.setFillColor(rgb[0],rgb[1],rgb[2]);doc.roundedRect(70,y-4,pct,5,1,1,'F');y+=9;});const fY=doc.internal.pageSize.getHeight()-18;doc.setFillColor(6,10,18);doc.rect(0,fY-6,pageW,24,'F');doc.setDrawColor(26,86,219);doc.setLineWidth(1);doc.line(0,fY-6,pageW,fY-6);doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(122,150,184);doc.text('TMMS  |  Nachi Eng Ltd  |  example.com  |  maintenance@example.com  |  +44 (0) 0000 000000',pageW/2,fY+2,{align:'center'});doc.setTextColor(59,130,246);doc.text('Registered in England & Wales | Company No. 16567818',pageW/2,fY+8,{align:'center'});doc.save('TMMS-Factory-Report-'+new Date().toISOString().slice(0,10)+'.pdf');showToast('PDF downloaded!');},500);}
+function exportReport(){showToast('Generating PDF...');setTimeout(()=>{const{jsPDF}=window.jspdf;const doc=new jsPDF();const pageW=doc.internal.pageSize.getWidth();const today=new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});doc.setFillColor(6,10,18);doc.rect(0,0,pageW,42,'F');doc.setFillColor(26,86,219);doc.roundedRect(14,8,6,26,1,1,'F');doc.setTextColor(255,255,255);doc.setFontSize(16);doc.setFont('helvetica','bold');doc.text('NACHI ENG LTD',26,20);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(96,165,250);doc.text('Nachi CMMS — Factory & Manufacturing Report',26,28);doc.setTextColor(122,150,184);doc.text('Generated: '+today,26,35);doc.setDrawColor(26,86,219);doc.setLineWidth(1.5);doc.line(0,42,pageW,42);let y=54;const rows=[['Overall Asset Uptime','97.3%',[16,185,129]],['Open Work Orders','14',[59,130,246]],['Avg MTTR','2.4 hours',[245,158,11]],['Savings vs Reactive','£42,000',[139,92,246]],['OEE Score','84%',[16,185,129]],['Monthly Cost','£18,200',[59,130,246]],['WOs Completed','127',[16,185,129]],['PPM Compliance','91%',[139,92,246]]];doc.setFillColor(13,22,38);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(96,165,250);doc.text('KPI SUMMARY',18,y);y+=10;rows.forEach(([l,v,rgb])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,pageW-18,y,{align:'right'});doc.setDrawColor(30,50,80);doc.setLineWidth(0.3);doc.line(18,y+2,pageW-18,y+2);y+=9;});y+=6;doc.setFillColor(13,22,38);doc.roundedRect(14,y-6,pageW-28,8,1,1,'F');doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(96,165,250);doc.text('PPM COMPLIANCE BY LINE',18,y);y+=10;[['Line A — Automotive','96%',[16,185,129],96],['Line B — Assembly','78%',[245,158,11],78],['Line C — Packaging','91%',[16,185,129],91],['Line D — Welding','64%',[239,68,68],64]].forEach(([l,v,rgb,pct])=>{doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(180,200,220);doc.text(l,18,y);doc.setFont('helvetica','bold');doc.setTextColor(rgb[0],rgb[1],rgb[2]);doc.text(v,55,y);doc.setFillColor(20,35,60);doc.roundedRect(70,y-4,100,5,1,1,'F');doc.setFillColor(rgb[0],rgb[1],rgb[2]);doc.roundedRect(70,y-4,pct,5,1,1,'F');y+=9;});const fY=doc.internal.pageSize.getHeight()-18;doc.setFillColor(6,10,18);doc.rect(0,fY-6,pageW,24,'F');doc.setDrawColor(26,86,219);doc.setLineWidth(1);doc.line(0,fY-6,pageW,fY-6);doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(122,150,184);doc.text('Nachi CMMS  |  Nachi Eng Ltd  |  example.com  |  maintenance@example.com  |  +44 (0) 0000 000000',pageW/2,fY+2,{align:'center'});doc.setTextColor(59,130,246);doc.text('Registered in England & Wales | Company No. 16567818',pageW/2,fY+8,{align:'center'});doc.save('Nachi CMMS-Factory-Report-'+new Date().toISOString().slice(0,10)+'.pdf');showToast('PDF downloaded!');},500);}
 
 // Init messaging on load
 setTimeout(()=>loadThread('james',document.querySelector('.msg-thread')),100);

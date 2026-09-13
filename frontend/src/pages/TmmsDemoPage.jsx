@@ -16,8 +16,8 @@ export default function TmmsDemoPage() {
     return (
         <>
             <Seo
-                title={`${demo.label} — TMMS simulated demonstration | Nachi Eng Ltd`}
-                description={`Simulated TMMS demonstration for ${demo.label.toLowerCase()} on fictional sample data.`}
+                title={`${demo.label} — Nachi CMMS simulated demonstration | Nachi Eng Ltd`}
+                description={`Simulated Nachi CMMS demonstration for ${demo.label.toLowerCase()} on fictional sample data.`}
                 path={`/tmms/demos/${demo.slug}`}
                 noindex
             />
@@ -30,7 +30,7 @@ export default function TmmsDemoPage() {
                         className="group inline-flex min-h-[44px] items-center gap-2 text-sm text-ink/60 transition-colors hover:text-ink"
                     >
                         <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5" aria-hidden="true" />
-                        Back to TMMS
+                        Back to Nachi CMMS
                     </Link>
                     <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
                         <div>
@@ -64,7 +64,7 @@ export default function TmmsDemoPage() {
                     <iframe
                         key={key}
                         src={`/demos/${demo.slug}.html`}
-                        title={`TMMS simulated demonstration — ${demo.label}`}
+                        title={`Nachi CMMS simulated demonstration — ${demo.label}`}
                         data-testid="demo-iframe"
                         sandbox="allow-scripts"
                         referrerPolicy="no-referrer"
