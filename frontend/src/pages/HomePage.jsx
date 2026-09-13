@@ -117,55 +117,46 @@ const HOME_JSONLD = {
     ],
 };
 
-const ProcessVisual = () => {
-    const stages = [
-        { icon: Activity, label: "Detect", detail: "Operational issue" },
-        { icon: Search, label: "Diagnose", detail: "Evidence-led review" },
-        { icon: Wrench, label: "Restore", detail: "Controlled action" },
-        { icon: ClipboardCheck, label: "Improve", detail: "Learning retained" },
-    ];
+const EngineerHeroVisual = () => (
+    <div className="hero-engineer-scene">
+        <div className="hero-engineer-halo" aria-hidden="true" />
+        <div className="hero-engineer-ring hero-engineer-ring-one" aria-hidden="true" />
+        <div className="hero-engineer-ring hero-engineer-ring-two" aria-hidden="true" />
 
-    return (
-        <div className="hero-process" aria-label="Nachi Eng maintenance approach">
-            <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
-                <div>
-                    <p className="eyebrow text-white/[0.45]">Maintenance response</p>
-                    <p className="mt-1 text-sm font-semibold text-white/90">From issue to lasting action</p>
-                </div>
-                <span className="status-pulse" aria-hidden="true" />
-            </div>
-            <div className="relative p-5 md:p-6">
-                <div className="process-rail" aria-hidden="true" />
-                <ol className="relative space-y-3">
-                    {stages.map(({ icon: Icon, label, detail }, index) => (
-                        <li key={label} className="process-step">
-                            <span className="process-icon" aria-hidden="true">
-                                <Icon className="h-4 w-4" />
-                            </span>
-                            <span className="min-w-0 flex-1">
-                                <span className="block text-sm font-semibold text-white">{label}</span>
-                                <span className="mt-0.5 block text-xs text-white/50">{detail}</span>
-                            </span>
-                            <span className="font-mono text-[10px] tracking-[0.14em] text-white/[0.35]">
-                                {String(index + 1).padStart(2, "0")}
-                            </span>
-                        </li>
-                    ))}
-                </ol>
-            </div>
-            <div className="grid grid-cols-2 gap-px border-t border-white/10 bg-white/10">
-                <div className="bg-[#11141b] px-5 py-4">
-                    <p className="eyebrow text-white/40">Focus</p>
-                    <p className="mt-1 text-xs text-white/75">Safe, accountable support</p>
-                </div>
-                <div className="bg-[#11141b] px-5 py-4">
-                    <p className="eyebrow text-white/40">Outcome</p>
-                    <p className="mt-1 text-xs text-white/75">Clear next action</p>
-                </div>
-            </div>
+        <div className="hero-engineer-image-wrap">
+            <img
+                src="/images/hero-engineer-maintenance-v1.webp"
+                alt="Maintenance engineer inspecting an industrial conveyor and electrical control system"
+                width="900"
+                height="1350"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                className="hero-engineer-image"
+            />
         </div>
-    );
-};
+
+        <div className="hero-diagnostic-card hero-diagnostic-card-top" aria-hidden="true">
+            <span className="status-pulse" />
+            <span>
+                <span className="eyebrow block text-[9px] text-white/40">System status</span>
+                <strong className="mt-1 block text-xs font-semibold text-white/90">Diagnostics active</strong>
+            </span>
+        </div>
+
+        <div className="hero-diagnostic-card hero-diagnostic-card-bottom" aria-hidden="true">
+            <span className="hero-diagnostic-index">01</span>
+            <span>
+                <span className="eyebrow block text-[9px] text-white/40">Engineering focus</span>
+                <strong className="mt-1 block text-xs font-semibold text-white/90">Evidence before action</strong>
+            </span>
+        </div>
+
+        <p className="hero-engineer-caption" aria-hidden="true">
+            <span>Electrical</span><span>Mechanical</span><span>Controls</span>
+        </p>
+    </div>
+);
 
 const Hero = () => (
     <section data-testid="home-hero" className="hero-surface relative overflow-hidden text-paper">
@@ -197,7 +188,7 @@ const Hero = () => (
                 </div>
             </div>
             <div className="hero-enter hero-enter-delay-2 lg:col-span-5">
-                <ProcessVisual />
+                <EngineerHeroVisual />
             </div>
         </div>
         <div className="border-t border-white/10 bg-black/10">
