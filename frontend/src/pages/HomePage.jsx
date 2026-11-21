@@ -125,10 +125,10 @@ const EngineerHeroVisual = () => (
 
         <div className="hero-engineer-image-wrap">
             <img
-                src="/images/hero-engineer-maintenance-v1.webp"
+                src="/images/hero-engineer-maintenance-v2.webp"
                 alt="Maintenance engineer inspecting an industrial conveyor and electrical control system"
-                width="900"
-                height="1350"
+                width="864"
+                height="1152"
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
