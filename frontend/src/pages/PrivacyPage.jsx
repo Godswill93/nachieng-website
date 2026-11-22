@@ -1,4 +1,5 @@
 import { Seo } from "../components/seo/Seo";
+import { routeSeo } from "../content/routeMeta";
 import { COMPANY } from "../content/site";
 
 const Section = ({ heading, children }) => (
@@ -11,11 +12,7 @@ const Section = ({ heading, children }) => (
 export default function PrivacyPage() {
     return (
         <section data-testid="page-privacy" className="bg-paper">
-            <Seo
-                title="Privacy Policy | Nachi Eng Ltd"
-                description="How Nachi Eng Ltd handles personal data submitted through the website enquiry form."
-                path="/privacy"
-            />
+            <Seo {...routeSeo("/privacy")} />
             <div className="container-shell max-w-3xl py-24 md:py-32">
                 <p className="eyebrow text-signal">Legal</p>
                 <h1 className="h-display mt-6">Privacy Policy</h1>

@@ -12,6 +12,7 @@ import {
     Wrench,
 } from "lucide-react";
 import { Seo } from "../components/seo/Seo";
+import { routeSeo } from "../content/routeMeta";
 import { Reveal } from "../components/motion/Reveal";
 import { PrimaryButton } from "../components/PrimaryButton";
 import { EnquiryCta } from "../components/EnquiryCta";
@@ -422,12 +423,7 @@ const Insights = () => (
 export default function HomePage() {
     return (
         <>
-            <Seo
-                title="Nachi Eng Ltd | Industrial Engineering & Maintenance, Essex"
-                description="Industrial maintenance, fault-finding and engineering support for factories, warehouses and facilities across London, Essex and the South East."
-                path="/"
-                jsonLd={HOME_JSONLD}
-            />
+            <Seo {...routeSeo("/")} jsonLd={HOME_JSONLD} />
             <Hero />
             <Services />
             <WaysToWork />

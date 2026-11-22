@@ -1,4 +1,5 @@
 import { Seo } from "../components/seo/Seo";
+import { routeSeo } from "../content/routeMeta";
 import { Reveal } from "../components/motion/Reveal";
 import { Chapter } from "../components/layout/Chapter";
 import { IndustryGrid } from "../components/IndustryGrid";
@@ -168,12 +169,7 @@ const Faq = () => (
 export default function ServicesPage() {
     return (
         <>
-            <Seo
-                title="Services | Industrial Maintenance & Engineering | Nachi Eng"
-                description="Industrial electrical and mechanical maintenance, fault-finding, controls support and maintenance improvement across London, Essex and the South East."
-                path="/services"
-                jsonLd={SERVICES_JSONLD}
-            />
+            <Seo {...routeSeo("/services")} jsonLd={SERVICES_JSONLD} />
             <PageIntro />
             {SERVICE_BLOCKS.map((block, i) => (
                 <ServiceBlock key={block.slug} block={block} index={i} />

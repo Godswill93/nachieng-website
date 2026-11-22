@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Check } from "lucide-react";
 import { Seo } from "../components/seo/Seo";
+import { routeSeo } from "../content/routeMeta";
 import { Reveal } from "../components/motion/Reveal";
 import { Chapter } from "../components/layout/Chapter";
 import { EnquiryCta } from "../components/EnquiryCta";
@@ -92,12 +93,7 @@ export default function DemonstrationLabPage() {
     const previewOnly = DEMONSTRATIONS.some((d) => !d.media.published) && SHOW_PREVIEW_MEDIA;
     return (
         <>
-            <Seo
-                title="Nachi CMMS Demonstration Lab | Nachi Eng Ltd"
-                description="The Nachi CMMS Demonstration Lab shows a configurable computerised maintenance management system using four simulated sector demonstrations on sample data."
-                path="/demonstrations"
-                jsonLd={LAB_JSONLD}
-            />
+            <Seo {...routeSeo("/demonstrations")} jsonLd={LAB_JSONLD} />
 
             <section data-testid="demo-lab-intro" className="bg-paper">
                 <div className="container-shell pb-16 pt-24 md:pb-20 md:pt-32">

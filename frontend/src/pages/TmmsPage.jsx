@@ -1,4 +1,5 @@
 import { Seo } from "../components/seo/Seo";
+import { routeSeo } from "../content/routeMeta";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "../components/motion/Reveal";
@@ -154,12 +155,7 @@ const Status = () => (
 export default function TmmsPage() {
     return (
         <>
-            <Seo
-                title="Nachi CMMS — Computerised Maintenance Management System | Nachi Eng Ltd"
-                description="Nachi CMMS is a computerised maintenance management system in development by Nachi Eng Ltd, with four simulated sector demonstrations on sample data. Private demonstration by enquiry."
-                path="/tmms"
-                jsonLd={TMMS_JSONLD}
-            />
+            <Seo {...routeSeo("/tmms")} jsonLd={TMMS_JSONLD} />
             <Intro />
             <Problem />
             <Modules />

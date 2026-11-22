@@ -1,4 +1,5 @@
 import { Seo } from "../components/seo/Seo";
+import { routeSeo } from "../content/routeMeta";
 import { COMPANY } from "../content/site";
 
 const Section = ({ heading, children }) => (
@@ -11,11 +12,7 @@ const Section = ({ heading, children }) => (
 export default function CookiePage() {
     return (
         <section data-testid="page-cookies" className="bg-paper">
-            <Seo
-                title="Cookie Policy | Nachi Eng Ltd"
-                description="This website sets no analytics or advertising cookies. How this website uses browser storage."
-                path="/cookies"
-            />
+            <Seo {...routeSeo("/cookies")} />
             <div className="container-shell max-w-3xl py-24 md:py-32">
                 <p className="eyebrow text-signal">Legal</p>
                 <h1 className="h-display mt-6">Cookie Policy</h1>

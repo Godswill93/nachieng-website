@@ -1,0 +1,140 @@
+{
+  "origin": "https://www.nachieng.co.uk",
+  "defaultImage": "/brand/og-default.jpg",
+  "defaultImageAlt": "Nachi Eng Ltd. Engineering reliability into every operation.",
+  "imageWidth": 1200,
+  "imageHeight": 630,
+  "routes": [
+    {
+      "path": "/",
+      "title": "Nachi Eng Ltd | Industrial Engineering & Maintenance, Essex",
+      "description": "Industrial maintenance, fault-finding and engineering support for factories, warehouses and facilities across London, Essex and the South East.",
+      "lastmod": "2026-11-21",
+      "changefreq": "monthly",
+      "priority": "1.0",
+      "sitemap": true
+    },
+    {
+      "path": "/services",
+      "title": "Services | Industrial Maintenance & Engineering | Nachi Eng",
+      "description": "Industrial electrical and mechanical maintenance, fault-finding, controls support and maintenance improvement across London, Essex and the South East.",
+      "lastmod": "2026-09-13",
+      "changefreq": "monthly",
+      "priority": "0.9",
+      "sitemap": true
+    },
+    {
+      "path": "/tmms",
+      "title": "Nachi CMMS — Computerised Maintenance Management System | Nachi Eng Ltd",
+      "description": "Nachi CMMS is a computerised maintenance management system in development by Nachi Eng Ltd, with four simulated sector demonstrations on sample data. Private demonstration by enquiry.",
+      "lastmod": "2026-09-13",
+      "changefreq": "monthly",
+      "priority": "0.9",
+      "sitemap": true
+    },
+    {
+      "path": "/demonstrations",
+      "title": "Nachi CMMS Demonstration Lab | Nachi Eng Ltd",
+      "description": "The Nachi CMMS Demonstration Lab shows a configurable computerised maintenance management system using four simulated sector demonstrations on sample data.",
+      "lastmod": "2026-09-13",
+      "changefreq": "monthly",
+      "priority": "0.8",
+      "sitemap": true
+    },
+    {
+      "path": "/about",
+      "title": "About | Nachi Eng Ltd",
+      "description": "Nachi Eng Ltd is an industrial engineering and technology company in Southend-on-Sea, Essex, founded in 2025 by Godswill C. Iweajunwa, BEng (Hons), MIET.",
+      "lastmod": "2026-09-10",
+      "changefreq": "monthly",
+      "priority": "0.7",
+      "sitemap": true
+    },
+    {
+      "path": "/insights",
+      "title": "Insights | Nachi Eng Ltd",
+      "description": "Articles on maintenance practice and maintenance technology, written from the maintenance floor.",
+      "lastmod": "2026-09-13",
+      "changefreq": "monthly",
+      "priority": "0.7",
+      "sitemap": true
+    },
+    {
+      "path": "/insights/what-is-a-cmms",
+      "title": "What is a CMMS? | Nachi Eng Ltd",
+      "description": "A CMMS (Computerised Maintenance Management System) helps operations teams plan, track and manage maintenance in one place. What it is, what it does and who it is for.",
+      "image": "/brand/og-what-is-a-cmms.jpg",
+      "imageAlt": "Diagram of a maintenance system linking clipboards, calendars and a gear.",
+      "lastmod": "2026-09-13",
+      "changefreq": "yearly",
+      "priority": "0.6",
+      "sitemap": true
+    },
+    {
+      "path": "/insights/reactive-vs-preventive-maintenance",
+      "title": "The 2am Phone Call That's Costing Your Facility a Fortune | Nachi Eng Ltd",
+      "description": "Why so many facilities teams stay stuck in reactive maintenance, what it really costs in disruption and risk, and how a CMMS helps shift to planned, preventive work.",
+      "image": "/brand/og-reactive-vs-preventive.jpg",
+      "imageAlt": "Diagram contrasting tangled reactive work with a straight preventive-maintenance line and gauges.",
+      "lastmod": "2026-09-13",
+      "changefreq": "yearly",
+      "priority": "0.6",
+      "sitemap": true
+    },
+    {
+      "path": "/contact",
+      "title": "Contact | Nachi Eng Ltd",
+      "description": "Contact Nachi Eng Ltd about an industrial engineering or maintenance requirement. Describe the site, the equipment and the problem for a considered response.",
+      "lastmod": "2026-09-11",
+      "changefreq": "yearly",
+      "priority": "0.8",
+      "sitemap": true
+    },
+    {
+      "path": "/privacy",
+      "title": "Privacy Policy | Nachi Eng Ltd",
+      "description": "How Nachi Eng Ltd handles personal data submitted through the website enquiry form.",
+      "lastmod": "2026-09-10",
+      "changefreq": "yearly",
+      "priority": "0.3",
+      "sitemap": true
+    },
+    {
+      "path": "/cookies",
+      "title": "Cookie Policy | Nachi Eng Ltd",
+      "description": "This website sets no analytics or advertising cookies. How this website uses browser storage.",
+      "lastmod": "2026-09-13",
+      "changefreq": "yearly",
+      "priority": "0.3",
+      "sitemap": true
+    },
+    {
+      "path": "/tmms/demos/factory",
+      "title": "Factory & manufacturing — Nachi CMMS simulated demonstration | Nachi Eng Ltd",
+      "description": "Simulated Nachi CMMS demonstration for factory & manufacturing on fictional sample data.",
+      "noindex": true,
+      "sitemap": false
+    },
+    {
+      "path": "/tmms/demos/warehouse",
+      "title": "Warehouse & logistics — Nachi CMMS simulated demonstration | Nachi Eng Ltd",
+      "description": "Simulated Nachi CMMS demonstration for warehouse & logistics on fictional sample data.",
+      "noindex": true,
+      "sitemap": false
+    },
+    {
+      "path": "/tmms/demos/hotel",
+      "title": "Hotel & hospitality — Nachi CMMS simulated demonstration | Nachi Eng Ltd",
+      "description": "Simulated Nachi CMMS demonstration for hotel & hospitality on fictional sample data.",
+      "noindex": true,
+      "sitemap": false
+    },
+    {
+      "path": "/tmms/demos/hospital",
+      "title": "Hospital & healthcare — Nachi CMMS simulated demonstration | Nachi Eng Ltd",
+      "description": "Simulated Nachi CMMS demonstration for hospital & healthcare on fictional sample data.",
+      "noindex": true,
+      "sitemap": false
+    }
+  ]
+}
