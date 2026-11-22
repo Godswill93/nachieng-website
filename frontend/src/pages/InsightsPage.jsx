@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { Seo } from "../components/seo/Seo";
+import { routeSeo } from "../content/routeMeta";
 import { Reveal } from "../components/motion/Reveal";
 import { EnquiryCta } from "../components/EnquiryCta";
 import { COMPANY } from "../content/site";
@@ -23,12 +24,7 @@ const INSIGHTS_JSONLD = {
 export default function InsightsPage() {
     return (
         <>
-            <Seo
-                title="Insights | Nachi Eng Ltd"
-                description="Articles on maintenance practice and maintenance technology, written from the maintenance floor."
-                path="/insights"
-                jsonLd={INSIGHTS_JSONLD}
-            />
+            <Seo {...routeSeo("/insights")} jsonLd={INSIGHTS_JSONLD} />
             <section data-testid="page-insights" className="bg-paper">
                 <div className="container-shell py-24 md:py-32">
                     <p className="eyebrow text-signal">Insights</p>

@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { ArrowUpRight, Check } from "lucide-react";
 import { Seo } from "../components/seo/Seo";
+import { routeSeo } from "../content/routeMeta";
 import { COMPANY } from "../content/site";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -81,11 +82,7 @@ export default function ContactPage() {
 
     return (
         <section data-testid="page-contact" className="bg-paper">
-            <Seo
-                title="Contact | Nachi Eng Ltd"
-                description="Contact Nachi Eng Ltd about an industrial engineering or maintenance requirement. Describe the site, the equipment and the problem for a considered response."
-                path="/contact"
-            />
+            <Seo {...routeSeo("/contact")} />
             <div className="container-shell grid gap-16 py-24 md:grid-cols-12 md:gap-8 md:py-32">
                 <div className="md:col-span-5">
                     <p className="eyebrow text-signal">Contact</p>

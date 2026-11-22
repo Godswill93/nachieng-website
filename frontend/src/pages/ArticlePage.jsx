@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, Link2, Check } from "lucide-react";
 import { Seo } from "../components/seo/Seo";
+import { routeSeo } from "../content/routeMeta";
 import { Reveal } from "../components/motion/Reveal";
 import { PrimaryButton } from "../components/PrimaryButton";
 import { COMPANY, FOUNDER } from "../content/site";
@@ -140,13 +141,7 @@ export default function ArticlePage() {
 
     return (
         <>
-            <Seo
-                title={`${article.title} | Nachi Eng Ltd`}
-                description={article.description}
-                path={`/insights/${article.slug}`}
-                jsonLd={jsonLd}
-                image={article.ogImage}
-            />
+            <Seo {...routeSeo(`/insights/${article.slug}`)} jsonLd={jsonLd} />
             <article data-testid={`article-${article.slug}`} className="bg-paper">
                 <div className="container-shell pt-10 md:pt-14">
                     <Link

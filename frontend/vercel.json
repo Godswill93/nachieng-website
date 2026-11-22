@@ -1,12 +1,19 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "create-react-app",
-  "routes": [
+    "routes": [
     { "handle": "filesystem" },
     { "src": "^/$", "dest": "/index.html" },
-    { "src": "^/(services|tmms|demonstrations|about|insights|contact|privacy|cookies)/?$", "dest": "/index.html" },
-    { "src": "^/insights/(what-is-a-cmms|reactive-vs-preventive-maintenance)/?$", "dest": "/index.html" },
-    { "src": "^/tmms/demos/(factory|warehouse|hotel|hospital)/?$", "dest": "/index.html" },
+    { "src": "^/services/?$", "dest": "/services/index.html" },
+    { "src": "^/tmms/?$", "dest": "/tmms/index.html" },
+    { "src": "^/demonstrations/?$", "dest": "/demonstrations/index.html" },
+    { "src": "^/about/?$", "dest": "/about/index.html" },
+    { "src": "^/insights/?$", "dest": "/insights/index.html" },
+    { "src": "^/insights/(what-is-a-cmms|reactive-vs-preventive-maintenance)/?$", "dest": "/insights/$1/index.html" },
+    { "src": "^/contact/?$", "dest": "/contact/index.html" },
+    { "src": "^/privacy/?$", "dest": "/privacy/index.html" },
+    { "src": "^/cookies/?$", "dest": "/cookies/index.html" },
+    { "src": "^/tmms/demos/(factory|warehouse|hotel|hospital)/?$", "dest": "/tmms/demos/$1/index.html" },
     { "src": "^/.*$", "status": 404, "dest": "/index.html" }
   ]
 }

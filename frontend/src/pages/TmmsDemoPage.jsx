@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, RotateCcw } from "lucide-react";
 import { Seo } from "../components/seo/Seo";
+import { routeSeo } from "../content/routeMeta";
 import { DemoGrid } from "../components/tmms/DemoGrid";
 import { DemoTour } from "../components/tmms/DemoTour";
 import { DEMO_NOTICE, TMMS_DEMOS } from "../content/tmms";
@@ -15,12 +16,7 @@ export default function TmmsDemoPage() {
 
     return (
         <>
-            <Seo
-                title={`${demo.label} — Nachi CMMS simulated demonstration | Nachi Eng Ltd`}
-                description={`Simulated Nachi CMMS demonstration for ${demo.label.toLowerCase()} on fictional sample data.`}
-                path={`/tmms/demos/${demo.slug}`}
-                noindex
-            />
+            <Seo {...routeSeo(`/tmms/demos/${demo.slug}`)} />
             <DemoTour key={demo.slug} sector={demo.slug} />
             <section data-testid={`demo-page-${demo.slug}`} className="bg-paper">
                 <div className="container-shell pt-10 md:pt-14">

@@ -1,4 +1,5 @@
 import { Seo } from "../components/seo/Seo";
+import { routeSeo } from "../content/routeMeta";
 import { Reveal } from "../components/motion/Reveal";
 import { Chapter } from "../components/layout/Chapter";
 import { EnquiryCta } from "../components/EnquiryCta";
@@ -159,12 +160,7 @@ const ApproachSection = () => (
 export default function AboutPage() {
     return (
         <>
-            <Seo
-                title="About | Nachi Eng Ltd"
-                description="Nachi Eng Ltd is an industrial engineering and technology company in Southend-on-Sea, Essex, founded in 2025 by Godswill C. Iweajunwa, BEng (Hons), MIET."
-                path="/about"
-                jsonLd={ABOUT_JSONLD}
-            />
+            <Seo {...routeSeo("/about")} jsonLd={ABOUT_JSONLD} />
             <PageIntro />
             <FounderSection />
             <CompanySection />
